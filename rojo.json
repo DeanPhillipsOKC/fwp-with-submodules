@@ -1,0 +1,14 @@
+{
+  "name": "Fishing With Pets",
+  "servePort": 8000,
+  "partitions": {
+    "Shared": {
+      "path": "src/shared",
+      "target": "ReplicatedStorage.src"
+    },
+    "SharedLibraries": {
+      "path": "modules/shared",
+      "target": "ReplicatedStorage.lib"
+    }
+  }
+}

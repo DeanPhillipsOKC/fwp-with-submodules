@@ -1,0 +1,9 @@
+[submodule "modules/inrastructure/lemur"]
+	path = modules/inrastructure/lemur
+	url = https://github.com/LPGhatguy/lemur.git
+[submodule "modules/infrastructure/testez"]
+	path = modules/infrastructure/testez
+	url = https://github.com/Roblox/testez.git
+[submodule "modules/shared/roact"]
+	path = modules/shared/roact
+	url = https://github.com/Roblox/roact.git
