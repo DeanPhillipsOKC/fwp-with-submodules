@@ -4,11 +4,23 @@
   "partitions": {
     "Shared": {
       "path": "src/shared",
-      "target": "ReplicatedStorage.src"
+      "target": "ReplicatedStorage"
     },
     "SharedLibraries": {
       "path": "modules/shared",
       "target": "ReplicatedStorage.lib"
+    },
+    "UI": {
+      "path": "src/ui",
+      "target": "StarterPlayer.StarterPlayerScripts"
+    },
+    "Server": {
+      "path": "src/server",
+      "target": "ServerScriptService"
+    },
+    "ServerLibraries": {
+      "path": "modules/server",
+      "target": "ServerScriptService.lib"
     }
   }
 }
