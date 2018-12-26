@@ -1,5 +1,5 @@
 return function()
-    local uutDependencies = require(script.Parent.PlayerEntity.Dependencies)
+    local uutDependencies = require(script.Parent.Dependencies)
 
     local DataStoreMock = requireFsModule("DataStore2Mock")
 
@@ -7,7 +7,7 @@ return function()
         DataStore = DataStoreMock
     })
 
-    local uut = require(script.Parent.PlayerEntity)
+    local uut = require(script.Parent)
 
     describe("GetTotalCoins", function()
         it("Should return total coin value stored in the database", function()
