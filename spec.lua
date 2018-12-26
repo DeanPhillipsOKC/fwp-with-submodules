@@ -6,10 +6,13 @@
 local LOAD_MODULES = {
 	{"src", "Game"},
 	{"modules/infrastructure/testez/lib", "TestEZ"},
+	{"testing/mocks", "Mocks"}
 }
 
+local lfs = require"lfs"
+
 -- This makes sure we can load Lemur and other libraries that depend on init.lua
-package.path = package.path .. ";?/init.lua"
+package.path = package.path .. ";?/init.lua" .. ";" .. lfs.currentdir() .. "\\testing\\mocks\\?.lua"
 
 -- If this fails, make sure you've cloned all Git submodules of this repo!
 local lemur = require("modules.infrastructure.lemur")

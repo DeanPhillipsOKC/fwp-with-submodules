@@ -4,7 +4,7 @@
   "partitions": {
     "Shared": {
       "path": "src/shared",
-      "target": "ReplicatedStorage"
+      "target": "ReplicatedStorage.src"
     },
     "SharedLibraries": {
       "path": "modules/shared",
@@ -12,15 +12,15 @@
     },
     "UI": {
       "path": "src/ui",
-      "target": "StarterPlayer.StarterPlayerScripts"
-    },
-    "Server": {
-      "path": "src/server",
-      "target": "ServerScriptService"
+      "target": "StarterPlayer.StarterPlayerScripts.src"
     },
     "ServerLibraries": {
       "path": "modules/server",
       "target": "ServerScriptService.lib"
+    },
+    "Server": {
+      "path": "src/server",
+      "target": "ServerScriptService.src"
     }
   }
 }
