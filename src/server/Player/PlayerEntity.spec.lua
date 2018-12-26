@@ -1,7 +1,7 @@
 return function()
     local uutDependencies = require(script.Parent.PlayerEntity.Dependencies)
 
-    local DataStoreMock = requireMock("DataStore2Mock")
+    local DataStoreMock = requireFsModule("DataStore2Mock")
 
     uutDependencies.Inject({
         DataStore = DataStoreMock
