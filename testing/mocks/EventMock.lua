@@ -8,12 +8,10 @@ function Event.new(e)
 end
 
 function Event:Connect(cb)
-    print("Loading cb ", cb)
     self.callback = cb
 end
 
 function Event:Fire(...)
-    print("Firing callback ", self.callback)
     self.callback(...)
 end
 
