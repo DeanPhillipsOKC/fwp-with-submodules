@@ -2,18 +2,17 @@ local RemoteEventMock = {}
 
 function RemoteEventMock.new(e)
     e = e or {}
+    e.handleClientCallback = function() end
     setmetatable(e, RemoteEventMock)
     return e
 end
 
-local handleClientCallback = function () end
-
 function RemoteEventMock:HandleClient(cb)
-    handleClientCallback = cb
+    self.handleClientCallback = cb
 end
 
 function RemoteEventMock:FireClient(...)
-    handleClientCallback(...)
+    self.handleClientCallback(...)
 end
 
 RemoteEventMock.__index = RemoteEventMock

@@ -12,6 +12,10 @@ function PlayerEntity.new(player)
 	return p
 end
 
+function PlayerEntity:GetUserId()
+	return self.Player.UserId
+end
+
 function PlayerEntity:GetTotalCoins()
 	return self.coinStore:Get(0)
 end

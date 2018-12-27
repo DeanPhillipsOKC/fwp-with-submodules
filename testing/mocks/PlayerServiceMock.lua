@@ -1,5 +1,6 @@
 local PlayerServiceMock = {}
 
-PlayerServiceMock.PlayerAdded = requireFsModule(EventMock)
+PlayerServiceMock.PlayerAdded = require(".EventMock").new()
+PlayerServiceMock.PlayerRemoving = require(".EventMock").new()
 
 return PlayerServiceMock

@@ -9,6 +9,13 @@ return function()
 
     local uut = require(script.Parent)
 
+    describe("GetUserId", function()
+        it("Should return the player's UserID", function()
+            local player = uut.new({ UserId = "Unit Tester 0"})
+            expect(player:GetUserId()).to.equal("Unit Tester 0")
+        end)
+    end)
+
     describe("GetTotalCoins", function()
         it("Should return total coin value stored in the database", function()
             local player = uut.new({ UserId = "Unit Tester 1"})

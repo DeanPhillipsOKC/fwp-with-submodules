@@ -9,7 +9,7 @@ end
 function PlayerRepositoryDependencies.Get()
     return injected or {    
         PlayersService = game:GetService("Players"),
-        PlayerFactory = require(game.ServerScriptService.Player.PlayerEntity),
+        PlayerFactory = require(script.Parent.PlayerEntity),
         PlayerInstantiatedEvent = game.ReplicatedStorage.Player.PlayerInstantiated,
     }
 end

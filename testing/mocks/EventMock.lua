@@ -2,18 +2,19 @@ local Event = {}
 
 function Event.new(e)
     e = e or {}
+    e.callback = function() end
     setmetatable(e, Event)
     return e
 end
 
-local callback = function() end
-
 function Event:Connect(cb)
-    callback = cb
+    print("Loading cb ", cb)
+    self.callback = cb
 end
 
 function Event:Fire(...)
-    cb(...)
+    print("Firing callback ", self.callback)
+    self.callback(...)
 end
 
 Event.__index = Event
