@@ -4,12 +4,12 @@ local LeftHudStatComponent = Roact.Component:extend("LeftHudStat")
 
 function LeftHudStatComponent:init(props)
     print("setting state");
-    self.state = {
-        FrameName = props.FrameName,
-        IconText = props.IconText,
-        AmountText = props.AmountText or "Loading..."
-    }
+    self.state = props
 end
+
+LeftHudStatComponent.defaultProps = {
+    AmountText = "Loading..."
+}
 
 function LeftHudStatComponent:render()
     print("Rendering!!")

@@ -3,11 +3,6 @@ local LeftHudStats = {}
 local Roact = require(script.Dependencies).Get().Roact
 local LeftHudStatContainer = require(script.Dependencies).Get().LeftHudStatContainer
 
-TotalCoinsContainer = LeftHudStatContainer._new({
-    FrameName = "TotalCoins",    
-    IconText = "💰"
-})
-
 function LeftHudStats.Get()
     return Roact.createElement("Frame", {
         Name = script.Name,
@@ -21,7 +16,10 @@ function LeftHudStats.Get()
         Layout = Roact.createElement("UIGridLayout", {
             Name = "Layout"
         }),
-        TotalCoinsContainer = Roact.createElement(TotalCoinsContainer)        
+        TotalCoinsContainer = Roact.createElement(LeftHudStatContainer, {
+            FrameName = "TotalCoins",
+            IconText = "💰"
+        })
     })
 end
 
