@@ -1,15 +1,16 @@
-local UiAcrossFoldeRDependencies = {}
+local UiAcrossFolderDependencies = {}
 
 local injected = nil
 
-function UiAcrossFoldeRDependencies.Inject(newDependencies)
+function UiAcrossFolderDependencies.Inject(newDependencies)
     injected = newDependencies
 end
 
-function UiAcrossFoldeRDependencies.Get()
+function UiAcrossFolderDependencies.Get()
     return injected or {
-        Roact = require(game.ReplicatedStorage.lib.roact.lib)
+        Roact = require(game.ReplicatedStorage.lib.roact.lib),
+        LeftHudStatContainer = require(script.Parent.LeftHudStat)
     }
 end
 
-return UiAcrossFoldeRDependencies
+return UiAcrossFolderDependencies
