@@ -1,5 +1,5 @@
-[submodule "modules/inrastructure/lemur"]
-	path = modules/inrastructure/lemur
+[submodule "modules/infrastructure/lemur"]
+	path = modules/infrastructure/lemur
 	url = https://github.com/LPGhatguy/lemur.git
 [submodule "modules/infrastructure/testez"]
 	path = modules/infrastructure/testez
@@ -7,3 +7,9 @@
 [submodule "modules/shared/roact"]
 	path = modules/shared/roact
 	url = https://github.com/Roblox/roact.git
+[submodule "modules/shared/Rodux"]
+	path = modules/shared/Rodux
+	url = https://github.com/Roblox/Rodux
+[submodule "modules/shared/roact-rodux"]
+	path = modules/shared/roact-rodux
+	url = https://github.com/Roblox/roact-rodux

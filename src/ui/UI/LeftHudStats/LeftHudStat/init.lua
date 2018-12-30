@@ -8,11 +8,10 @@ function LeftHudStatComponent:init(props)
 end
 
 LeftHudStatComponent.defaultProps = {
-    AmountText = "Loading..."
+    AmountText = "Loading...",
 }
 
 function LeftHudStatComponent:render()
-    print("Rendering!!")
     return Roact.createElement("Frame", {
         Name = self.state.FrameName,
         BackgroundTransparency = 1
