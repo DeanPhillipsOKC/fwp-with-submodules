@@ -12,7 +12,6 @@ function LeftHudStats.Get()
         Size = UDim2.new(0, 100, 0, 300),
         SizeConstraint = Enum.SizeConstraint.RelativeXY
     }, {
-
         Layout = Roact.createElement("UIGridLayout", {
             Name = "Layout"
         }),

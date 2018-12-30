@@ -9,5 +9,5 @@ local function HUD()
         LeftHudStats = LeftHudStats
     })
 end
-
+print("Mounting")
 Roact.mount(HUD(), Players.LocalPlayer:WaitForChild("PlayerGui"))

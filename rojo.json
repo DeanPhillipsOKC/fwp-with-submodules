@@ -10,8 +10,8 @@
       "path": "modules/shared",
       "target": "ReplicatedStorage.lib"
     },
-    "UI": {
-      "path": "src/ui",
+    "Client": {
+      "path": "src/client",
       "target": "StarterPlayer.StarterPlayerScripts.src"
     },
     "ServerLibraries": {
