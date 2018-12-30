@@ -8,7 +8,7 @@ end
 
 function UiAcrossFolderDependencies.Get()
     return injected or {
-        Roact = require(game.ReplicatedStorage.lib.roact.lib),
+        Roact = require(game.ReplicatedStorage.lib.Roact),
         LeftHudStatContainer = require(script.Parent.LeftHudStat)
     }
 end

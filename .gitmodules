@@ -10,6 +10,6 @@
 [submodule "modules/shared/Rodux"]
 	path = modules/shared/Rodux
 	url = https://github.com/Roblox/Rodux
-[submodule "modules/shared/roact-rodux"]
-	path = modules/shared/roact-rodux
+[submodule "modules/shared/RoactRodux"]
+	path = modules/shared/RoactRodux
 	url = https://github.com/Roblox/roact-rodux

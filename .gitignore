@@ -1,2 +1,5 @@
 /luacov.*
 /site/
+/modules/shared/Roact/
+/modules/shared/Rodux/
+/modules/shared/RoactRodux/

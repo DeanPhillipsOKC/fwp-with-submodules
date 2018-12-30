@@ -1,3 +1,5 @@
+print("including the vm")
+
 local Rodux = require(script.Dependencies).Get().Rodux
 
 local function TotalCoinsChanged(newTotal)
@@ -23,4 +25,4 @@ local store = Rodux.Store.new(reducer, nil, {
 
 store:dispatch(TotalCoinsChanged(12345))
 
---return store
+return store

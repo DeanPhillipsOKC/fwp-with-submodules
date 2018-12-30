@@ -8,7 +8,7 @@ end
 
 function vmDependencies.Get()
     return injected or {
-        Rodux = require(game.ReplicatedStorage.lib.Rodux.lib)
+        Rodux = require(game.ReplicatedStorage.lib.Rodux)
     }
 end
 
