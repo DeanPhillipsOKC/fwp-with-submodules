@@ -1,19 +1,14 @@
-local Roact = require(script.Dependencies).Get().Roact
-local Players = require(script.Dependencies).Get().PlayersService
-local LeftHudStats = require(script.Dependencies).Get().LeftHudStats.Get()
-local VM = require(script.Dependencies).Get().VM
-local RoactRodux = require(script.Dependencies).Get().RoactRodux
+local screenGui = require(script.Screen)
+local Roact = require(game.ReplicatedStorage.lib.Roact)
+local RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux)
+local PlayersService = game:GetService("Players")
+local VM = require(Game:GetService("Players").LocalPlayer.PlayerScripts.src.viewmodel)
 
-local function HUD()
-    return Roact.createElement(RoactRodux.StoreProvider, {
-        store = VM
-    }, {
-        LeftHudStats = Roact.createElement("ScreenGui", {
-            Name = "MainGui"
-        }, {
-            LeftHudStats = LeftHudStats
-        })
-    })
-end
+local mainUI = Roact.createElement(RoactRodux.StoreProvider, {
+    store = VM
+}, {
+    Roact.createElement(screenGui)
+})
+
 print("Mounting")
-Roact.mount(HUD(), Players.LocalPlayer:WaitForChild("PlayerGui"))
+Roact.mount(mainUI, PlayersService.LocalPlayer:WaitForChild("PlayerGui"))
