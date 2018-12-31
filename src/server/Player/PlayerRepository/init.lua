@@ -5,6 +5,7 @@ local players = {}
 local playersService = require(script.Dependencies).Get().PlayersService
 local playerFactory = require(script.Dependencies).Get().PlayerFactory
 local playerInstantiatedEvent = require(script.Dependencies).Get().PlayerInstantiatedEvent
+local getTotalCoinsRF = require(script.Dependencies).Get().GetTotalCoinsRF
 
 playersService.PlayerAdded:Connect(function (player)
 	players[player.UserId] = playerFactory.new(player)
@@ -21,6 +22,11 @@ end)
 
 function PlayerRepository.GetPlayer(player)
 	return players[player.UserId]
+end
+
+function getTotalCoinsRF.OnServerInvoke(player)
+	local playerEntity = PlayerRepository.GetPlayer(player)
+	return playerEntity:GetTotalCoins()
 end
 
 return PlayerRepository

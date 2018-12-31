@@ -11,6 +11,7 @@ function PlayerRepositoryDependencies.Get()
         PlayersService = game:GetService("Players"),
         PlayerFactory = require(script.Parent.PlayerEntity),
         PlayerInstantiatedEvent = game.ReplicatedStorage.Player.PlayerInstantiated,
+        GetTotalCoinsRF = game.ReplicatedStorage.src.Player.Stats.GetTotalCoinsRF
     }
 end
 

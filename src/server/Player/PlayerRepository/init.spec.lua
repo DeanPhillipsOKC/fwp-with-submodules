@@ -2,12 +2,15 @@ return function()
     local uutDependencies = require(script.Parent.Dependencies);
 
     local PlayerServiceMock = requireFsModule("PlayerServiceMock")
+    local PlayerFactoryMock = requireFsModule("PlayerFactoryMock")
     local PlayerInstantiatedEvent = requireFsModule("RemoteEventMock").new()
+    local GetTotalCoinsRF = requireFsModule("RemoteFunctionMock").new()
 
     uutDependencies.Inject({
         PlayersService = PlayerServiceMock,
-        PlayerFactory = require(script.Parent.Parent.PlayerEntity),
-        PlayerInstantiatedEvent = PlayerInstantiatedEvent
+        PlayerFactory = PlayerFactoryMock,
+        PlayerInstantiatedEvent = PlayerInstantiatedEvent,
+        GetTotalCoinsRF = GetTotalCoinsRF
     })
 
     local uut = require(script.Parent)
@@ -39,6 +42,18 @@ return function()
             
             PlayerServiceMock.PlayerRemoving:Fire(player)
             expect(uut.GetPlayer(player)).to.equal(nil)
+        end)
+    end)
+
+    describe("GetTotalCoins Remote Function", function()
+        it("Should return the total gold for the corresponding player when invoked.", function()
+            local player = { 
+                UserId = "Unit Tester GetTotalCoinsRF 1",
+                TotalCoins = 743
+            }
+            PlayerServiceMock.PlayerAdded:Fire(player)
+
+            expect(GetTotalCoinsRF:InvokeServer(player)).to.equal(743)
         end)
     end)
 end
