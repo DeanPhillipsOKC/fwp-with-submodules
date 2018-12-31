@@ -2,10 +2,10 @@ local Rodux = require(script.Dependencies).Get().Rodux
 
 local function reducer(state, action)
     state = state or {
-        TotalCoins = 0,
+        TotalCoins = nil,
     }
 
-    if action.type == "totalCoinsChagned" then
+    if action.type == "totalCoinsChanged" then
         return {
             TotalCoins = action.newtotalCoins
         }

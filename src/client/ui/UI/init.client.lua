@@ -12,3 +12,9 @@ local mainUI = Roact.createElement(RoactRodux.StoreProvider, {
 
 print("Mounting")
 Roact.mount(mainUI, PlayersService.LocalPlayer:WaitForChild("PlayerGui"))
+
+wait(3)
+VM:dispatch({
+    type = "totalCoinsChanged",
+    newtotalCoins = 12345
+})

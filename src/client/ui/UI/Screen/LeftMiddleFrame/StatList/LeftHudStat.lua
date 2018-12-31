@@ -31,6 +31,7 @@ function LeftHudStat(props)
                 Text = props.AmountText,
                 Font = Enum.Font.GothamBlack,
                 TextSize = 38,
+                TextXAlignment = Enum.TextXAlignment.Right,
                 BackgroundTransparency = 1,
                 TextColor3 = Color3.fromRGB(0, 255, 0)
             })
