@@ -1,6 +1,6 @@
 local Rodux = require(script.Dependencies).Get().Rodux
 
-local TotalCoinsReducer = require(script.TotalCoinsReducer)
+local TotalCoinsReducer = require(script.TotalCoins.TotalCoinsReducer)
 
 function reducer(state, action)
     state = state or {}
