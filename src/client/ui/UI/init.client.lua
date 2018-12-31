@@ -16,5 +16,5 @@ Roact.mount(mainUI, PlayersService.LocalPlayer:WaitForChild("PlayerGui"))
 wait(3)
 VM:dispatch({
     type = "totalCoinsChanged",
-    newtotalCoins = 12345
+    newTotalCoins = 12345
 })
