@@ -69,4 +69,18 @@ return function()
             end).to.throw()
         end)
     end)
+
+    describe("GetCurrentPole", function()
+        it("Should return the name of pole that is stored in the database", function()
+            local player = uut.new( {UserId = "GetCurrentPole Test User 1" })
+            DataStoreMock.SetGet("SomeAwesomePole")
+            expect(player:GetCurrentPole()).to.equal("SomeAwesomePole")
+        end)
+
+        it("Should return the basic pole if nothing is stored in the database", function()
+            local player = uut.new({UserId = "GetCurrentPole Test User 2"})
+            DataStoreMock.SetGet(nil)
+            expect(player:GetCurrentPole()).to.equal("BasicPole")
+        end)
+    end)
 end

@@ -9,6 +9,7 @@ function PlayerEntity.new(player)
 	}
 	setmetatable(p, PlayerEntity)
 	p.coinStore = datastore("coins", player)
+	p.poleStore = datastore("poles", player)
 	return p
 end
 
@@ -18,6 +19,10 @@ end
 
 function PlayerEntity:GetTotalCoins()
 	return self.coinStore:Get(0)
+end
+
+function PlayerEntity:GetCurrentPole()
+	return self.poleStore:Get("BasicPole")
 end
 
 function PlayerEntity:SetTotalCoins(amount)
