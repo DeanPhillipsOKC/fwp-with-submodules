@@ -1,6 +1,7 @@
 local PlayerEntity = {}
 
 local datastore = require(script.Dependencies).Get().DataStore
+local playerBackpack = require(script.Dependencies).Get().PlayerBackpack
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -10,6 +11,7 @@ function PlayerEntity.new(player)
 	setmetatable(p, PlayerEntity)
 	p.coinStore = datastore("coins", player)
 	p.poleStore = datastore("poles", player)
+	p.backpack = playerBackpack.new(player)
 	return p
 end
 

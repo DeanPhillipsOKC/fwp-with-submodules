@@ -4,7 +4,8 @@ local injected = nil
 
 function Dependencies.Get()
     return injected or {
-        DataStore = require (game.ServerScriptService.lib.datastore2)
+        DataStore = require (game.ServerScriptService.lib.datastore2),
+        PlayerBackpack = require (script.Parent.Parent.PlayerBackpack)
     }
 end
 

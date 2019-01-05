@@ -12,7 +12,6 @@ function PlayerRepositoryDependencies.Get()
         PlayerFactory = require(script.Parent.Parent.PlayerEntity),
         PlayerInstantiatedEvent = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE,
         GetTotalCoinsRF = game.ReplicatedStorage.src.Player.Stats.GetTotalCoinsRF,
-        GetEquippedPoleRF = game.ReplicatedStorage.src.Player.Equipment.GetEquippedPoleRF
     }
 end
 
