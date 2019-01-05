@@ -47,5 +47,9 @@ function PlayerEntity:SetTotalCoins(amount)
 	self.coinStore:Set(amount)
 end
 
+function PlayerEntity:AddPoleToPack(poleName)
+	self.backpack:Add(poleName)
+end
+
 PlayerEntity.__index = PlayerEntity
 return PlayerEntity

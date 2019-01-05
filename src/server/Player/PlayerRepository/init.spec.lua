@@ -5,14 +5,12 @@ return function()
     local PlayerFactoryMock = requireFsModule("PlayerFactoryMock")
     local PlayerInstantiatedEvent = requireFsModule("RemoteEventMock").new()
     local GetTotalCoinsRF = requireFsModule("RemoteFunctionMock").new()
-    local GetEquippedPoleRF = requireFsModule("RemoteFunctionMock").new()
 
     uutDependencies.Inject({
         PlayersService = PlayerServiceMock,
         PlayerFactory = PlayerFactoryMock,
         PlayerInstantiatedEvent = PlayerInstantiatedEvent,
         GetTotalCoinsRF = GetTotalCoinsRF,
-        GetEquippedPoleRF = GetEquippedPoleRF
     })
 
     local uut = require(script.Parent)
@@ -35,6 +33,16 @@ return function()
 
             PlayerServiceMock.PlayerAdded:Fire(player)
             expect(playerRxFromServer.UserId).to.equal(player.UserId)
+        end)
+
+        it("Should add the player's currently equipped pole to his or her backpack.", function()
+            local player = { UserId = "Unit Tester 3"}
+            
+            PlayerFactoryMock.SetDefaultEquippedPole("SomePole")
+            PlayerServiceMock.PlayerAdded:Fire(player)
+
+            local playerEntity = uut.GetPlayer(player)
+            expect(playerEntity.PoleAddedToPack).to.equal("SomePole")
         end)
     end)
 

@@ -9,7 +9,11 @@ local getTotalCoinsRF = require(script.Dependencies).Get().GetTotalCoinsRF
 local getEquippedPoleRF = require(script.Dependencies).Get().GetEquippedPoleRF
 
 playersService.PlayerAdded:Connect(function (player)
-	players[player.UserId] = playerFactory.new(player)
+	newPlayerEntity = playerFactory.new(player)
+	players[player.UserId] = newPlayerEntity
+	
+	newPlayerEntity:AddPoleToPack(newPlayerEntity:GetCurrentPole())
+	
 	if not pcall(function()
 		playerInstantiatedEvent:FireClient(player)
 	end) then
@@ -28,11 +32,6 @@ end
 function getTotalCoinsRF.OnServerInvoke(player)
 	local playerEntity = PlayerRepository.GetPlayer(player)
 	return playerEntity:GetTotalCoins()
-end
-
-function getEquippedPoleRF.OnServerInvoke(player)
-	local playerEntity = PlayerRepository.GetPlayer(player)
-	return playerEntity:GetCurrentPole(player)
 end
 
 return PlayerRepository
