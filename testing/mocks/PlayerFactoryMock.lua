@@ -10,6 +10,10 @@ function PlayerFactoryMock:GetTotalCoins()
     return self.TotalCoins
 end
 
+function PlayerFactoryMock:GetCurrentPole()
+    return self.EquippedPole
+end
+
 function PlayerFactoryMock:GetUserId()
 	return self.UserId
 end
