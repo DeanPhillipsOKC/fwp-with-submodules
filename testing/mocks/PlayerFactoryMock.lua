@@ -25,7 +25,7 @@ function PlayerFactoryMock:GetUserId()
 end
 
 function PlayerFactoryMock:AddPoleToPack(pole)
-    self.PoleAddedToPack = pole
+    self.PoleAddedToPack = pole.Name
 end
 
 PlayerFactoryMock.__index = PlayerFactoryMock

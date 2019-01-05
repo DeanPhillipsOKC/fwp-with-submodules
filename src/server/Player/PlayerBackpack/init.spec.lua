@@ -42,7 +42,7 @@ return function()
             end).to.throw()
         end)
 
-        it("should fail, if the supplied player does not have a UserId", function()
+        it("should fail, if the supplied player does not have a Name", function()
             dependencies.PlayersInGame = {}
             dependencies.EquipmentModelLocation = {}
             
@@ -53,14 +53,14 @@ return function()
             end).to.throw()
         end)
 
-        it("should fail, if the supplied player has a null UserId", function()
+        it("should fail, if the supplied player has a null Name", function()
             dependencies.PlayersInGame = {}
             dependencies.EquipmentModelLocation = {}
             
             local uut = require(script.Parent)
 
             expect(function()
-                uut.new({ UserId = nil })
+                uut.new({ Name = nil })
             end).to.throw()
         end)
 
@@ -71,7 +71,7 @@ return function()
             local uut = require(script.Parent)
 
             expect(function()
-                uut.new({ UserId = "notbob"})
+                uut.new({ Name = "notbob"})
             end).to.throw()
         end)
     end)
@@ -81,7 +81,7 @@ return function()
             dependencies.PlayersInGame = {bob = true}
             dependencies.EquipmentModelLocation = {}
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             expect(function()
                 backpack.Add()
@@ -92,7 +92,7 @@ return function()
             dependencies.PlayersInGame = {bob = true}
             dependencies.EquipmentModelLocation = {}
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             expect(function()
                 backpack.Add({
@@ -106,7 +106,7 @@ return function()
             dependencies.PlayersInGame = {bob = true}
             dependencies.EquipmentModelLocation = {}
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             expect(function()
                 backpack.Add({
@@ -120,7 +120,7 @@ return function()
             dependencies.PlayersInGame = {bob = true}
             dependencies.EquipmentModelLocation = {}
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             expect(function()
                 backpack.Add({
@@ -138,7 +138,7 @@ return function()
                 }
             }
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             expect(function()
                 backpack.Add({
@@ -156,7 +156,7 @@ return function()
                 }
             }
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             dependencies.PlayersInGame.bob = nil
 
@@ -178,7 +178,7 @@ return function()
                 }
             }
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
 
             expect(function()
                 backpack:Add({
@@ -191,7 +191,11 @@ return function()
         it("Should add the item to the players backpack if there are no errors", function()
             dependencies.PlayersInGame = {
                 bob = {
-                    Backpack = "This is a backpack"
+                    WaitForChild = function()
+                        return {
+                            Backpack = "This is a backpack"
+                        }
+                    end
                 }
             }
             dependencies.EquipmentModelLocation = {
@@ -206,7 +210,7 @@ return function()
                 }
             }
 
-            local backpack = require(script.Parent).new({ UserId = "bob" })
+            local backpack = require(script.Parent).new({ Name = "bob" })
             backpack:Add({
                 Category = "SomeCategory",
                 Name = "SomeTool"

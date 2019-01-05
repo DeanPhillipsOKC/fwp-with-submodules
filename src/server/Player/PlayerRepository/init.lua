@@ -12,7 +12,10 @@ playersService.PlayerAdded:Connect(function (player)
 	newPlayerEntity = playerFactory.new(player)
 	players[player.UserId] = newPlayerEntity
 	
-	newPlayerEntity:AddPoleToPack(newPlayerEntity:GetCurrentPole())
+	newPlayerEntity:AddPoleToPack({
+		Name = newPlayerEntity:GetCurrentPole(),
+		Category = "Poles"
+	})
 	
 	if not pcall(function()
 		playerInstantiatedEvent:FireClient(player)

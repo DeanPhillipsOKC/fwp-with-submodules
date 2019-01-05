@@ -7,8 +7,8 @@ assert(dependencies.EquipmentModelLocation ~= nil, "Could not find equipment mod
 
 function PlayerBackpack.new(player)
     assert(player ~= nil, "Cannot instantiate a player backpack without providing a name.")
-    assert(player.UserId ~= nil, "Cannot instantiate a player backpack for a user without a UserId.")
-    assert(dependencies.PlayersInGame[player.UserId] ~= nil, "Cannot instantiate a player backpack for a user that is not in the game.")
+    assert(player.Name ~= nil, "Cannot instantiate a player backpack for a user without a UserId.")
+    assert(dependencies.PlayersInGame[player.Name] ~= nil, "Cannot instantiate a player backpack for a user that is not in the game.")
 
     local pb = {
         Player = player
@@ -23,11 +23,11 @@ function PlayerBackpack:Add(item)
     assert(item.Name ~= nil, "Cannot add an item with a name to player backpack.")
     assert(dependencies.EquipmentModelLocation[item.Category] ~= nil, "Attempting to add an item with unknown category " .. item.Category .. " to player backpack.")
     assert(dependencies.EquipmentModelLocation[item.Category][item.Name] ~= nil, "Attempting to add an item with category " .. item.Category .. ", and unknown name " .. item.Name .. " to player backpack.")
-    assert(dependencies.PlayersInGame[self.Player.UserId] ~= nil, "Cannot add an item to " .. self.Player.UserId .. "'s backpack the player does not appear to be in the game anymore.'")
-    assert(dependencies.PlayersInGame[self.Player.UserId].Backpack ~= nil, "Cannot add an item to " .. self.Player.UserId .. "'s backpack because we could not find their backpack.'")
+    assert(dependencies.PlayersInGame[self.Player.Name] ~= nil, "Cannot add an item to " .. self.Player.Name .. "'s backpack the player does not appear to be in the game anymore.'")
+    assert(dependencies.PlayersInGame[self.Player.Name]:WaitForChild("Backpack") ~= nil, "Cannot add an item to " .. self.Player.Name .. "'s backpack because we could not find their backpack.'")
 
     local itemClone = dependencies.EquipmentModelLocation[item.Category][item.Name]:Clone()
-    local playerBackpack = dependencies.PlayersInGame[self.Player.UserId].Backpack
+    local playerBackpack = dependencies.PlayersInGame[self.Player.Name].Backpack
 
     itemClone.Parent = playerBackpack
 end
