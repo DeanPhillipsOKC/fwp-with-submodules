@@ -1,15 +1,14 @@
 local HumanoidMock = {}
+local AnimationTrackMock = require(".AnimationTrackMock")
 
 function HumanoidMock.new()
-    local h = {
-        AnimationTrackToReturn = nil
-    }
+    local h = { }
     setmetatable(h, HumanoidMock)
     return h
 end
 
 function HumanoidMock:LoadAnimation(animationName)
-    return self.AnimationTrackToReturn
+    return AnimationTrackMock.new(animationName)
 end
 
 HumanoidMock.__index = HumanoidMock

@@ -1,13 +1,13 @@
 local PlayersServiceMock = {}
 
-local playerInstances = {}
+local PlayerInstanceMock = require(".PlayerInstanceMock")
 
 PlayersServiceMock.PlayerAdded = require(".EventMock").new()
 PlayersServiceMock.PlayerRemoving = require(".EventMock").new()
 
 -- Not methods on the real Players Service
 function PlayersServiceMock.AddPlayerToGame(player)
-    playerInstances[player.Name] = requireFsModule("PlayerInstanceMock").new()
+    PlayersServiceMock[player.Name] = PlayerInstanceMock.new()
 end
 
 return PlayersServiceMock

@@ -1,7 +1,7 @@
 return function()
     local uutDependencies = require(script.Parent.Dependencies);
 
-    local PlayerServiceMock = requireFsModule("PlayerServiceMock")
+    local PlayerServiceMock = requireFsModule("PlayersServiceMock")
     local PlayerFactoryMock = requireFsModule("PlayerFactoryMock")
     local PlayerInstantiatedEvent = requireFsModule("RemoteEventMock").new()
     local GetTotalCoinsRF = requireFsModule("RemoteFunctionMock").new()

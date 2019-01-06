@@ -1,10 +1,12 @@
 local PlayerInstanceMock = {}
 
+local humanoidMock = require(".HumanoidMock")
+
 --dependencies.PlayersService[self.PlayerName].Character.Humanoid:LoadAnimation(animation)
 function PlayerInstanceMock.new()
     local pi = {
         Character = {
-            Humanoid = requireFsModule("HumanoidMock").new()
+            Humanoid = humanoidMock.new()
         }
     }
     setmetatable(pi, PlayerInstanceMock)
