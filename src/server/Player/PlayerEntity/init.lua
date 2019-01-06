@@ -57,5 +57,9 @@ function PlayerEntity:PlayAnimation(animationName)
 	self.animationController:Play(animationName)
 end
 
+function PlayerEntity:StopAnimation(animationName, fadeTime)
+	self.animationController:Stop(animationName, fadeTime)
+end
+
 PlayerEntity.__index = PlayerEntity
 return PlayerEntity

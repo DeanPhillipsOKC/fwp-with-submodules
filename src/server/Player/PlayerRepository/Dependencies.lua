@@ -12,7 +12,8 @@ function PlayerRepositoryDependencies.Get()
         PlayerFactory = require(script.Parent.Parent.PlayerEntity),
         PlayerInstantiatedEvent = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE,
         GetTotalCoinsRF = game.ReplicatedStorage.src.Player.Stats.GetTotalCoinsRF,
-        StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE
+        StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
+        StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE
     }
 end
 

@@ -6,13 +6,15 @@ return function()
     local PlayerInstantiatedEvent = requireFsModule("RemoteEventMock").new()
     local GetTotalCoinsRF = requireFsModule("RemoteFunctionMock").new()
     local StartFishingRE = requireFsModule("RemoteEventMock").new()
+    local StopFishingRE = requireFsModule("RemoteEventMock").new()
 
     uutDependencies.Inject({
         PlayersService = PlayerServiceMock,
         PlayerFactory = PlayerFactoryMock,
         PlayerInstantiatedEvent = PlayerInstantiatedEvent,
         GetTotalCoinsRF = GetTotalCoinsRF,
-        StartFishingRE = StartFishingRE
+        StartFishingRE = StartFishingRE,
+        StopFishingRE = StopFishingRE
     })
 
     local uut = require(script.Parent)

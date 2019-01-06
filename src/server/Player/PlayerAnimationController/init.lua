@@ -15,9 +15,15 @@ function PlayerAnimationController:Play(animationName)
     self.AnimationTracks[animationName]:Play()
 end
 
-function PlayerAnimationController:GetTrack(animationName)
-    return self.AnimationTracks[animationName]
+function PlayerAnimationController:Stop(animationName, fadeTime)
+    if self.AnimationTracks[animationName] ~= nil and self.AnimationTracks[animationName].IsPlaying then
+        self.AnimationTracks[animationName]:Stop(fadeTime)
+    end
 end
+
+--function PlayerAnimationController:GetTrack(animationName)
+--    return self.AnimationTracks[animationName]
+--end
 
 PlayerAnimationController.__index = PlayerAnimationController
 return PlayerAnimationController

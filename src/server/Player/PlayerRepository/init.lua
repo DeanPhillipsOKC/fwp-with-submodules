@@ -8,6 +8,7 @@ local playerInstantiatedEvent = require(script.Dependencies).Get().PlayerInstant
 local getTotalCoinsRF = require(script.Dependencies).Get().GetTotalCoinsRF
 local getEquippedPoleRF = require(script.Dependencies).Get().GetEquippedPoleRF
 local startFishingRE = require(script.Dependencies).Get().StartFishingRE
+local stopFishingRE = require(script.Dependencies).Get().StopFishingRE
 
 playersService.PlayerAdded:Connect(function (player)
 	newPlayerEntity = playerFactory.new(player)
@@ -42,6 +43,12 @@ startFishingRE.OnServerEvent:Connect(function(player)
 	local playerEntity = PlayerRepository.GetPlayer(player)
 	playerEntity:PlayAnimation("CastPole")
 	playerEntity:PlayAnimation("PoleIdle")
+end)
+
+stopFishingRE.OnServerEvent:Connect(function(player)
+	local playerEntity = PlayerRepository.GetPlayer(player)
+	playerEntity:StopAnimation("CastPole")
+	playerEntity:StopAnimation("PoleIdle")
 end)
 
 return PlayerRepository
