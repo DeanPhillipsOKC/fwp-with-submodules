@@ -2,6 +2,8 @@ local PlayerFactoryMock = {}
 
 function PlayerFactoryMock.new(pf)
     pf = pf or { }
+    pf.AnimationsPlayed = {}
+    pf.AnimationsStopped = {}
     setmetatable(pf, PlayerFactoryMock)
     return pf
 end
@@ -26,6 +28,14 @@ end
 
 function PlayerFactoryMock:AddPoleToPack(pole)
     self.PoleAddedToPack = pole.Name
+end
+
+function PlayerFactoryMock:PlayAnimation(animationName)
+    self.AnimationsPlayed[animationName] = true
+end
+
+function PlayerFactoryMock:StopAnimation(animationName)
+    self.AnimationsStopped[animationName] = true
 end
 
 PlayerFactoryMock.__index = PlayerFactoryMock

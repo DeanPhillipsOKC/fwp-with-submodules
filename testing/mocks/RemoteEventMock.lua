@@ -6,7 +6,9 @@ function RemoteEventMock.new(e)
     e.handleServerCallback = function() end
 
     e.OnServerEvent = {
-        Connect = function (cb)
+
+        Connect = function (instance, cb)
+            print("connecting", cb)
             e.handleServerCallback = cb
         end
     }
@@ -21,6 +23,10 @@ end
 
 function RemoteEventMock:FireClient(...)
     self.handleClientCallback(...)
+end
+
+function RemoteEventMock:FireServer(...)
+    self.handleServerCallback(...)
 end
 
 RemoteEventMock.__index = RemoteEventMock

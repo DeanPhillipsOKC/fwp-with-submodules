@@ -70,4 +70,27 @@ return function()
             expect(GetTotalCoinsRF:InvokeServer(player)).to.equal(743)
         end)
     end)
+
+    describe("StartFishing Remote Event", function()
+        it("Should play action and idle animations for casting a pole.", function()
+            local player = { UserId = 123, Name = "bob" }
+            PlayerServiceMock.PlayerAdded:Fire(player)
+
+            StartFishingRE:FireServer(player)
+            expect(uut.GetPlayer(player).AnimationsPlayed.CastPole).to.equal(true)
+            expect(uut.GetPlayer(player).AnimationsPlayed.PoleIdle).to.equal(true)
+        end)
+    end)
+
+    describe("StopFishing Remote Event", function()
+        it("Should stop the action, and idle pole animations, if they are playing", function()
+            local player = { UserId = 123, Name = "bob" }
+            PlayerServiceMock.PlayerAdded:Fire(player)
+
+            StartFishingRE:FireServer(player)
+            StopFishingRE:FireServer(player)
+            expect(uut.GetPlayer(player).AnimationsStopped.CastPole).to.equal(true)
+            expect(uut.GetPlayer(player).AnimationsStopped.PoleIdle).to.equal(true)
+        end)
+    end)
 end
