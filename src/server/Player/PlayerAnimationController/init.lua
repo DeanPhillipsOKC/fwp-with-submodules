@@ -1,5 +1,7 @@
 local PlayerAnimationController = {}
 
+local dependencies = require(script.Dependencies).Get()
+
 function PlayerAnimationController.new(player)
     local pac = {
         PlayerName = player.Name,
@@ -10,8 +12,8 @@ function PlayerAnimationController.new(player)
 end
 
 function PlayerAnimationController:Play(animationName)
-    local animation = game.ReplicatedStorage.Animations[animationName]
-    self.AnimationTracks[animationName] = game.Players[self.PlayerName].Character.Humanoid:LoadAnimation(animation)
+    local animation = dependencies.ReplicatedStorage.Animations[animationName]
+    self.AnimationTracks[animationName] = dependencies.PlayersService[self.PlayerName].Character.Humanoid:LoadAnimation(animation)
     self.AnimationTracks[animationName]:Play()
 end
 
