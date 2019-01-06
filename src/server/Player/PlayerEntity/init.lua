@@ -2,6 +2,7 @@ local PlayerEntity = {}
 
 local datastore = require(script.Dependencies).Get().DataStore
 local playerBackpack = require(script.Dependencies).Get().PlayerBackpack
+local PlayerAnimationController = require(script.Dependencies).Get().PlayerAnimationController
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -12,6 +13,7 @@ function PlayerEntity.new(player)
 	p.coinStore = datastore("coins", player)
 	p.poleStore = datastore("poles", player)
 	p.backpack = playerBackpack.new(player)
+	p.animationController = PlayerAnimationController.new(player)
 	return p
 end
 
@@ -49,6 +51,10 @@ end
 
 function PlayerEntity:AddPoleToPack(poleName)
 	self.backpack:Add(poleName)
+end
+
+function PlayerEntity:PlayAnimation(animationName)
+	self.animationController:Play(animationName)
 end
 
 PlayerEntity.__index = PlayerEntity

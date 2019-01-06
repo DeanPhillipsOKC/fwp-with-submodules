@@ -3,6 +3,14 @@ local RemoteEventMock = {}
 function RemoteEventMock.new(e)
     e = e or {}
     e.handleClientCallback = function() end
+    e.handleServerCallback = function() end
+
+    e.OnServerEvent = {
+        Connect = function (cb)
+            e.handleServerCallback = cb
+        end
+    }
+
     setmetatable(e, RemoteEventMock)
     return e
 end
