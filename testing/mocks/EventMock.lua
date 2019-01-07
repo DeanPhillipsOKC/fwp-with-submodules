@@ -9,10 +9,17 @@ end
 
 function Event:Connect(cb)
     self.callback = cb
+
+    return {
+        Disconnect = function()
+            self.callback = nil
+        end
+    }
 end
 
 function Event:Fire(...)
-    self.callback(...)
+    local cb = self.callback or function() end
+    cb(...)
 end
 
 Event.__index = Event

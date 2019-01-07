@@ -3,6 +3,7 @@ local FishingPoleController = {}
 local dependencies = require(script.Dependencies).Get()
 
 function FishingPoleController.new(fpc)
+	assert(fpc ~= nil, "Cannot create a fishing pole without a template.")
 	assert(fpc.Pole ~= nil, "Cannot create a fishing pole controller without passing a pole to the constructor.")
 
 	setmetatable(fpc, FishingPoleController)

@@ -2,11 +2,11 @@ local FishingPoleControllerDependencies = {}
 
 local injected = nil
 
-function FishingPoleControllerDependencies:Inject(newDependencies)
+function FishingPoleControllerDependencies.Inject(newDependencies)
     injected = newDependencies
 end
 
-function FishingPoleControllerDependencies:Get()
+function FishingPoleControllerDependencies.Get()
     return injected or {
         LocalPlayer = game.Players.LocalPlayer,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,

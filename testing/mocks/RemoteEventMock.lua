@@ -8,7 +8,6 @@ function RemoteEventMock.new(e)
     e.OnServerEvent = {
 
         Connect = function (instance, cb)
-            print("connecting", cb)
             e.handleServerCallback = cb
         end
     }
