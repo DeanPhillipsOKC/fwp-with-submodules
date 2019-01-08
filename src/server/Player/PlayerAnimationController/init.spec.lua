@@ -1,7 +1,7 @@
 return function()
     local dependencies = {
         ReplicatedStorage = { },
-        PlayersService = requireFsModule("PlayersServiceMock")
+        PlayersService = require("PlayersServiceMock")
     }
 
     require(script.Parent.Dependencies).Inject(dependencies)
