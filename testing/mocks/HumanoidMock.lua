@@ -1,5 +1,5 @@
 local HumanoidMock = {}
-local AnimationTrackMock = require(".AnimationTrackMock")
+local AnimationTrackMock = require(game.Mocks.AnimationTrackMock)
 
 function HumanoidMock.new()
     local h = { }

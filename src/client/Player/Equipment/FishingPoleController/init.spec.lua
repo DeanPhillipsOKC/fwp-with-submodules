@@ -1,9 +1,9 @@
 return function()
     local dependencyInjector = require(script.Parent.Dependencies)
     local uutDependencies = {
-        UserInputService = require("UserInputServiceMock"),
-        StartFishingRE = require("RemoteEventMock").new(),
-        StopFishingRE = require("RemoteEventMock").new()
+        UserInputService = require(game.Mocks.UserInputServiceMock),
+        StartFishingRE = require(game.Mocks.RemoteEventMock).new(),
+        StopFishingRE = require(game.Mocks.RemoteEventMock).new()
     }
     dependencyInjector.Inject(uutDependencies)
     
@@ -20,7 +20,7 @@ return function()
 
     local uut = require(script.Parent)
 
-    local eventFactory = require("EventMock")
+    local eventFactory = require(game.Mocks.EventMock)
 
     describe("Constructor", function()
         it("Should throw an error if no parameters supplied", function()

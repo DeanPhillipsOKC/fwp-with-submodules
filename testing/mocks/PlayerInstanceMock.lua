@@ -1,6 +1,6 @@
 local PlayerInstanceMock = {}
 
-local humanoidMock = require(".HumanoidMock")
+local humanoidMock = require(game.Mocks.HumanoidMock)
 
 --dependencies.PlayersService[self.PlayerName].Character.Humanoid:LoadAnimation(animation)
 function PlayerInstanceMock.new()

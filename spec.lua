@@ -1,7 +1,7 @@
 local lfs = require"lfs"
 
 -- This makes sure we can load Lemur and other libraries that depend on init.lua
-package.path = package.path .. ";?/init.lua" .. ";" .. lfs.currentdir() .. "\\testing\\mocks\\?.lua"
+package.path = package.path .. ";?/init.lua"
 
 local lemur = require("modules.infrastructure.lemur")
 local habitat = lemur.Habitat.new()
@@ -22,6 +22,10 @@ Root.Name = "Root"
 
 	local game = habitat.game
 	game.Parent = Root
+
+		local Mocks = habitat:loadFromFs("testing/mocks")
+		Mocks.Name = "Mocks"
+		Mocks.Parent = game
 
 		local ReplicatedStorage = habitat.game:GetService("ReplicatedStorage")
 		ReplicatedStorage.Parent = game
