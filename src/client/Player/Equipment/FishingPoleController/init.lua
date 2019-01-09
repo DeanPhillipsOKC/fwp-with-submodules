@@ -29,8 +29,8 @@ function FishingPoleController.new(fpc)
 			if input.UserInputType == Enum.UserInputType.MouseMovement then
 				local part, coords = dependencies.Input2dToWorld3dService.Convert(input.Position.X, input.Position.Y)
 
-				if part.Name == "WaterFilter" then
-					print("Found water!")
+				if part.Name == "WaterFilter" and game.Players.LocalPlayer:DistanceFromCharacter(coords) < 20 then
+					print("Found water... and character is in range!")
 				end
 			end
 		end)
