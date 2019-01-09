@@ -1,15 +1,15 @@
 return function()
     local uutDependencies = require(script.Parent.Dependencies)
 
-    local DataStoreMock = require("DataStore2Mock")
+    local DataStoreMock = require(game.Mocks.DataStore2Mock)
     local PlayersInGame = {}
 
     setmetatable(PlayersInGame, {})
 
     uutDependencies.Inject({
         DataStore = DataStoreMock,
-        PlayerBackpack = require("PlayerBackpackMock"),
-        PlayerAnimationController = require("PlayerAnimationControllerMock")
+        PlayerBackpack = require(game.Mocks.PlayerBackpackMock),
+        PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock)
     })
 
     local uut = require(script.Parent)
