@@ -1,7 +1,6 @@
 local FishingPoleController = {}
 
 local dependencies = require(script.Dependencies).Get()
-local mouse = game.Players.LocalPlayer:GetMouse()
 
 function FishingPoleController.new(fpc)
 	assert(fpc ~= nil, "Cannot create a fishing pole without a template.")
@@ -32,15 +31,15 @@ function FishingPoleController.new(fpc)
 			if input.UserInputType == Enum.UserInputType.MouseMovement then
 				local part, coords = dependencies.Input2dToWorld3dService.Convert(input.Position.X, input.Position.Y)
 				
-				if part.Name == "WaterFilter" and game.Players.LocalPlayer:DistanceFromCharacter(coords) < 20 then
+				if part.Name == "WaterFilter" and dependencies.Player:DistanceFromCharacter(coords) < 20 then
 					canFish = true
 				end
 			end
 
 			if canFish then
-				mouse.Icon = "rbxassetid://2733335402"
+				dependencies.Mouse.Icon = "rbxassetid://2733335402"
 			else
-				mouse.Icon = ""
+				dependencies.Mouse.Icon = ""
 			end
 		end)
 	end)
