@@ -10,6 +10,7 @@ function FishingPoleController.new(fpc)
 
 	fpc.inputBeganConnection = nil
 	fpc.inputEndedConnection = nil
+	fpc.inputChangedConnection = nil
 
 	fpc.Pole.Equipped:Connect(function()
 		fpc.inputBeganConnection = dependencies.UserInputService.InputBegan:Connect(function (input)
@@ -23,6 +24,24 @@ function FishingPoleController.new(fpc)
 				dependencies.StopFishingRE:FireServer()
 			end
 		end)
+
+		fpc.inputChangedConnection = dependencies.UserInputService.InputChanged:Connect(function (input)
+			local canFish = false
+
+			if input.UserInputType == Enum.UserInputType.MouseMovement then
+				local part, coords = dependencies.Input2dToWorld3dService.Convert(input.Position.X, input.Position.Y)
+				
+				if part.Name == "WaterFilter" and dependencies.Player:DistanceFromCharacter(coords) < 20 then
+					canFish = true
+				end
+			end
+
+			if canFish then
+				dependencies.Mouse.Icon = "rbxassetid://2733335402"
+			else
+				dependencies.Mouse.Icon = ""
+			end
+		end)
 	end)
 
 	fpc.Pole.Unequipped:Connect(function()
@@ -30,6 +49,8 @@ function FishingPoleController.new(fpc)
 		fpc.inputBeganConnection:Disconnect()
 		assert(fpc.inputEndedConnection ~= nil, "Invalid State Detected:  Recieved an unequipped event, and tried to disconnect the input ended connection, but could not find one.  Something's wrong")
 		fpc.inputEndedConnection:Disconnect()
+		assert(fpc.inputChangedConnection ~= nil, "Invalid State Detected: Recieved an unequipped event, and tried to disconnect the input changed connection, but could not find one.  Something's wrong")
+		fpc.inputChangedConnection:Disconnect()
 	end)
 
 	return fpc
