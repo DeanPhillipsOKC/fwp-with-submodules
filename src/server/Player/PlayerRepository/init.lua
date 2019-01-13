@@ -39,16 +39,23 @@ function getTotalCoinsRF.OnServerInvoke(player)
 	return playerEntity:GetTotalCoins()
 end
 
-startFishingRE.OnServerEvent:Connect(function(player)
-	local playerEntity = PlayerRepository.GetPlayer(player)
-	playerEntity:PlayAnimation("CastPole")
-	playerEntity:PlayAnimation("PoleIdle")
+startFishingRE.OnServerEvent:Connect(function(player, fishingLocation)
+	if player:DistanceFromCharacter(fishingLocation) < 20 then
+		local playerEntity = PlayerRepository.GetPlayer(player)
+		playerEntity:PlayAnimation("CastPole").KeyframeReached:Connect(function(keyframeName)
+			if keyframeName == "Casted" then
+				playerEntity:DeployBobber(fishingLocation)
+			end 
+		end)
+		playerEntity:PlayAnimation("PoleIdle")
+	end
 end)
 
 stopFishingRE.OnServerEvent:Connect(function(player)
 	local playerEntity = PlayerRepository.GetPlayer(player)
 	playerEntity:StopAnimation("CastPole")
 	playerEntity:StopAnimation("PoleIdle")
+	playerEntity:UndeployBobber()
 end)
 
 return PlayerRepository

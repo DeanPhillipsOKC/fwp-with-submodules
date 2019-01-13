@@ -12,16 +12,23 @@ function FishingPoleController.new(fpc)
 	fpc.inputEndedConnection = nil
 	fpc.inputChangedConnection = nil
 
+	local isFishing = false
+
 	fpc.Pole.Equipped:Connect(function()
 		fpc.inputBeganConnection = dependencies.UserInputService.InputBegan:Connect(function (input)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				dependencies.StartFishingRE:FireServer()
+				if FishingPoleController.CanFishHere(input.Position.X, input.Position.Y) then
+					local part, coords = dependencies.Input2dToWorld3dService.Convert(input.Position.X, input.Position.Y)
+					dependencies.StartFishingRE:FireServer(coords)
+					isFishing = true
+				end
 			end
 		end)
 		
 		fpc.inputEndedConnection = dependencies.UserInputService.InputEnded:Connect(function (input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			if input.UserInputType == Enum.UserInputType.MouseButton1 and isFishing then
 				dependencies.StopFishingRE:FireServer()
+				isFishing = false
 			end
 		end)
 
@@ -29,17 +36,12 @@ function FishingPoleController.new(fpc)
 			local canFish = false
 
 			if input.UserInputType == Enum.UserInputType.MouseMovement then
-				local part, coords = dependencies.Input2dToWorld3dService.Convert(input.Position.X, input.Position.Y)
-				
-				if part.Name == "WaterFilter" and dependencies.Player:DistanceFromCharacter(coords) < 20 then
-					canFish = true
-				end
-			end
 
-			if canFish then
-				dependencies.Mouse.Icon = "rbxassetid://2733335402"
-			else
-				dependencies.Mouse.Icon = ""
+				if FishingPoleController.CanFishHere(input.Position.X, input.Position.Y) then
+					dependencies.Mouse.Icon = "rbxassetid://2733335402"
+				else
+					dependencies.Mouse.Icon = ""
+				end
 			end
 		end)
 	end)
@@ -54,6 +56,16 @@ function FishingPoleController.new(fpc)
 	end)
 
 	return fpc
+end
+
+function FishingPoleController.CanFishHere(xCoordinate, yCoordinate)
+	local part, coords = dependencies.Input2dToWorld3dService.Convert(xCoordinate, yCoordinate)
+				
+	if part ~= nil and part.Name == "WaterFilter" and dependencies.Player:DistanceFromCharacter(coords) < 20 then
+		return true
+	end
+
+	return false
 end
 
 FishingPoleController.__index = FishingPoleController

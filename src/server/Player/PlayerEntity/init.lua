@@ -3,6 +3,7 @@ local PlayerEntity = {}
 local datastore = require(script.Dependencies).Get().DataStore
 local playerBackpack = require(script.Dependencies).Get().PlayerBackpack
 local PlayerAnimationController = require(script.Dependencies).Get().PlayerAnimationController
+local BobberFactory = require(script.Dependencies).Get().Bobber
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -54,11 +55,25 @@ function PlayerEntity:AddPoleToPack(poleName)
 end
 
 function PlayerEntity:PlayAnimation(animationName)
-	self.animationController:Play(animationName)
+	return self.animationController:Play(animationName)
 end
 
 function PlayerEntity:StopAnimation(animationName, fadeTime)
 	self.animationController:Stop(animationName, fadeTime)
+end
+
+function PlayerEntity:DeployBobber(fishingLocation)
+	self.Bobber = BobberFactory.new()
+	local pole = self:GetPoleFromeWorkspace()
+	self.Bobber:Deploy(pole, fishingLocation)
+end
+
+function PlayerEntity:UndeployBobber()
+	self.Bobber:Destroy()
+end
+
+function PlayerEntity:GetPoleFromeWorkspace()
+	return game.Workspace[self.Player.Name][self:GetCurrentPole()]
 end
 
 PlayerEntity.__index = PlayerEntity
