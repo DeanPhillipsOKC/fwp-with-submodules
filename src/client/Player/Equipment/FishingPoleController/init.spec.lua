@@ -292,6 +292,13 @@ return function()
             playerStartedFishing = false
             playerStoppedFishing = false
 
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "WaterFilter" }
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
             uutDependencies.UserInputService.InputEnded:Fire({ UserInputType = Enum.UserInputType.MouseButton1} )
 
             expect(playerStoppedFishing).to.equal(true)

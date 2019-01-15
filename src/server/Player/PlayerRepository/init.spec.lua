@@ -7,6 +7,7 @@ return function()
     local GetTotalCoinsRF = require(game.Mocks.RemoteFunctionMock).new()
     local StartFishingRE = require(game.Mocks.RemoteEventMock).new()
     local StopFishingRE = require(game.Mocks.RemoteEventMock).new()
+    local PlayerInstanceMockFactory = require(game.Mocks.PlayerInstanceMock)
 
     uutDependencies.Inject({
         PlayersService = PlayerServiceMock,
@@ -73,8 +74,11 @@ return function()
 
     describe("StartFishing Remote Event", function()
         it("Should play action and idle animations for casting a pole.", function()
-            local player = { UserId = 123, Name = "bob" }
+            local player = PlayerInstanceMockFactory.new({ UserId = 123, Name = "bob" })
+            player.DistanceFromCharacterReturnValue = 19
             PlayerServiceMock.PlayerAdded:Fire(player)
+
+            print(player.DistanceFromCharacter)
 
             StartFishingRE:FireServer(player)
             expect(uut.GetPlayer(player).AnimationsPlayed.CastPole).to.equal(true)
@@ -84,7 +88,9 @@ return function()
 
     describe("StopFishing Remote Event", function()
         it("Should stop the action, and idle pole animations, if they are playing", function()
-            local player = { UserId = 123, Name = "bob" }
+            local player = PlayerInstanceMockFactory.new({ UserId = 123, Name = "bob" })
+            player.DistanceFromCharacterReturnValue = 19
+            
             PlayerServiceMock.PlayerAdded:Fire(player)
 
             StartFishingRE:FireServer(player)
