@@ -154,6 +154,31 @@ return function()
             pole.Unequipped:Fire()
         end)
 
+        it("Will not let the player start fishing if he, or she is not pointing to a part.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            playerStartedFishing = false
+            playerStoppedFishing = false
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = nil
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(playerStartedFishing).to.equal(false)
+
+            pole.Unequipped:Fire()
+        end)
+
         it("Will not tell the server that the player started fishing, if the pole is not equipped", function()
             local pole = {
                 Equipped = eventFactory.new(),
@@ -277,10 +302,33 @@ return function()
 
             expect(uutDependencies.Mouse.Icon).to.equal("")
         end)
+
+        it("Will keep the default mouse cursor if the mouse cursoor is not over any part.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = nil
+
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputChanged:Fire({ 
+                UserInputType = Enum.UserInputType.MouseMovement,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("")
+        end)
     end)
 
     describe("User Input Service - Input Ended Event Handler", function()
-        it("Will tell the server that the user stopped fishign if the pole is equipped", function()
+        it("Will tell the server that the user stopped fishign if the pole is equipped, and the user is fishing", function()
             local pole = {
                 Equipped = eventFactory.new(),
                 Unequipped = eventFactory.new()
@@ -302,6 +350,25 @@ return function()
             uutDependencies.UserInputService.InputEnded:Fire({ UserInputType = Enum.UserInputType.MouseButton1} )
 
             expect(playerStoppedFishing).to.equal(true)
+
+            pole.Unequipped:Fire()
+        end)
+
+        it("Will not tell the server that the user stopped fishing, if he, or she is not fishing.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            playerStartedFishing = false
+            playerStoppedFishing = false
+
+            uutDependencies.UserInputService.InputEnded:Fire({ UserInputType = Enum.UserInputType.MouseButton1} )
+
+            expect(playerStoppedFishing).to.equal(false)
 
             pole.Unequipped:Fire()
         end)

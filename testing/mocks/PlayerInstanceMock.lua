@@ -2,7 +2,6 @@ local PlayerInstanceMock = {}
 
 local humanoidMock = require(game.Mocks.HumanoidMock)
 
---dependencies.PlayersService[self.PlayerName].Character.Humanoid:LoadAnimation(animation)
 function PlayerInstanceMock.new(pi)
     local pi = pi or {} 
     pi.Character = {

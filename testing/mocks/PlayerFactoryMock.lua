@@ -10,7 +10,8 @@ function PlayerFactoryMock.new(pf)
     }
     factory.AnimationsPlayed = {}
     factory.AnimationsStopped = {}
-    factory.UndeployedBobber = false
+    factory.UndeployedBobber = nil
+    factory.DeployedBobber = nil
     setmetatable(factory, PlayerFactoryMock)
     return factory
 end
@@ -38,8 +39,8 @@ function PlayerFactoryMock:AddPoleToPack(pole)
 end
 
 function PlayerFactoryMock:PlayAnimation(animationName)
-    self.AnimationsPlayed[animationName] = true
-    return animationTrackMockFactory.new()
+    self.AnimationsPlayed[animationName] = animationTrackMockFactory.new()
+    return self.AnimationsPlayed[animationName]
 end
 
 function PlayerFactoryMock:StopAnimation(animationName)
@@ -48,6 +49,10 @@ end
 
 function PlayerFactoryMock:UndeployBobber()
     self.UndeployedBobber = true
+end
+
+function PlayerFactoryMock:DeployBobber()
+    self.DeployedBobber = true
 end
 
 PlayerFactoryMock.__index = PlayerFactoryMock
