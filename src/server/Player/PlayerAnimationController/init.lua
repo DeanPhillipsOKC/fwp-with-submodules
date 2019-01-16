@@ -23,6 +23,8 @@ function PlayerAnimationController:Play(animationName)
     local animation = dependencies.ReplicatedStorage.Animations[animationName]
     self.AnimationTracks[animationName] = dependencies.PlayersService[self.PlayerName].Character.Humanoid:LoadAnimation(animation)
     self.AnimationTracks[animationName]:Play()
+
+    return self.AnimationTracks[animationName]
 end
 
 function PlayerAnimationController:Stop(animationName, fadeTime)

@@ -1,11 +1,19 @@
 local PlayerFactoryMock = {}
 
+local animationTrackMockFactory = require(game.Mocks.AnimationTrackMock)
+
 function PlayerFactoryMock.new(pf)
-    pf = pf or { }
-    pf.AnimationsPlayed = {}
-    pf.AnimationsStopped = {}
-    setmetatable(pf, PlayerFactoryMock)
-    return pf
+    local factory = { 
+        Name = pf.Name, 
+        UserId = pf.UserId,
+        TotalCoins = pf.TotalCoins 
+    }
+    factory.AnimationsPlayed = {}
+    factory.AnimationsStopped = {}
+    factory.UndeployedBobber = nil
+    factory.DeployedBobber = nil
+    setmetatable(factory, PlayerFactoryMock)
+    return factory
 end
 
 local defaultEquippedPoleName = nil
@@ -31,11 +39,20 @@ function PlayerFactoryMock:AddPoleToPack(pole)
 end
 
 function PlayerFactoryMock:PlayAnimation(animationName)
-    self.AnimationsPlayed[animationName] = true
+    self.AnimationsPlayed[animationName] = animationTrackMockFactory.new()
+    return self.AnimationsPlayed[animationName]
 end
 
 function PlayerFactoryMock:StopAnimation(animationName)
     self.AnimationsStopped[animationName] = true
+end
+
+function PlayerFactoryMock:UndeployBobber()
+    self.UndeployedBobber = true
+end
+
+function PlayerFactoryMock:DeployBobber()
+    self.DeployedBobber = true
 end
 
 PlayerFactoryMock.__index = PlayerFactoryMock

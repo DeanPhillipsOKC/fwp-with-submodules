@@ -1,8 +1,11 @@
 local AnimationTrackMock = {}
 
+local EventMockFactory = require(game.Mocks.EventMock)
+
 function AnimationTrackMock.new(at)
     at = at or {}
     at.IsPlaying = false
+    at.KeyframeReached = EventMockFactory.new()
 
     setmetatable(at, AnimationTrackMock)
     return at
