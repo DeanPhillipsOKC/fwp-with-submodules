@@ -3,7 +3,8 @@ return function()
 
     local dependencies = {
         PlayersInGame = {},
-        EquipmentModelLocation = {}
+        EquipmentModelLocation = {},
+        HasItemInBackpackRF = require(game.Mocks.RemoteFunctionMock).new()
     }
 
     uutDependencies.Inject(dependencies)
@@ -209,6 +210,8 @@ return function()
                     }
                 }
             }
+
+            dependencies.HasItemInBackpackRF.InvokeClientReturnValue = true
 
             local backpack = require(script.Parent).new({ Name = "bob" })
             backpack:Add({

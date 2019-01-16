@@ -9,7 +9,8 @@ end
 function PlayerBackpackDependencies.Get()
     return injected or {
         PlayersInGame = game.Players,
-        EquipmentModelLocation = game.ReplicatedStorage.Equipment
+        EquipmentModelLocation = game.ReplicatedStorage.Equipment,
+        HasItemInBackpackRF = game.ReplicatedStorage.src.Player.Equipment.HasItemInBackpackRF
     }
 end
 

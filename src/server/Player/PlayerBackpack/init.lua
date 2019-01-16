@@ -26,10 +26,11 @@ function PlayerBackpack:Add(item)
     assert(dependencies.PlayersInGame[self.Player.Name] ~= nil, "Cannot add an item to " .. self.Player.Name .. "'s backpack the player does not appear to be in the game anymore.'")
     assert(dependencies.PlayersInGame[self.Player.Name]:WaitForChild("Backpack") ~= nil, "Cannot add an item to " .. self.Player.Name .. "'s backpack because we could not find their backpack.'")
 
-    local itemClone = dependencies.EquipmentModelLocation[item.Category][item.Name]:Clone()
-    local playerBackpack = dependencies.PlayersInGame[self.Player.Name].Backpack
-
-    itemClone.Parent = playerBackpack
+    while not dependencies.HasItemInBackpackRF:InvokeClient(self.Player, item.Name) do
+        local itemClone = dependencies.EquipmentModelLocation[item.Category][item.Name]:Clone()
+        itemClone.Parent = dependencies.PlayersInGame[self.Player.Name]:WaitForChild("Backpack")
+        wait(0.2)
+    end
 end
 
 PlayerBackpack.__index = PlayerBackpack

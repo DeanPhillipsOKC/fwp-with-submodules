@@ -3,7 +3,10 @@ return function()
     local uutDependencies = {
         UserInputService = require(game.Mocks.UserInputServiceMock),
         StartFishingRE = require(game.Mocks.RemoteEventMock).new(),
-        StopFishingRE = require(game.Mocks.RemoteEventMock).new()
+        StopFishingRE = require(game.Mocks.RemoteEventMock).new(),
+        Mouse = { Icon = "SomeIcon" },
+        Input2dToWorld3dService = require(game.Mocks.Input2dToWorld3dServiceMock),
+        Player = require(game.Mocks.PlayerInstanceMock).new()
     }
     dependencyInjector.Inject(uutDependencies)
     
@@ -76,7 +79,7 @@ return function()
     end)
 
     describe("User Input Service - Input Began Handler", function()
-        it("Should tell the server that the player started fishing, if the pole is equipped", function()
+        it("Should tell the server that the player started fishing, if the pole is equipped, and user can fish in spot mouse is under", function()
             local pole = {
                 Equipped = eventFactory.new(),
                 Unequipped = eventFactory.new()
@@ -88,9 +91,90 @@ return function()
             playerStartedFishing = false
             playerStoppedFishing = false
 
-            uutDependencies.UserInputService.InputBegan:Fire({ UserInputType = Enum.UserInputType.MouseButton1} )
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "WaterFilter" }
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
 
             expect(playerStartedFishing).to.equal(true)
+
+            pole.Unequipped:Fire()
+        end)
+
+        it("Will not let the player start fishing if he or she is not pointing to a valid fishing spot", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            playerStartedFishing = false
+            playerStoppedFishing = false
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "NotTheWaterFilter" }
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(playerStartedFishing).to.equal(false)
+
+            pole.Unequipped:Fire()
+        end)
+
+        it("Will not let the player start fishing if he or she is not less than 20 studs away from fishing spot.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            playerStartedFishing = false
+            playerStoppedFishing = false
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "WaterFilter" }
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 20
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(playerStartedFishing).to.equal(false)
+
+            pole.Unequipped:Fire()
+        end)
+
+        it("Will not let the player start fishing if he, or she is not pointing to a part.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            playerStartedFishing = false
+            playerStoppedFishing = false
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = nil
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(playerStartedFishing).to.equal(false)
 
             pole.Unequipped:Fire()
         end)
@@ -104,6 +188,9 @@ return function()
 
             playerStartedFishing = false
             playerStoppedFishing = false
+
+            pole.Equipped:Fire()
+            pole.Unequipped:Fire()
 
             uutDependencies.UserInputService.InputBegan:Fire({ UserInputType = Enum.UserInputType.MouseButton1 })
 
@@ -130,8 +217,144 @@ return function()
         end)
     end)
 
+    describe("User Input Service - Input Changed Event Handler", function()
+        it("Will not change the mouse cursor if the type of event is something other than mouse movement.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.UserInputService.InputChanged:Fire({ UserInputType = Enum.UserInputType.MouseButton1 })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("SomeIcon")
+        end)
+
+        it("Will change the mouse cursor if the mouse cursoor moves over the water filter, and the user is less than 20 studs away.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "WaterFilter" }
+
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputChanged:Fire({ 
+                UserInputType = Enum.UserInputType.MouseMovement,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("rbxassetid://2733335402")
+        end)
+
+        it("Will keep the default mouse cursor if the user is not less than 20 studs away.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "WaterFilter" }
+
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 20
+
+            uutDependencies.UserInputService.InputChanged:Fire({ 
+                UserInputType = Enum.UserInputType.MouseMovement,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("")
+        end)
+
+        it("Will keep the default mouse cursor if the mouse cursoor moves over any part other than the water filter", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "NotTheWaterFilter" }
+
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputChanged:Fire({ 
+                UserInputType = Enum.UserInputType.MouseMovement,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("")
+        end)
+
+        it("Will keep the default mouse cursor if the mouse cursoor is not over any part.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = nil
+
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputChanged:Fire({ 
+                UserInputType = Enum.UserInputType.MouseMovement,
+                Position = { X = 1, Y = 2 }
+            })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("")
+        end)
+    end)
+
     describe("User Input Service - Input Ended Event Handler", function()
-        it("Will tell the server that the user stopped fishign if the pole is equipped", function()
+        it("Will tell the server that the user stopped fishign if the pole is equipped, and the user is fishing", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+
+            playerStartedFishing = false
+            playerStoppedFishing = false
+
+            uutDependencies.Input2dToWorld3dService.ConvertReturnValues.Part = { Name = "WaterFilter" }
+            uutDependencies.Player.DistanceFromCharacterReturnValue = 19
+
+            uutDependencies.UserInputService.InputBegan:Fire({ 
+                UserInputType = Enum.UserInputType.MouseButton1,
+                Position = { X = 1, Y = 2 }
+            })
+            uutDependencies.UserInputService.InputEnded:Fire({ UserInputType = Enum.UserInputType.MouseButton1} )
+
+            expect(playerStoppedFishing).to.equal(true)
+
+            pole.Unequipped:Fire()
+        end)
+
+        it("Will not tell the server that the user stopped fishing, if he, or she is not fishing.", function()
             local pole = {
                 Equipped = eventFactory.new(),
                 Unequipped = eventFactory.new()
@@ -145,7 +368,7 @@ return function()
 
             uutDependencies.UserInputService.InputEnded:Fire({ UserInputType = Enum.UserInputType.MouseButton1} )
 
-            expect(playerStoppedFishing).to.equal(true)
+            expect(playerStoppedFishing).to.equal(false)
 
             pole.Unequipped:Fire()
         end)
@@ -220,6 +443,23 @@ return function()
             uutDependencies.UserInputService.InputEnded:Fire({ UserInputType = Enum.UserInputType.MouseButton1 })
 
             expect(playerStoppedFishing).never.to.equal(true)
+        end)
+
+        it("Should terminate the connection to the input changed user input service event", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+            pole.Unequipped:Fire()
+
+            uutDependencies.Mouse.Icon = "SomeIcon"
+
+            uutDependencies.UserInputService.InputChanged:Fire({ UserinputType = Enum.UserInputType.MouseMovement })
+
+            expect(uutDependencies.Mouse.Icon).to.equal("SomeIcon")
         end)
     end)
 end

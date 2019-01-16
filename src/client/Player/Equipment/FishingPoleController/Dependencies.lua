@@ -11,7 +11,10 @@ function FishingPoleControllerDependencies.Get()
         LocalPlayer = game.Players.LocalPlayer,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
-        UserInputService = game:GetService("UserInputService")
+        UserInputService = game:GetService("UserInputService"),
+        Input2dToWorld3dService = require(script.Parent.Parent.Parent.Parent.Input.Input2dToWorld3dService),
+        Mouse = game.Players.LocalPlayer:GetMouse(),
+        Player = game.Players.LocalPlayer
     }
 end
 
