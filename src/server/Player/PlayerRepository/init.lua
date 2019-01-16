@@ -13,7 +13,7 @@ local stopFishingRE = require(script.Dependencies).Get().StopFishingRE
 playersService.PlayerAdded:Connect(function (player)
 	newPlayerEntity = playerFactory.new(player)
 	players[player.UserId] = newPlayerEntity
-	
+
 	newPlayerEntity:AddPoleToPack({
 		Name = newPlayerEntity:GetCurrentPole(),
 		Category = "Poles"
