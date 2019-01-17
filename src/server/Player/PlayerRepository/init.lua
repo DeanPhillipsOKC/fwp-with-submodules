@@ -9,6 +9,8 @@ local getTotalCoinsRF = require(script.Dependencies).Get().GetTotalCoinsRF
 local getEquippedPoleRF = require(script.Dependencies).Get().GetEquippedPoleRF
 local startFishingRE = require(script.Dependencies).Get().StartFishingRE
 local stopFishingRE = require(script.Dependencies).Get().StopFishingRE
+local waitForFishRE = require(script.Dependencies).Get().WaitForFishRE
+local caughtFishRE = require(script.Dependencies).Get().CaughtFishRE
 
 playersService.PlayerAdded:Connect(function (player)
 	newPlayerEntity = playerFactory.new(player)
@@ -40,22 +42,13 @@ function getTotalCoinsRF.OnServerInvoke(player)
 end
 
 startFishingRE.OnServerEvent:Connect(function(player, fishingLocation)
-	if player:DistanceFromCharacter(fishingLocation) < 20 then
-		local playerEntity = PlayerRepository.GetPlayer(player)
-		playerEntity:PlayAnimation("CastPole").KeyframeReached:Connect(function(keyframeName)
-			if keyframeName == "Casted" then
-				playerEntity:DeployBobber(fishingLocation)
-			end 
-		end)
-		playerEntity:PlayAnimation("PoleIdle")
-	end
+	local playerEntity = PlayerRepository.GetPlayer(player)
+	playerEntity:StartFishing(fishingLocation)
 end)
 
 stopFishingRE.OnServerEvent:Connect(function(player)
 	local playerEntity = PlayerRepository.GetPlayer(player)
-	playerEntity:StopAnimation("CastPole")
-	playerEntity:StopAnimation("PoleIdle")
-	playerEntity:UndeployBobber()
+	playerEntity:StopFishing()
 end)
 
 return PlayerRepository
