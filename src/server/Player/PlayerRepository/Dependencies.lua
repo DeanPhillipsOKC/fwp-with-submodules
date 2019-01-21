@@ -13,7 +13,9 @@ function PlayerRepositoryDependencies.Get()
         PlayerInstantiatedEvent = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE,
         GetTotalCoinsRF = game.ReplicatedStorage.src.Player.Stats.GetTotalCoinsRF,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
-        StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE
+        StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
+        WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE,
+        CaughtFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.CaughtFishRE
     }
 end
 

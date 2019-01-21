@@ -4,6 +4,7 @@ local datastore = require(script.Dependencies).Get().DataStore
 local playerBackpack = require(script.Dependencies).Get().PlayerBackpack
 local PlayerAnimationController = require(script.Dependencies).Get().PlayerAnimationController
 local BobberFactory = require(script.Dependencies).Get().Bobber
+local PlayerFishingController = require(script.Dependencies).Get().FishingController
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -15,6 +16,7 @@ function PlayerEntity.new(player)
 	p.poleStore = datastore("poles", player)
 	p.backpack = playerBackpack.new(player)
 	p.animationController = PlayerAnimationController.new(player)
+	p.fishingController = PlayerFishingController.new(player, p)
 	return p
 end
 
@@ -74,6 +76,14 @@ end
 
 function PlayerEntity:GetPoleFromeWorkspace()
 	return game.Workspace[self.Player.Name][self:GetCurrentPole()]
+end
+
+function PlayerEntity:StartFishing(fishingLocation)
+	self.fishingController:StartFishing(fishingLocation)
+end
+
+function PlayerEntity:StopFishing()
+	self.fishingController:StopFishing()
 end
 
 PlayerEntity.__index = PlayerEntity

@@ -7,7 +7,8 @@ function Dependencies.Get()
         DataStore = require (game.ServerScriptService.lib.datastore2),
         PlayerBackpack = require (script.Parent.Parent.PlayerBackpack),
         PlayerAnimationController = require(script.Parent.Parent.PlayerAnimationController),
-        Bobber = require (game.ServerScriptService.src.Fishing.FishingBobber)
+        Bobber = require (game.ServerScriptService.src.Fishing.FishingBobber),
+        FishingController = require(script.Parent.Parent.PlayerFishingController)
     }
 end
 

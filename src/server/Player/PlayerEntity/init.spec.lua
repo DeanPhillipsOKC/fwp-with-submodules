@@ -9,7 +9,8 @@ return function()
     uutDependencies.Inject({
         DataStore = DataStoreMock,
         PlayerBackpack = require(game.Mocks.PlayerBackpackMock),
-        PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock)
+        PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock),
+        FishingController = require(game.Mocks.PlayerFishingControllerMock)
     })
 
     local uut = require(script.Parent)
