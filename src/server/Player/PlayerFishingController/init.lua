@@ -31,6 +31,24 @@ function PlayerFishingController:StopFishing()
 	dependencies.StopFishingRE:FireClient(self.Player)
 end
 
+function getFish()
+	fishTable = {}
+	fishTable[1] = {
+		ImageAssetId = "2771043601",
+		Name = "Green Banded Lilac Wretzel"
+	}
+	fishTable[2] = {
+		Name = "Brown Spotted Sturdy Erv",
+		ImageAssetId = "2754714344"
+	}
+	fishTable[3] = {
+		Name = "Sweetwater Melon Cote",
+		ImageAssetId = "2773360527"
+	}
+
+	return fishTable[math.random(1, #fishTable)]
+end
+
 function waitForFish(player)
 	spawn(function() 
 		local interrupted = false
@@ -48,10 +66,7 @@ function waitForFish(player)
 		end
 
 		if not interrupted then
-			dependencies.CaughtFishRE:FireClient(player, {
-				Name = "Brown Spotted Sturdy Erv",
-				ImageAssetId = "2754714344"
-			})
+			dependencies.CaughtFishRE:FireClient(player, getFish())
 			waitForFish(player)
 		end
 	end)

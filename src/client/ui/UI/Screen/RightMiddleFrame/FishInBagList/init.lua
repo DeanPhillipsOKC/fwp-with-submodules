@@ -38,6 +38,7 @@ end
 function addLatestCatchToBag(state)
     -- Search the bag for the same kind of fish.  If found, remember the key so that we
     -- can update the count, and delete it.
+    local fishFound = false
     for k, v in pairs(FishInBag) do
         if v.Name == state.CaughtFish.Name then
             fishFound = true
