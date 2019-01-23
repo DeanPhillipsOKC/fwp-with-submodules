@@ -1,0 +1,13 @@
+language: rust
+rust: stable
+cache: cargo
+
+install:
+  - ./install-rojo
+
+script:
+  - echo "TODO, run tests"
+
+after_success:
+#  - rojo upload --cookie "$ROBLOSECURITY" --place_id 2726230850
+  - echo "Build successful"
