@@ -17,7 +17,7 @@ function PlayerFishingController:StartFishing(fishingLocation)
 			if keyframeName == "Casted" then
 				self.PlayerEntity:DeployBobber(fishingLocation)
 				dependencies.StartFishingRE:FireClient(self.Player)
-				waitForFish(self.Player)
+				waitForFish(self.Player, self.PlayerEntity:GetCurrentPole().CatchDelay)
 			end 
 		end)
 		self.PlayerEntity:PlayAnimation("PoleIdle")
@@ -49,28 +49,27 @@ function getFish()
 	return fishTable[math.random(1, #fishTable)]
 end
 
-function waitForFish(player)
+function waitForFish(player, timeToWait)
 	spawn(function() 
 		local interrupted = false
 		local timeRemaining = 0
-		local ttw = 5
 
 		dependencies.StopFishingRE.OnServerEvent:Connect(function(player)
 			interrupted = true
 		end)
 		
 		local elapsedTime = 0
-		while elapsedTime < ttw and not interrupted do
-			local timeRemaining = ttw - elapsedTime
+		while elapsedTime < timeToWait and not interrupted do
+			local timeRemaining = timeToWait - elapsedTime
 			elapsedTime = elapsedTime + wait(timeRemaining < 0.1 and timeRemaining or 0.1)
 		end
 
 		if not interrupted then
 			dependencies.CaughtFishRE:FireClient(player, getFish())
-			waitForFish(player)
+			waitForFish(player, timeToWait)
 		end
 	end)
-	dependencies.WaitForFishRE:FireClient(player, 5)
+	dependencies.WaitForFishRE:FireClient(player, timeToWait)
 end
 
 PlayerFishingController.__index = PlayerFishingController

@@ -8,7 +8,7 @@ end
 
 function FishingPoleDependencies.Get()
     return injected or {
-        
+        LocationOfPoleModels = game.ReplicatedStorage.Equipment.Poles
     }
 end
 

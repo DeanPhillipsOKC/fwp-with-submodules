@@ -7,7 +7,7 @@ function FishingPoleRepositoryDependencies.Inject(newDependencies)
 end
 
 function FishingPoleRepositoryDependencies.Get()
-    return inject or {
+    return injected or {
         FishingPoleFactory = require(script.Parent.Parent.FishingPole)
     }
 end

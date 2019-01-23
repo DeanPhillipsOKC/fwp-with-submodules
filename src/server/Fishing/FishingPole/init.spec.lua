@@ -1,4 +1,11 @@
 return function()
+
+    require(script.Parent.Dependencies).Inject({
+        LocationOfPoleModels = {
+            TestPole = {}
+        }
+    })
+
     local uut = require(script.Parent)
 
     describe("Constructor", function()
@@ -38,6 +45,17 @@ return function()
 
             expect(function()
                 uut.new({})
+            end).to.throw()
+        end)
+
+        it("Should throw an exception if a model that corresponds to the name is not found.", function()
+            data = {
+                Name = "NoModelForThisOne",
+                CatchDelay = 4
+            }
+
+            expect(function()
+                uut.new(data)
             end).to.throw()
         end)
     end)
