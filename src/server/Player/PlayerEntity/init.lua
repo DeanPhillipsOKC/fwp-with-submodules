@@ -5,6 +5,7 @@ local playerBackpack = require(script.Dependencies).Get().PlayerBackpack
 local PlayerAnimationController = require(script.Dependencies).Get().PlayerAnimationController
 local BobberFactory = require(script.Dependencies).Get().Bobber
 local PlayerFishingController = require(script.Dependencies).Get().FishingController
+local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -29,7 +30,8 @@ function PlayerEntity:GetTotalCoins()
 end
 
 function PlayerEntity:GetCurrentPole()
-	return self.poleStore:Get("BasicPole")
+	local poleName = self.poleStore:Get("BasicPole")
+	return FishingPoleRepository.Get(poleName)
 end
 
 function PlayerEntity:SetTotalCoins(amount)
@@ -75,7 +77,7 @@ function PlayerEntity:UndeployBobber()
 end
 
 function PlayerEntity:GetPoleFromeWorkspace()
-	return game.Workspace[self.Player.Name][self:GetCurrentPole()]
+	return game.Workspace[self.Player.Name][self:GetCurrentPole().Name]
 end
 
 function PlayerEntity:StartFishing(fishingLocation)

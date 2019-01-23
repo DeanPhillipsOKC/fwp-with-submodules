@@ -17,7 +17,7 @@ playersService.PlayerAdded:Connect(function (player)
 	players[player.UserId] = newPlayerEntity
 
 	newPlayerEntity:AddPoleToPack({
-		Name = newPlayerEntity:GetCurrentPole(),
+		Name = newPlayerEntity:GetCurrentPole().Name,
 		Category = "Poles"
 	})
 	
