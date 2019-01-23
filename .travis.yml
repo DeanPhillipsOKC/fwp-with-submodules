@@ -12,5 +12,5 @@ script:
   - echo "TODO, run tests"
 
 after_success:
-#  - rojo upload --cookie "$ROBLOSECURITY" --place_id 2726230850
+  - rojo upload --cookie "$ROBLOSECURITY" --place_id 993781553
   - echo "Build successful"
