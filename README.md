@@ -1,1 +1,1 @@
-https://travis-ci.com/DeanPhillipsOKC/FishingWithPets.svg?token=7hnqyRHH718Ah9imr2wZ&branch=master
+[![Build Status](https://travis-ci.com/DeanPhillipsOKC/FishingWithPets.svg?token=7hnqyRHH718Ah9imr2wZ&branch=master)](https://travis-ci.com/DeanPhillipsOKC/FishingWithPets)
