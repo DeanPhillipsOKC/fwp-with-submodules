@@ -2,6 +2,9 @@ language: rust
 rust: stable
 cache: cargo
 
+before_install:
+  - chmod 755 ./install-rojo.sh
+
 install:
   - ./install-rojo.sh
 
