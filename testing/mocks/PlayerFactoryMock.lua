@@ -27,7 +27,9 @@ function PlayerFactoryMock:GetTotalCoins()
 end
 
 function PlayerFactoryMock:GetCurrentPole()
-    return self.EquippedPole or defaultEquippedPoleName
+    return self.EquippedPole or defaultEquippedPoleName or {
+        Name = "BasicPole"
+    }
 end
 
 function PlayerFactoryMock:GetUserId()

@@ -2,6 +2,7 @@ return function()
     local uutDependencies = require(script.Parent.Dependencies)
 
     local DataStoreMock = require(game.Mocks.DataStore2Mock)
+    local FishingPoleRepositoryMock =  require(game.Mocks.FishingPoleRepositoryMock)
     local PlayersInGame = {}
 
     setmetatable(PlayersInGame, {})
@@ -10,7 +11,8 @@ return function()
         DataStore = DataStoreMock,
         PlayerBackpack = require(game.Mocks.PlayerBackpackMock),
         PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock),
-        FishingController = require(game.Mocks.PlayerFishingControllerMock)
+        FishingController = require(game.Mocks.PlayerFishingControllerMock),
+        FishingPoleRepository = FishingPoleRepositoryMock
     })
 
     local uut = require(script.Parent)
@@ -77,16 +79,22 @@ return function()
     end)
 
     describe("GetCurrentPole", function()
-        it("Should return the name of pole that is stored in the database", function()
+        it("Should return a pole with the matching name from the fishing pole repository.", function()
             local player = uut.new( {UserId = "GetCurrentPole Test User 1", Name = "bob" })
             DataStoreMock.SetGet("SomeAwesomePole")
-            expect(player:GetCurrentPole()).to.equal("SomeAwesomePole")
+            FishingPoleRepositoryMock.poles["SomeAwesomePole"] = {
+                Name = "SomeAwesomePole"
+            }
+            expect(player:GetCurrentPole().Name).to.equal("SomeAwesomePole")
         end)
 
-        it("Should return the basic pole if nothing is stored in the database", function()
+        it("Should return the basic pole if there is no record of a fishing pole in the database.", function()
             local player = uut.new({UserId = "GetCurrentPole Test User 2", Name = "bob"})
             DataStoreMock.SetGet(nil)
-            expect(player:GetCurrentPole()).to.equal("BasicPole")
+            FishingPoleRepositoryMock.poles["BasicPole"] = {
+                Name = "BasicPole"
+            }
+            expect(player:GetCurrentPole().Name).to.equal("BasicPole")
         end)
     end)
 

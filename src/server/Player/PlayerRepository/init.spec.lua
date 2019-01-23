@@ -43,7 +43,9 @@ return function()
         it("Should add the player's currently equipped pole to his or her backpack.", function()
             local player = { UserId = "Unit Tester 3"}
             
-            PlayerFactoryMock.SetDefaultEquippedPole("SomePole")
+            PlayerFactoryMock.SetDefaultEquippedPole({
+                Name = "SomePole"
+            })
             PlayerServiceMock.PlayerAdded:Fire(player)
 
             local playerEntity = uut.GetPlayer(player)
