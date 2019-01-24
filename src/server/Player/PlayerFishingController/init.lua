@@ -45,6 +45,10 @@ function getFish()
 		Name = "Sweetwater Melon Cote",
 		ImageAssetId = "2773360527"
 	}
+	fishTable[4] = {
+		Name = "Silver Dollar Sand Skipper",
+		ImageAssetId = "2778875718"
+	}
 
 	return fishTable[math.random(1, #fishTable)]
 end
