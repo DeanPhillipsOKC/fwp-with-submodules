@@ -6,6 +6,7 @@ local PlayerAnimationController = require(script.Dependencies).Get().PlayerAnima
 local BobberFactory = require(script.Dependencies).Get().Bobber
 local PlayerFishingController = require(script.Dependencies).Get().FishingController
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
+local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -68,7 +69,7 @@ end
 
 function PlayerEntity:DeployBobber(fishingLocation)
 	self.Bobber = BobberFactory.new()
-	local pole = self:GetPoleFromeWorkspace()
+	local pole = self:GetEquippedPole()
 	self.Bobber:Deploy(pole, fishingLocation)
 end
 
@@ -76,8 +77,10 @@ function PlayerEntity:UndeployBobber()
 	self.Bobber:Destroy()
 end
 
-function PlayerEntity:GetPoleFromeWorkspace()
-	return game.Workspace[self.Player.Name][self:GetCurrentPole().Name]
+function PlayerEntity:GetEquippedPole()
+	assert(EquippedToolLocation ~= nil, "Cannot get " .. self.Player.Name .. "'s equipped pole because the EquippedToolLocation dependency is not defined.'")
+	assert(EquippedToolLocation[self.Player.Name] ~= nil, "Cannot get ".. self.Player.Name .. "'s equipped pole because they do not have an entry in the workspace for some reason.'")
+	return EquippedToolLocation[self.Player.Name][self:GetCurrentPole().Name]
 end
 
 function PlayerEntity:StartFishing(fishingLocation)
