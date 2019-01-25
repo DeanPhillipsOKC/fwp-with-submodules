@@ -12,7 +12,7 @@ function PlayerFishingController.new(player, playerEntity)
 end
 
 function PlayerFishingController:StartFishing(fishingLocation)
-	if self.Player:DistanceFromCharacter(fishingLocation) < 20 then
+	if self.Player:DistanceFromCharacter(fishingLocation) < 20 and self.PlayerEntity:GetEquippedPole() ~= nil then
 		self.PlayerEntity:PlayAnimation("CastPole").KeyframeReached:Connect(function(keyframeName)
 			if keyframeName == "Casted" then
 				self.PlayerEntity:DeployBobber(fishingLocation)
