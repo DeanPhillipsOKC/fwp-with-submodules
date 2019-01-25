@@ -4,6 +4,7 @@ return function()
     local DataStoreMock = require(game.Mocks.DataStore2Mock)
     local FishingPoleRepositoryMock =  require(game.Mocks.FishingPoleRepositoryMock)
     local PlayersInGame = {}
+    local EquippedToolLocationMock = {}
 
     setmetatable(PlayersInGame, {})
 
@@ -12,7 +13,8 @@ return function()
         PlayerBackpack = require(game.Mocks.PlayerBackpackMock),
         PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock),
         FishingController = require(game.Mocks.PlayerFishingControllerMock),
-        FishingPoleRepository = FishingPoleRepositoryMock
+        FishingPoleRepository = FishingPoleRepositoryMock,
+        EquippedToolLocation = EquippedToolLocationMock
     })
 
     local uut = require(script.Parent)
@@ -111,6 +113,62 @@ return function()
             local player = uut.new( {UserId = 123, Name = "bob" })
             player:StopAnimation("SomeAnimation")
             expect(player.animationController.AnimationsStopped.SomeAnimation).to.equal(true)
+        end)
+    end)
+
+    describe("GetEquippedPole", function()
+        it("Should return currently equipped pole from the workspace", function()
+            local player = uut.new({
+                UserId = 123,
+                Name = "bob"
+            })
+            
+            DataStoreMock.SetGet(nil)
+            FishingPoleRepositoryMock.poles["BasicPole"] = {
+                Name = "BasicPole"
+            }
+
+            EquippedToolLocationMock.bob = {
+                BasicPole = {
+                    Name = "BasicPole"
+                }
+            }
+
+            expect(player:GetEquippedPole().Name).to.equal("BasicPole")
+        end)
+
+        it("Should return null if there is no equipped pole", function()
+            local player = uut.new({
+                UserId = 123,
+                Name = "bob"
+            })
+            
+            DataStoreMock.SetGet(nil)
+            FishingPoleRepositoryMock.poles["BasicPole"] = {
+                Name = "BasicPole"
+            }
+
+            EquippedToolLocationMock.bob = { }
+
+            expect(player:GetEquippedPole()).never.to.be.ok()
+        end)
+
+        it("Should throw an exception if there is no entry for player in workspace", function()
+            local player = uut.new({
+                UserId = 123,
+                Name = "bob"
+            })
+            
+            DataStoreMock.SetGet(nil)
+            FishingPoleRepositoryMock.poles["BasicPole"] = {
+                Name = "BasicPole"
+            }
+
+            EquippedToolLocationMock.bob = nil
+            
+            expect(function()
+                player:GetEquippedPole()
+            end).to.throw()
         end)
     end)
 end
