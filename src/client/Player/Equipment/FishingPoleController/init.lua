@@ -53,6 +53,7 @@ function FishingPoleController.new(fpc)
 		fpc.inputEndedConnection:Disconnect()
 		assert(fpc.inputChangedConnection ~= nil, "Invalid State Detected: Recieved an unequipped event, and tried to disconnect the input changed connection, but could not find one.  Something's wrong")
 		fpc.inputChangedConnection:Disconnect()
+		dependencies.StopFishingRE:FireServer()
 	end)
 
 	return fpc
