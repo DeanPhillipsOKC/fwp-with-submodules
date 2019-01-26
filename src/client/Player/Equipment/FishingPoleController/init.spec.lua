@@ -461,5 +461,20 @@ return function()
 
             expect(uutDependencies.Mouse.Icon).to.equal("SomeIcon")
         end)
+
+        it("Should fire the stop fishing event.", function()
+            local pole = {
+                Equipped = eventFactory.new(),
+                Unequipped = eventFactory.new()
+            }
+            local controller = uut.new({ Pole = pole })
+
+            pole.Equipped:Fire()
+            
+            playerStoppedFishing = false
+            pole.Unequipped:Fire()
+
+            expect(playerStoppedFishing).to.equal(true)
+        end)
     end)
 end
