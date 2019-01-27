@@ -8,6 +8,7 @@ local PlayerFishingController = require(script.Dependencies).Get().FishingContro
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
 local PlayersService = require(script.Dependencies).Get().PlayersService
+local TotalFishCaughtChangedRF = require(script.Dependencies).Get().TotalFishCaughtChangedRF
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -17,6 +18,7 @@ function PlayerEntity.new(player)
 	setmetatable(p, PlayerEntity)
 	p.coinStore = datastore("coins", player)
 	p.poleStore = datastore("poles", player)
+	p.fishAmountStore = datastore("fishamount", player)
 	p.backpack = playerBackpack.new(player)
 	p.animationController = PlayerAnimationController.new(player)
 	p.fishingController = PlayerFishingController.new(player, p)
@@ -29,6 +31,10 @@ end
 
 function PlayerEntity:GetTotalCoins()
 	return self.coinStore:Get(0)
+end
+
+function PlayerEntity:GetTotalFishCaught()
+	return self.fishAmountStore:Get(0)
 end
 
 function PlayerEntity:GetCurrentPole()
@@ -54,6 +60,13 @@ function PlayerEntity:SetTotalCoins(amount)
 	end
 
 	self.coinStore:Set(amount)
+end
+
+function PlayerEntity:IncrementTotalFishCaught()
+	local newTotal = self:GetTotalFishCaught() + 1
+
+	self.fishAmountStore:Set(newTotal)
+	TotalFishCaughtChangedRF:FireClient(self.Player, newTotal)
 end
 
 function PlayerEntity:AddPoleToPack(poleName)

@@ -18,7 +18,7 @@ TotalFishStat = RoactRodux.connect(
         -- mapStateToProps is run every time the store's state updates.
         -- It's also run whenever the component receives new props.
         return {
-            AmountText = state.TotalFish,
+            AmountText = state.TotalFishCaught,
         }
     end
 )(TotalFishStat)
