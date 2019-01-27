@@ -4,6 +4,7 @@ return function()
     local PlayerServiceMock = require(game.Mocks.PlayersServiceMock)
     local PlayerFactoryMock = require(game.Mocks.PlayerFactoryMock)
     local PlayerInstantiatedEvent = require(game.Mocks.RemoteEventMock).new()
+    local GetTotalFishCaughtRF = require(game.Mocks.RemoteFunctionMock).new()
     local GetTotalCoinsRF = require(game.Mocks.RemoteFunctionMock).new()
     local StartFishingRE = require(game.Mocks.RemoteEventMock).new()
     local StopFishingRE = require(game.Mocks.RemoteEventMock).new()
@@ -15,7 +16,8 @@ return function()
         PlayerInstantiatedEvent = PlayerInstantiatedEvent,
         GetTotalCoinsRF = GetTotalCoinsRF,
         StartFishingRE = StartFishingRE,
-        StopFishingRE = StopFishingRE
+        StopFishingRE = StopFishingRE,
+        GetTotalFishCaughtRF = GetTotalFishCaughtRF
     })
 
     local uut = require(script.Parent)

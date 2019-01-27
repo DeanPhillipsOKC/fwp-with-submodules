@@ -8,7 +8,7 @@ local PlayerFishingController = require(script.Dependencies).Get().FishingContro
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
 local PlayersService = require(script.Dependencies).Get().PlayersService
-local TotalFishCaughtChangedRF = require(script.Dependencies).Get().TotalFishCaughtChangedRF
+local TotalFishCaughtChangedRE = require(script.Dependencies).Get().TotalFishCaughtChangedRE
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -64,9 +64,8 @@ end
 
 function PlayerEntity:IncrementTotalFishCaught()
 	local newTotal = self:GetTotalFishCaught() + 1
-
 	self.fishAmountStore:Set(newTotal)
-	TotalFishCaughtChangedRF:FireClient(self.Player, newTotal)
+	TotalFishCaughtChangedRE:FireClient(self.Player, newTotal)
 end
 
 function PlayerEntity:AddPoleToPack(poleName)

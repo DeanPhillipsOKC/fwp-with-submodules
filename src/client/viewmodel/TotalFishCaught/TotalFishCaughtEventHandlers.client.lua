@@ -1,5 +1,6 @@
 local GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF
 local PlayerInstantiatedRE = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE
+local TotalFishCaughtChanged = game.ReplicatedStorage.src.Player.Stats.TotalFishCaughtChangedRE
 local VM = require(Game:GetService("Players").LocalPlayer.PlayerScripts.src.viewmodel)
 
 PlayerInstantiatedRE.OnClientEvent:Connect(function()
@@ -7,6 +8,13 @@ PlayerInstantiatedRE.OnClientEvent:Connect(function()
     VM:dispatch({
         type = "totalfishcaughtchanged",
         newTotalFishCaught = totalFishCaught
+    })
+end)
+
+TotalFishCaughtChanged.OnClientEvent:Connect(function(newTotal)
+    VM:dispatch({
+        type = "totalfishcaughtchanged",
+        newTotalFishCaught = newTotal
     })
 end)
 
