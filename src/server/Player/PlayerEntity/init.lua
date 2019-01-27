@@ -7,6 +7,7 @@ local BobberFactory = require(script.Dependencies).Get().Bobber
 local PlayerFishingController = require(script.Dependencies).Get().FishingController
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
+local PlayersService = require(script.Dependencies).Get().PlayersService
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -89,6 +90,31 @@ end
 
 function PlayerEntity:StopFishing()
 	self.fishingController:StopFishing()
+end
+
+function PlayerEntity:GetCharacter()
+	assert(PlayersService ~= nil, "Cannot get player character because there is an issue with the PlayersService")
+	assert(self ~= nil, "Cannot get player character because the player entity self referecne was not found.  Did you remember to call GetCharacter with the colon?")
+	assert(self.Player ~= nil, "Cannot get player character because the reference to the player instance was nil.")
+	assert(self.Player.Name ~= nil, "Cannot get the player character because tbe name on the player instances was nil.")
+	assert(PlayersService[self.Player.Name] ~= nil, "Cannot get player character for " .. self.Player.Name .. " because they do not appear to be in the game anymore.")
+
+	local character = PlayersService[self.Player.Name].Character
+	
+	assert(character ~= nil, "Could not get the character for " .. self.Player.Name .. " because we could not find it.")
+	return character
+end
+
+function PlayerEntity:GetHumanoid()
+	assert(self ~= nil, "Cannot get player humanoid because the player entity self reference was not found.  Did you remember to call GetHumanoid with the colon operator?")
+
+	local character = self:GetCharacter()
+	assert(character ~= nil, "Could not get the humanoid for " .. self.Player.Name .. " because his or her character is nil.")
+
+	local humanoid = character.Humanoid
+	assert(humanoid ~= nil, "Could not get the humanoid for " .. self.Player.Name .. " because his or her humanoid is nil.")
+	
+	return humanoid
 end
 
 PlayerEntity.__index = PlayerEntity
