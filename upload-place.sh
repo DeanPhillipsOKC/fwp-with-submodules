@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-curl -X POST -d @FishingWithPets.rbxlx -H "COOKIE: .ROBLOXSECURITY=$ROBLOXSECURITY" -H "USER_AGENT: Roblox/WinInet" -H "Requester: Client" -H "CONTENT_TYPE: application/xml" -H "ACCEPT: application/json" "https://data.roblox.com/Data/Upload.ashx?assetid=2751232980"
+curl -X POST -d @FishingWithPets.rbxlx -H "COOKIE: .ROBLOSECURITY=$ROBLOXSECURITY" -H "USER_AGENT: Roblox/WinInet" -H "Requester: Client" -H "CONTENT_TYPE: application/xml" -H "ACCEPT: application/json" "https://data.roblox.com/Data/Upload.ashx?assetid=2751232980"
 
 #    let url = format!("", options.asset_id);
 
