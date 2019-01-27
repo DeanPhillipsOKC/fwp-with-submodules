@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 PLACE_ID="2751232980"
 
-RESULT=$(curl -v -X POST -d @FishingWithPets.rbxlx \
+unix2dos ./FishingWithPets.rbxlx
+
+RESULT=$(curl -v -X POST --data-binary @FishingWithPets.rbxlx \
     -H "COOKIE: .ROBLOSECURITY=$ROBLOXSECURITY" \
     -H "USER-AGENT: Roblox/WinInet" \
     -H "Requester: Client" \
