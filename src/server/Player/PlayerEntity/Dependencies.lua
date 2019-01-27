@@ -10,7 +10,8 @@ function Dependencies.Get()
         Bobber = require (game.ServerScriptService.src.Fishing.FishingBobber),
         FishingController = require(script.Parent.Parent.PlayerFishingController),
         FishingPoleRepository = require(game.ServerScriptService.src.Fishing.FishingPoleRepository),
-        EquippedToolLocation = game.Workspace
+        EquippedToolLocation = game.Workspace,
+        PlayersService = game:GetService("Players")
     }
 end
 
