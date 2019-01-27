@@ -4,6 +4,7 @@ cache: cargo
 
 before_install:
   - chmod 755 ./install-rojo.sh
+  - chmod 755 ./upload-place.sh
 
 install:
   - ./install-rojo.sh
