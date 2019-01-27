@@ -1,6 +1,7 @@
 local Roact = require(game.ReplicatedStorage.lib.Roact)
 
 local TotalCoinsStat = require(script.TotalCoinsStat)
+local TotalFishStat = require(script.TotalFishStat)
 
 function StatList()
     return Roact.createElement("Frame", {
@@ -11,7 +12,8 @@ function StatList()
         Layout = Roact.createElement("UIGridLayout", {
             Name = "Layout"
         }),
-        TotalCoinsStat = Roact.createElement(TotalCoinsStat)
+        TotalCoinsStat = Roact.createElement(TotalCoinsStat),
+        TotalFishStat = Roact.createElement(TotalFishStat)
     })
 end
 
