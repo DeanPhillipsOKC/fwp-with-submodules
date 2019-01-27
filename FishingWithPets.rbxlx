@@ -25174,6 +25174,694 @@ return Input2dToWorld3dService]]></ProtectedString>
 			<bool name="ShowDevelopmentGui">true</bool>
 			<BinaryString name="Tags"></BinaryString>
 		</Properties>
+		<Item class="ScreenGui" referent="RBXAA5089C55EA446DD84E53B2AC040A318">
+			<Properties>
+				<bool name="AutoLocalize">true</bool>
+				<int name="DisplayOrder">0</int>
+				<bool name="Enabled">true</bool>
+				<bool name="IgnoreGuiInset">false</bool>
+				<string name="Name">Anchor-Cheat-Sheet</string>
+				<bool name="ResetOnSpawn">true</bool>
+				<Ref name="RootLocalizationTable">null</Ref>
+				<BinaryString name="Tags"></BinaryString>
+				<token name="ZIndexBehavior">0</token>
+			</Properties>
+			<Item class="Folder" referent="RBX8186FC47CA7A499393A6817D9084F696">
+				<Properties>
+					<string name="Name">Top</string>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Frame" referent="RBX76DA44DA6A2D4F4EA7091C953B27BF98">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4282122022</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Top_Middle</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0.5</XS>
+							<XO>-150</XO>
+							<YS>0</YS>
+							<YO>10</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>300</XO>
+							<YS>0</YS>
+							<YO>100</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX8D33AAAB6D2E4FB9AD6DED2C33C596D9">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4294962470</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Top_Middle</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>10</XO>
+							<YS>0</YS>
+							<YO>10</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>100</XO>
+							<YS>0</YS>
+							<YO>100</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX6D58AAB95BDC48008604692552DA5C2E">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4290926591</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Top_Right</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>1</XS>
+							<XO>-110</XO>
+							<YS>0</YS>
+							<YO>10</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>100</XO>
+							<YS>0</YS>
+							<YO>100</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Folder" referent="RBXFB285622D6A84BBC9A8663F87AB70BEC">
+				<Properties>
+					<string name="Name">Middle</string>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Frame" referent="RBXAF2E893E4F30497E8A61798B8926A2D0">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4294930057</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Middle_lEFT</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>10</XO>
+							<YS>0.5</YS>
+							<YO>-150</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>100</XO>
+							<YS>0</YS>
+							<YO>300</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX444B033AF57A481DB2FF11971E6D510A">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4289341725</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Middle_Center</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0.5</XS>
+							<XO>-150</XO>
+							<YS>0.5</YS>
+							<YO>-150</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>300</XO>
+							<YS>0</YS>
+							<YO>300</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX0A9587BDAD50477892234F298C5BFB0B">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4284627114</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Middle_Right</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>1</XS>
+							<XO>-110</XO>
+							<YS>0.5</YS>
+							<YO>-150</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>100</XO>
+							<YS>0</YS>
+							<YO>300</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Folder" referent="RBX885D84322083409AA934368A8234474C">
+				<Properties>
+					<string name="Name">Bottom</string>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Frame" referent="RBX4D9426D722364C41A5AAE0C2389FBDDD">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4292476718</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Bottom_Right</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>1</XS>
+							<XO>-110</XO>
+							<YS>1</YS>
+							<YO>-110</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>100</XO>
+							<YS>0</YS>
+							<YO>100</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBXB73E5174DDAB4F1989106B1005306298">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4294928180</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Bottom_Middle</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0.5</XS>
+							<XO>-150</XO>
+							<YS>1</YS>
+							<YO>-110</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>300</XO>
+							<YS>0</YS>
+							<YO>100</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBXB95F3D0892694C4897CC8CD6C1C3FD85">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4286447576</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Bottom_Left</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>10</XO>
+							<YS>1</YS>
+							<YO>-110</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>100</XO>
+							<YS>0</YS>
+							<YO>100</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Folder" referent="RBXCFC2C6055308445C9B8C621DE27A940F">
+				<Properties>
+					<string name="Name">Across</string>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Frame" referent="RBX11D69BAC5AD64032B59CD90F899CA575">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4283006802</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Top_Across</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>20</XO>
+							<YS>0</YS>
+							<YO>20</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>1</XS>
+							<XO>-40</XO>
+							<YS>0</YS>
+							<YO>50</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX85269BBB387D42138D7FA46C08A6BB92">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4279912319</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Bottom_Across</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>20</XO>
+							<YS>1</YS>
+							<YO>-70</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>1</XS>
+							<XO>-40</XO>
+							<YS>0</YS>
+							<YO>50</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX7C43B4A3D0914195B801293EDBD0CE05">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4284900966</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Middle_Across</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>20</XO>
+							<YS>0.5</YS>
+							<YO>-25</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>1</XS>
+							<XO>-40</XO>
+							<YS>0</YS>
+							<YO>50</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+			</Item>
+			<Item class="Folder" referent="RBX5ACF2A5BD08949FFAEA60CF99A47E233">
+				<Properties>
+					<string name="Name">Downward</string>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
+				<Item class="Frame" referent="RBXBD0DB79D2313433EB8E847BCB1785941">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4290431091</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Right_Top_Down</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>1</XS>
+							<XO>-70</XO>
+							<YS>0</YS>
+							<YO>20</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>50</XO>
+							<YS>1</YS>
+							<YO>-40</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX49CC48B0040745E7ACF7ED0938F1D0BE">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4294962840</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Left_Top_Down</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0</XS>
+							<XO>20</XO>
+							<YS>0</YS>
+							<YO>20</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>50</XO>
+							<YS>1</YS>
+							<YO>-40</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+				<Item class="Frame" referent="RBX8E7EABD32AFB49269B0930ECE27F3D89">
+					<Properties>
+						<bool name="Active">false</bool>
+						<Vector2 name="AnchorPoint">
+							<X>0</X>
+							<Y>0</Y>
+						</Vector2>
+						<bool name="AutoLocalize">true</bool>
+						<Color3 name="BackgroundColor3">4291323155</Color3>
+						<float name="BackgroundTransparency">0</float>
+						<Color3 name="BorderColor3">4279970357</Color3>
+						<int name="BorderSizePixel">1</int>
+						<bool name="ClipsDescendants">false</bool>
+						<bool name="Draggable">false</bool>
+						<int name="LayoutOrder">0</int>
+						<string name="Name">Middle_Top_Down</string>
+						<Ref name="NextSelectionDown">null</Ref>
+						<Ref name="NextSelectionLeft">null</Ref>
+						<Ref name="NextSelectionRight">null</Ref>
+						<Ref name="NextSelectionUp">null</Ref>
+						<UDim2 name="Position">
+							<XS>0.5</XS>
+							<XO>-25</XO>
+							<YS>0</YS>
+							<YO>20</YO>
+						</UDim2>
+						<Ref name="RootLocalizationTable">null</Ref>
+						<float name="Rotation">0</float>
+						<bool name="Selectable">false</bool>
+						<Ref name="SelectionImageObject">null</Ref>
+						<UDim2 name="Size">
+							<XS>0</XS>
+							<XO>50</XO>
+							<YS>1</YS>
+							<YO>-40</YO>
+						</UDim2>
+						<token name="SizeConstraint">0</token>
+						<token name="Style">0</token>
+						<BinaryString name="Tags"></BinaryString>
+						<bool name="Visible">true</bool>
+						<int name="ZIndex">1</int>
+					</Properties>
+				</Item>
+			</Item>
+		</Item>
 	</Item>
 	<Item class="LocalizationService" referent="RBX8DA1ABFB9A554540807A89820FC025DA">
 		<Properties>
