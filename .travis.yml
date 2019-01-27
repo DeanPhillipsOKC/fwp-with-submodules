@@ -13,4 +13,5 @@ script:
 
 after_success:
 #  - rojo upload --cookie "$ROBLOSECURITY" --place_id 2751232980
+  - ./upload-place.sh
   - echo "Build successful"
