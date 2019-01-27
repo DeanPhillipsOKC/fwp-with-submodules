@@ -11,7 +11,8 @@ function Dependencies.Get()
         FishingController = require(script.Parent.Parent.PlayerFishingController),
         FishingPoleRepository = require(game.ServerScriptService.src.Fishing.FishingPoleRepository),
         EquippedToolLocation = game.Workspace,
-        PlayersService = game:GetService("Players")
+        PlayersService = game:GetService("Players"),
+        TotalFishCaughtChangedRE = game.ReplicatedStorage.src.Player.Stats.TotalFishCaughtChangedRE
     }
 end
 

@@ -15,8 +15,6 @@ function PlayerFishingController:playerInValidFishingState()
 	local humanoid = self.PlayerEntity:GetHumanoid()
 	assert(humanoid ~= nil, "Could not check to see if " .. self.Player.Name .. " is in a valid fishing state, because we could not find their humanoid instance.")
 
-	print(humanoid:GetState())
-
 	return  humanoid:GetState() ~= Enum.HumanoidStateType.Running and
 			humanoid:GetState() ~= Enum.HumanoidStateType.Jumping and
 			humanoid:GetState() ~= Enum.HumanoidStateType.Swimming and
@@ -71,7 +69,6 @@ function PlayerFishingController:waitForFish(timeToWait)
 		local interrupted = false
 		local timeRemaining = 0
 		local playerInInvalidState = false
-		print("time to wait", timeToWait)
 
 		dependencies.StopFishingRE.OnServerEvent:Connect(function(player)
 			interrupted = true
@@ -96,6 +93,7 @@ function PlayerFishingController:waitForFish(timeToWait)
 
 		if not interrupted then
 			dependencies.CaughtFishRE:FireClient(self.Player, getFish())
+			self.PlayerEntity:IncrementTotalFishCaught()
 			self:waitForFish(timeToWait)
 		elseif playerInInvalidState then
 			self:StopFishing()

@@ -11,6 +11,7 @@ local startFishingRE = require(script.Dependencies).Get().StartFishingRE
 local stopFishingRE = require(script.Dependencies).Get().StopFishingRE
 local waitForFishRE = require(script.Dependencies).Get().WaitForFishRE
 local caughtFishRE = require(script.Dependencies).Get().CaughtFishRE
+local getTotalFishCaughtRF = require(script.Dependencies).Get().GetTotalFishCaughtRF
 
 playersService.PlayerAdded:Connect(function (player)
 	newPlayerEntity = playerFactory.new(player)
@@ -39,6 +40,11 @@ end
 function getTotalCoinsRF.OnServerInvoke(player)
 	local playerEntity = PlayerRepository.GetPlayer(player)
 	return playerEntity:GetTotalCoins()
+end
+
+function getTotalFishCaughtRF.OnServerInvoke(player)
+	local playerEntity = PlayerRepository.GetPlayer(player)
+	return playerEntity:GetTotalFishCaught()
 end
 
 startFishingRE.OnServerEvent:Connect(function(player, fishingLocation)
