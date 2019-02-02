@@ -83,7 +83,7 @@ return function()
     describe("GetFishBagContents", function()
         local player
 
-        function setup()
+        local function setup()
             player = uut.new( { UserId = 123, Name = "tester"} )
         end
 
@@ -102,11 +102,97 @@ return function()
         end)
 
         it("Should throw an error if the record in the database is not a table.", function()
-            uut.new( { UserId = 123, Name = "tester"} )
+            setup()
             DataStoreMock.SetGet(321)
 
             expect(function ()
                 player:GetFishBagContents()
+            end).to.throw()
+        end)
+    end)
+
+    describe("AddFishToBag", function()
+        local player
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should increment the count of the caught fish, if a record exists for it.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = 2,
+                StarFish = 8
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(3)
+        end)
+
+        it("Should set the count of a caught fish to 1, if a record does not already exist for it.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(1)
+        end)
+
+        it("Should throw an error, if the database returns a record that is not a table.", function()
+            setup()
+
+            DataStoreMock.SetGet(123)
+
+            expect(function()
+                player:AddFishToBag("SunFish")
+            end).to.throw()
+        end)
+
+        it("Should add the fish, and set the count to 1 even if the database does not have a record.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(1)
+        end)
+
+        it("Should throw an error, if the fish name is not a string.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 1
+            })
+
+            expect(function()
+                player:AddFishToBag(123)
+            end).to.throw()
+
+            expect(function()
+                player:AddFishToBag({})
+            end).to.throw()
+        end)
+
+        it("Should throw an error, if the fish name is not provided.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 1
+            })
+
+            expect(function()
+                player:AddFishToBag()
+            end).to.throw()
+
+            expect(function()
+                player:AddFishToBag(nil)
             end).to.throw()
         end)
     end)

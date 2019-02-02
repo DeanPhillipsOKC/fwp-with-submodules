@@ -41,6 +41,17 @@ function PlayerEntity:GetFishBagContents()
 	return contents
 end
 
+function PlayerEntity:AddFishToBag(name)
+	assert(name ~= nil, "Attempt to add a fish to the bag without providing a fish name.")
+	assert(type(name) == "string", "Attempt to add a fish to the bag with a non-string name.")
+
+	local contents = self:GetFishBagContents()
+
+	contents[name] = contents[name] ~= nil and (contents[name] + 1) or 1
+
+	self.fishBagStore:Set(contents)
+end
+
 function PlayerEntity:GetCurrentPole()
 	local poleName = self.poleStore:Get("BasicPole")
 	return FishingPoleRepository.Get(poleName)
