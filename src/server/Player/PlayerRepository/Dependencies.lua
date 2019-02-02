@@ -15,8 +15,7 @@ function PlayerRepositoryDependencies.Get()
         GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
-        WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE,
-        CaughtFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.CaughtFishRE
+        WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE
     }
 end
 

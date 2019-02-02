@@ -10,7 +10,6 @@ local getEquippedPoleRF = require(script.Dependencies).Get().GetEquippedPoleRF
 local startFishingRE = require(script.Dependencies).Get().StartFishingRE
 local stopFishingRE = require(script.Dependencies).Get().StopFishingRE
 local waitForFishRE = require(script.Dependencies).Get().WaitForFishRE
-local caughtFishRE = require(script.Dependencies).Get().CaughtFishRE
 local getTotalFishCaughtRF = require(script.Dependencies).Get().GetTotalFishCaughtRF
 
 playersService.PlayerAdded:Connect(function (player)
