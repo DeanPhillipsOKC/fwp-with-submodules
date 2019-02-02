@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-PLACE_ID="2751232980"
+
+if ["$TRAVIS_BRANCH" == "master" ]
+then
+    PLACE_ID="2751232980"
+else
+    PLACE_ID="2809187108"
+fi
 
 unix2dos ./FishingWithPets.rbxlx
 
