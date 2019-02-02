@@ -8,6 +8,7 @@ local PlayerFishingController = require(script.Dependencies).Get().FishingContro
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
 local PlayersService = require(script.Dependencies).Get().PlayersService
+local FishBagContentsChanged = require(script.Dependencies).Get().FishBagContentsChanged
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -49,6 +50,8 @@ function PlayerEntity:AddFishToBag(name)
 	contents[name] = contents[name] ~= nil and (contents[name] + 1) or 1
 
 	self.fishBagStore:Set(contents)
+
+	FishBagContentsChanged:FireClient(self.Player)
 end
 
 function PlayerEntity:GetCurrentPole()

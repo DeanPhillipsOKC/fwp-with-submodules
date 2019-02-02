@@ -14,7 +14,8 @@ return function()
         PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock),
         FishingController = require(game.Mocks.PlayerFishingControllerMock),
         FishingPoleRepository = FishingPoleRepositoryMock,
-        EquippedToolLocation = EquippedToolLocationMock
+        EquippedToolLocation = EquippedToolLocationMock,
+        FishBagContentsChanged = require(game.Mocks.RemoteEventMock).new()
     })
 
     local uut = require(script.Parent)
@@ -113,9 +114,15 @@ return function()
 
     describe("AddFishToBag", function()
         local player
+        local fishBagContentsChangedFired
 
         local function setup()
             player = uut.new( { UserId = 123, Name = "tester"} )
+            fishBagContentsChangedFired = false
+
+            uutDependencies.Get().FishBagContentsChanged:HandleClient(function()
+                fishBagContentsChangedFired = true
+            end)
         end
 
         it("Should increment the count of the caught fish, if a record exists for it.", function()
@@ -194,6 +201,28 @@ return function()
             expect(function()
                 player:AddFishToBag(nil)
             end).to.throw()
+        end)
+
+        it("Should fire the fish bag contents changed, if a fish is added to the bag.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            player:AddFishToBag("SunFish")
+
+            expect(fishBagContentsChangedFired).to.equal(true)
+        end)
+
+        it("Should not fire the fish bag contents changed, if there was an error.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            expect(function()
+                player:AddFishToBag(123) -- should throw exception
+            end).to.throw()
+            
+            expect(fishBagContentsChangedFired).to.equal(false)
         end)
     end)
 
