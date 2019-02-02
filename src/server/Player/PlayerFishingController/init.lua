@@ -44,22 +44,10 @@ end
 
 function getFish()
 	fishTable = {}
-	fishTable[1] = {
-		ImageAssetId = "2771043601",
-		Name = "Green Banded Lilac Wretzel"
-	}
-	fishTable[2] = {
-		Name = "Brown Spotted Sturdy Erv",
-		ImageAssetId = "2754714344"
-	}
-	fishTable[3] = {
-		Name = "Sweetwater Melon Cote",
-		ImageAssetId = "2773360527"
-	}
-	fishTable[4] = {
-		Name = "Silver Dollar Sand Skipper",
-		ImageAssetId = "2778875718"
-	}
+	fishTable[1] = "Green Banded Lilac Wretzel"
+	fishTable[2] = "Brown Spotted Sturdy Erv"
+	fishTable[3] = "Sweetwater Melon Cote"
+	fishTable[4] = "Silver Dollar Sand Skipper"
 
 	return fishTable[math.random(1, #fishTable)]
 end
@@ -92,7 +80,7 @@ function PlayerFishingController:waitForFish(timeToWait)
 		stateChangedConnection = nil
 
 		if not interrupted then
-			self.PlayerEntity:AddFishToBag(getFish().Name)
+			self.PlayerEntity:AddFishToBag(getFish())
 			self:waitForFish(timeToWait)
 		elseif playerInInvalidState then
 			self:StopFishing()
