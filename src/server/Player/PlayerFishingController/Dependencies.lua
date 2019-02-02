@@ -10,7 +10,6 @@ function PlayerFishingControllerDependencies.Get()
     return injected or {
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
-        CaughtFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.CaughtFishRE,
         WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE
     }
 end

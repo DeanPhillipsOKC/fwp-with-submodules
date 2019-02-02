@@ -92,7 +92,7 @@ function PlayerFishingController:waitForFish(timeToWait)
 		stateChangedConnection = nil
 
 		if not interrupted then
-			dependencies.CaughtFishRE:FireClient(self.Player, getFish())
+			--dependencies.CaughtFishRE:FireClient(self.Player, getFish())
 			self.PlayerEntity:IncrementTotalFishCaught()
 			self:waitForFish(timeToWait)
 		elseif playerInInvalidState then
