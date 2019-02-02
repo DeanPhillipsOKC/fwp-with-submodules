@@ -112,6 +112,70 @@ return function()
         end)
     end)
 
+    describe("GetTotalFishCaught", function()
+        local player
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should return zero if the bag is empty", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            expect(player:GetTotalFishCaught()).to.equal(0)
+        end)
+
+        it("Should return the count stored in the database if a fish was caught.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 3
+            })
+
+            expect(player:GetTotalFishCaught()).to.equal(3)
+        end)
+
+        it("Should return the total counts stored in the database, if multiple fish were caught", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = 3,
+                StarFish = 2
+            })
+
+            expect(player:GetTotalFishCaught()).to.equal(16)
+        end)
+
+        it("Should throw an error if a non-numeric value is found in the bag", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = "abc"
+            })
+
+            expect(function()
+                player:GetTotalFishCaught()
+            end).to.throw()
+        end)
+
+        it("Should throw an error if a negative count is found in the bag", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = -1
+            })
+
+            expect(function()
+                player:GetTotalFishCaught()
+            end).to.throw()
+        end)
+    end)
+
     describe("AddFishToBag", function()
         local player
         local fishBagContentsChangedFired

@@ -41,6 +41,20 @@ function PlayerEntity:GetFishBagContents()
 	return contents
 end
 
+function PlayerEntity:GetTotalFishCaught()
+	local bagContents = self:GetFishBagContents()
+
+	local total = 0
+
+	for k,v in pairs(bagContents) do
+		assert(type(v) == "number", "The count for " .. k .. " was not a number.")
+		assert(v >= 0, "The count for " .. k .. " was negative.")
+		total = total + v
+	end
+
+	return total
+end
+
 function PlayerEntity:AddFishToBag(name)
 	assert(name ~= nil, "Attempt to add a fish to the bag without providing a fish name.")
 	assert(type(name) == "string", "Attempt to add a fish to the bag with a non-string name.")
