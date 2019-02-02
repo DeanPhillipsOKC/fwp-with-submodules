@@ -80,6 +80,37 @@ return function()
         end)
     end)
 
+    describe("GetFishBagContents", function()
+        local player
+
+        function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should return an empty table if database record is null.", function()
+            setup()
+            DataStoreMock.SetGet(nil)
+
+            expect(player:GetFishBagContents()).to.be.ok()
+        end)
+
+        it("Should return whatever table is in the database if record found.", function()
+            setup()
+            DataStoreMock.SetGet({Name = "someName"})
+
+            expect(player:GetFishBagContents().Name).to.equal("someName")
+        end)
+
+        it("Should throw an error if the record in the database is not a table.", function()
+            uut.new( { UserId = 123, Name = "tester"} )
+            DataStoreMock.SetGet(321)
+
+            expect(function ()
+                player:GetFishBagContents()
+            end).to.throw()
+        end)
+    end)
+
     describe("GetCurrentPole", function()
         it("Should return a pole with the matching name from the fishing pole repository.", function()
             local player = uut.new( {UserId = "GetCurrentPole Test User 1", Name = "bob" })

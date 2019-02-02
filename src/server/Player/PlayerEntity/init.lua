@@ -18,6 +18,7 @@ function PlayerEntity.new(player)
 	setmetatable(p, PlayerEntity)
 	p.coinStore = datastore("coins", player)
 	p.poleStore = datastore("poles", player)
+	p.fishBagStore = datastore("fishbag", player)
 	p.backpack = playerBackpack.new(player)
 	p.animationController = PlayerAnimationController.new(player)
 	p.fishingController = PlayerFishingController.new(player, p)
@@ -30,6 +31,14 @@ end
 
 function PlayerEntity:GetTotalCoins()
 	return self.coinStore:Get(0)
+end
+
+function PlayerEntity:GetFishBagContents()
+	local contents = self.fishBagStore:Get({})
+
+	assert(type(contents) == "table", "The datastore returned a non table for the fish bag contents.  This needs to be fixed")
+
+	return contents
 end
 
 function PlayerEntity:GetCurrentPole()
