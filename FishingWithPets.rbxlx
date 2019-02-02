@@ -36,6 +36,80 @@
 			<bool name="TemporaryLegacyPhysicsSolverOverrideStreaming">false</bool>
 			<bool name="TerrainWeldsFixed">true</bool>
 		</Properties>
+		<Item class="Part" referent="RBXB67E3921142749D2B11B3E0FF679901D">
+			<Properties>
+				<bool name="Anchored">true</bool>
+				<float name="BackParamA">-0.5</float>
+				<float name="BackParamB">0.5</float>
+				<token name="BackSurface">0</token>
+				<token name="BackSurfaceInput">0</token>
+				<float name="BottomParamA">-0.5</float>
+				<float name="BottomParamB">0.5</float>
+				<token name="BottomSurface">0</token>
+				<token name="BottomSurfaceInput">0</token>
+				<CoordinateFrame name="CFrame">
+					<X>-52.9646873</X>
+					<Y>5</Y>
+					<Z>11.8259974</Z>
+					<R00>-0.573599219</R00>
+					<R01>0</R01>
+					<R02>0.81913656</R02>
+					<R10>0</R10>
+					<R11>1</R11>
+					<R12>0</R12>
+					<R20>-0.81913656</R20>
+					<R21>0</R21>
+					<R22>-0.573599219</R22>
+				</CoordinateFrame>
+				<bool name="CanCollide">true</bool>
+				<int name="CollisionGroupId">0</int>
+				<Color3uint8 name="Color3uint8">4289352960</Color3uint8>
+				<PhysicalProperties name="CustomPhysicalProperties">
+					<CustomPhysics>false</CustomPhysics>
+				</PhysicalProperties>
+				<float name="FrontParamA">-0.5</float>
+				<float name="FrontParamB">0.5</float>
+				<token name="FrontSurface">0</token>
+				<token name="FrontSurfaceInput">0</token>
+				<float name="LeftParamA">-0.5</float>
+				<float name="LeftParamB">0.5</float>
+				<token name="LeftSurface">0</token>
+				<token name="LeftSurfaceInput">0</token>
+				<bool name="Locked">false</bool>
+				<bool name="Massless">false</bool>
+				<token name="Material">1280</token>
+				<string name="Name">DirtWall</string>
+				<float name="Reflectance">0</float>
+				<float name="RightParamA">-0.5</float>
+				<float name="RightParamB">0.5</float>
+				<token name="RightSurface">0</token>
+				<token name="RightSurfaceInput">0</token>
+				<int name="RootPriority">0</int>
+				<Vector3 name="RotVelocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<BinaryString name="Tags"></BinaryString>
+				<float name="TopParamA">-0.5</float>
+				<float name="TopParamB">0.5</float>
+				<token name="TopSurface">0</token>
+				<token name="TopSurfaceInput">0</token>
+				<float name="Transparency">0</float>
+				<Vector3 name="Velocity">
+					<X>0</X>
+					<Y>0</Y>
+					<Z>0</Z>
+				</Vector3>
+				<token name="formFactorRaw">1</token>
+				<token name="shape">1</token>
+				<Vector3 name="size">
+					<X>1</X>
+					<Y>10</Y>
+					<Z>8</Z>
+				</Vector3>
+			</Properties>
+		</Item>
 		<Item class="Part" referent="RBX8495F45140BC4F678FBEA31BB9D3B40E">
 			<Properties>
 				<bool name="Anchored">true</bool>
@@ -21928,80 +22002,6 @@ gP+A/4D/gP+A/4D/gP+A/4D/gP+A/4D/gP+A/4D/gP+Aag==]]></BinaryString>
 				</Vector3>
 			</Properties>
 		</Item>
-		<Item class="Part" referent="RBXB67E3921142749D2B11B3E0FF679901D">
-			<Properties>
-				<bool name="Anchored">true</bool>
-				<float name="BackParamA">-0.5</float>
-				<float name="BackParamB">0.5</float>
-				<token name="BackSurface">0</token>
-				<token name="BackSurfaceInput">0</token>
-				<float name="BottomParamA">-0.5</float>
-				<float name="BottomParamB">0.5</float>
-				<token name="BottomSurface">0</token>
-				<token name="BottomSurfaceInput">0</token>
-				<CoordinateFrame name="CFrame">
-					<X>-52.9646873</X>
-					<Y>5</Y>
-					<Z>11.8259974</Z>
-					<R00>-0.573599219</R00>
-					<R01>0</R01>
-					<R02>0.81913656</R02>
-					<R10>0</R10>
-					<R11>1</R11>
-					<R12>0</R12>
-					<R20>-0.81913656</R20>
-					<R21>0</R21>
-					<R22>-0.573599219</R22>
-				</CoordinateFrame>
-				<bool name="CanCollide">true</bool>
-				<int name="CollisionGroupId">0</int>
-				<Color3uint8 name="Color3uint8">4289352960</Color3uint8>
-				<PhysicalProperties name="CustomPhysicalProperties">
-					<CustomPhysics>false</CustomPhysics>
-				</PhysicalProperties>
-				<float name="FrontParamA">-0.5</float>
-				<float name="FrontParamB">0.5</float>
-				<token name="FrontSurface">0</token>
-				<token name="FrontSurfaceInput">0</token>
-				<float name="LeftParamA">-0.5</float>
-				<float name="LeftParamB">0.5</float>
-				<token name="LeftSurface">0</token>
-				<token name="LeftSurfaceInput">0</token>
-				<bool name="Locked">false</bool>
-				<bool name="Massless">false</bool>
-				<token name="Material">1280</token>
-				<string name="Name">DirtWall</string>
-				<float name="Reflectance">0</float>
-				<float name="RightParamA">-0.5</float>
-				<float name="RightParamB">0.5</float>
-				<token name="RightSurface">0</token>
-				<token name="RightSurfaceInput">0</token>
-				<int name="RootPriority">0</int>
-				<Vector3 name="RotVelocity">
-					<X>0</X>
-					<Y>0</Y>
-					<Z>0</Z>
-				</Vector3>
-				<BinaryString name="Tags"></BinaryString>
-				<float name="TopParamA">-0.5</float>
-				<float name="TopParamB">0.5</float>
-				<token name="TopSurface">0</token>
-				<token name="TopSurfaceInput">0</token>
-				<float name="Transparency">0</float>
-				<Vector3 name="Velocity">
-					<X>0</X>
-					<Y>0</Y>
-					<Z>0</Z>
-				</Vector3>
-				<token name="formFactorRaw">1</token>
-				<token name="shape">1</token>
-				<Vector3 name="size">
-					<X>1</X>
-					<Y>10</Y>
-					<Z>8</Z>
-				</Vector3>
-			</Properties>
-		</Item>
 	</Item>
 	<Item class="SoundService" referent="RBXDFF335AD90F9437BA62480376AF8187B">
 		<Properties>
@@ -27153,8 +27153,7 @@ function PlayerRepositoryDependencies.Get()
         GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
-        WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE,
-        CaughtFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.CaughtFishRE
+        WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE
     }
 end
 
@@ -27654,6 +27653,12 @@ return FishingPoleRepositoryDependencies]]></ProtectedString>
 						</Properties>
 					</Item>
 				</Item>
+			</Item>
+			<Item class="Folder" referent="RBXC0DD5959D16D40A49C601B0170EB074F">
+				<Properties>
+					<string name="Name">Utilities</string>
+					<BinaryString name="Tags"></BinaryString>
+				</Properties>
 			</Item>
 		</Item>
 	</Item>
