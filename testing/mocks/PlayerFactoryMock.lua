@@ -6,13 +6,15 @@ function PlayerFactoryMock.new(pf)
     local factory = { 
         Name = pf.Name, 
         UserId = pf.UserId,
-        TotalCoins = pf.TotalCoins 
+        TotalCoins = pf.TotalCoins,
+        FishBagContents = pf.FishBagContents
     }
     factory.AnimationsPlayed = {}
     factory.AnimationsStopped = {}
     factory.UndeployedBobber = nil
     factory.DeployedBobber = nil
     setmetatable(factory, PlayerFactoryMock)
+
     return factory
 end
 
@@ -24,6 +26,10 @@ end
 
 function PlayerFactoryMock:GetTotalCoins()
     return self.TotalCoins
+end
+
+function PlayerFactoryMock:GetFishBagContents()
+    return self.FishBagContents
 end
 
 function PlayerFactoryMock:GetCurrentPole()

@@ -5,6 +5,7 @@ return function()
     local PlayerFactoryMock = require(game.Mocks.PlayerFactoryMock)
     local PlayerInstantiatedEvent = require(game.Mocks.RemoteEventMock).new()
     local GetTotalFishCaughtRF = require(game.Mocks.RemoteFunctionMock).new()
+    local GetFishBagContentsRF = require(game.Mocks.RemoteFunctionMock).new()
     local GetTotalCoinsRF = require(game.Mocks.RemoteFunctionMock).new()
     local StartFishingRE = require(game.Mocks.RemoteEventMock).new()
     local StopFishingRE = require(game.Mocks.RemoteEventMock).new()
@@ -17,7 +18,8 @@ return function()
         GetTotalCoinsRF = GetTotalCoinsRF,
         StartFishingRE = StartFishingRE,
         StopFishingRE = StopFishingRE,
-        GetTotalFishCaughtRF = GetTotalFishCaughtRF
+        GetTotalFishCaughtRF = GetTotalFishCaughtRF,
+        GetFishBagContentsRF = GetFishBagContentsRF
     })
 
     local uut = require(script.Parent)
@@ -75,4 +77,27 @@ return function()
             expect(GetTotalCoinsRF:InvokeServer(player)).to.equal(743)
         end)
     end)
+
+    describe("GetFishBagContents Remote Function", function()
+        local player
+
+        local function setup()
+            player = {
+                UserId = 123,
+                FishBagContents = {
+                    SunFish = 11,
+                    StarFish = 3
+                }
+            }
+            PlayerServiceMock.PlayerAdded:Fire(player)
+        end
+
+        it("Should return the contents of the fish bag for the corresponding player when invoked", function()
+            setup()
+
+            expect(GetFishBagContentsRF:InvokeServer(player).SunFish).to.equal(11)
+            expect(GetFishBagContentsRF:InvokeServer(player).StarFish).to.equal(3)
+        end)
+    end)
+
 end
