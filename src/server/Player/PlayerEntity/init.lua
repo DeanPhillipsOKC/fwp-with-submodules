@@ -79,11 +79,6 @@ function PlayerEntity:SetTotalCoins(amount)
 	self.coinStore:Set(amount)
 end
 
-function PlayerEntity:IncrementTotalFishCaught()
-	local newTotal = self:GetTotalFishCaught() + 1
-	--TotalFishCaughtChangedRE:FireClient(self.Player, newTotal)
-end
-
 function PlayerEntity:AddPoleToPack(poleName)
 	self.backpack:Add(poleName)
 end
