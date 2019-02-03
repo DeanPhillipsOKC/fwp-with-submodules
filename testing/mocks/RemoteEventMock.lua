@@ -12,6 +12,12 @@ function RemoteEventMock.new(e)
         end
     }
 
+    e.OnClientEvent = {
+        Connect = function (instance, cb)
+            e.handleClientCallback = cb
+        end
+    }
+
     setmetatable(e, RemoteEventMock)
     return e
 end
