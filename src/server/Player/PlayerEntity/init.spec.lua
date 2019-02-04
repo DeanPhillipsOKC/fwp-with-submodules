@@ -15,7 +15,7 @@ return function()
         FishingController = require(game.Mocks.PlayerFishingControllerMock),
         FishingPoleRepository = FishingPoleRepositoryMock,
         EquippedToolLocation = EquippedToolLocationMock,
-        FishBagContentsChanged = require(game.Mocks.RemoteEventMock).new()
+        FishBagContentsChangedRE = require(game.Mocks.RemoteEventMock).new()
     })
 
     local uut = require(script.Parent)
@@ -184,7 +184,7 @@ return function()
             player = uut.new( { UserId = 123, Name = "tester"} )
             fishBagContentsChangedFired = false
 
-            uutDependencies.Get().FishBagContentsChanged:HandleClient(function()
+            uutDependencies.Get().FishBagContentsChangedRE:HandleClient(function()
                 fishBagContentsChangedFired = true
             end)
         end

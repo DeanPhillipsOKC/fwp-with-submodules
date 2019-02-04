@@ -10,7 +10,7 @@ function TotalFishStatDependencies.Get()
     return injected or {
         Roact = require(game.ReplicatedStorage.lib.Roact),
         RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux),
-        BaseComponent = require(script.Parent.LeftHudStat)
+        BaseComponent = require(script.Parent.Parent.LeftHudStat)
     }
 end
 

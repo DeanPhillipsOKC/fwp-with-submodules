@@ -8,7 +8,7 @@ end
 
 function FishBagReducerDependencies.Get()
     return injected or {
-        FishImageService = require(game.Players[game.Players.LocalPlayer].src.Fish.FishImageService)
+        FishImageService = require(game.Players[game.Players.LocalPlayer.Name].PlayerScripts.src.Fish.FishImageService)
     }
 end
 
