@@ -24808,27 +24808,23 @@ end]]></ProtectedString>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">viewmodel</string>
 						<string name="ScriptGuid">{ACCC6CAD-E249-450C-A89E-22D0A5EA6691}</string>
-						<ProtectedString name="Source"><![CDATA[local Rodux = require(script.Dependencies).Get().Rodux
-
-local TotalCoinsReducer = require(script.TotalCoins.TotalCoinsReducer)
-local IsfishingReducer = require(script.IsFishingReducer)
-local WaitingForFishReducer = require(script.WaitingForFishReducer)
-
--- These are not used, but need to be loaded so that the dispatchers can respond to events
-local FishBagDispatcher = require(script.FishBagDispatcher)
+						<ProtectedString name="Source"><![CDATA[local dependencies = require(script.Dependencies).Get()
 
 local function reducer(state, action)
     state = state or {}
     local newState = {
-        TotalCoins = TotalCoinsReducer(state.TotalCoins, action),
-        PlayerIsFishing = IsfishingReducer(state, action),
-        WaitingForFish = WaitingForFishReducer(state, action) or {},
+        FishBag = dependencies.FishBagReducer(state, action),
+        TotalCoins = dependencies.TotalCoinsReducer(state.TotalCoins, action),
+        PlayerIsFishing = dependencies.IsfishingReducer(state, action),
+        WaitingForFish = dependencies.WaitingForFishReducer(state, action) or {}
     }
-
     return newState
 end
 
-local store = Rodux.Store.new(reducer)
+local store = dependencies.Rodux.Store.new(reducer)
+
+-- These are not used, but need to be loaded so that the dispatchers can respond to events
+local FishBagDispatcher = require(dependencies.FishBagDispatcherInstance)
 
 return store]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
@@ -24848,7 +24844,12 @@ end
 
 function vmDependencies.Get()
     return injected or {
-        Rodux = require(game.ReplicatedStorage.lib.Rodux)
+        Rodux = require(game.ReplicatedStorage.lib.Rodux),
+        TotalCoinsReducer = require(script.TotalCoins.TotalCoinsReducer),
+        IsfishingReducer = require(script.IsFishingReducer),
+        WaitingForFishReducer = require(script.WaitingForFishReducer),
+        FishBagReducer = require(script.FishBagReducer),
+        FishBagDispatcherInstance = script.FishBagDispatcher
     }
 end
 
@@ -25514,6 +25515,81 @@ end
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
+					</Item>
+					<Item class="ModuleScript" referent="RBX7614A454A2E84FDE978BD2258F8DB661">
+						<Properties>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">init.spec</string>
+							<string name="ScriptGuid"></string>
+							<ProtectedString name="Source"><![CDATA[return function()
+    local dependencies
+
+    function setup()
+        getmetatable(script.Parent).instance.moduleLoaded = false
+
+        dependencies = {}
+        dependencies.Rodux = require(game.Mocks.RoduxMock)
+        dependencies.TotalCoinsReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.IsfishingReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.WaitingForFishReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.FishBagReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.FishBagDispatcherInstance = game.Mocks.FishBagDispatcherMock
+
+        require(script.Parent.Dependencies).Inject(dependencies)
+
+        getmetatable(dependencies.FishBagDispatcherInstance).instance.moduleLoaded = false
+
+        dependencies.FishBagReducer.returnValue = nil
+        dependencies.TotalCoinsReducer.returnValue = nil
+        dependencies.IsfishingReducer.returnValue = nil
+        dependencies.WaitingForFishReducer.returnValue = nil
+    end
+
+    describe("Dispatcher Initialization", function()
+        it("Will initialize the fish bag contents changed dispatcher", function()
+            setup()
+            require(script.Parent)
+
+            expect(getmetatable(dependencies.FishBagDispatcherInstance).instance.moduleLoaded).to.equal(true)
+        end)
+    end)
+
+    describe("Store State", function()
+        it("Will have a property called FishBag that is set by the fish bag reducer.", function()
+            setup()
+            dependencies.FishBagReducer.returnValue = 123
+
+            local uut = require(script.Parent)
+            expect(uut().FishBag).to.equal(123)
+        end)
+
+        it("Will have a property called TotalCoins that is set by the total coins reducer", function()
+            setup()
+            dependencies.TotalCoinsReducer.returnValue = 321
+
+            local uut = require(script.Parent)
+            expect(uut().TotalCoins).to.equal(321)
+        end)
+
+        it("Will have a property called PlayerIsFishing that is set by the is fishing reducer", function()
+            setup()
+            dependencies.IsfishingReducer.returnValue = "abc"
+
+            local uut = require(script.Parent)
+            expect(uut().PlayerIsFishing).to.equal("abc")
+        end)
+
+        it("Will have a property called WaitingForFish that is set by the waiting for fish reducer", function()
+            setup()
+            dependencies.WaitingForFishReducer.returnValue = "xyz"
+
+            local uut = require(script.Parent)
+            expect(uut().WaitingForFish).to.equal("xyz")
+        end)
+    end)
+end]]></ProtectedString>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
 					</Item>
 				</Item>
 				<Item class="Folder" referent="RBX6D11FDA3AC9F4DF491C111889A06397D">
