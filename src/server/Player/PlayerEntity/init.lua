@@ -8,7 +8,7 @@ local PlayerFishingController = require(script.Dependencies).Get().FishingContro
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
 local PlayersService = require(script.Dependencies).Get().PlayersService
-local TotalFishCaughtChangedRE = require(script.Dependencies).Get().TotalFishCaughtChangedRE
+local FishBagContentsChangedRE = require(script.Dependencies).Get().FishBagContentsChangedRE
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -18,7 +18,7 @@ function PlayerEntity.new(player)
 	setmetatable(p, PlayerEntity)
 	p.coinStore = datastore("coins", player)
 	p.poleStore = datastore("poles", player)
-	p.fishAmountStore = datastore("fishamount", player)
+	p.fishBagStore = datastore("fishbag", player)
 	p.backpack = playerBackpack.new(player)
 	p.animationController = PlayerAnimationController.new(player)
 	p.fishingController = PlayerFishingController.new(player, p)
@@ -33,8 +33,39 @@ function PlayerEntity:GetTotalCoins()
 	return self.coinStore:Get(0)
 end
 
+function PlayerEntity:GetFishBagContents()
+	local contents = self.fishBagStore:Get({})
+
+	assert(type(contents) == "table", "The datastore returned a non table for the fish bag contents.  This needs to be fixed")
+
+	return contents
+end
+
 function PlayerEntity:GetTotalFishCaught()
-	return self.fishAmountStore:Get(0)
+	local bagContents = self:GetFishBagContents()
+
+	local total = 0
+
+	for k,v in pairs(bagContents) do
+		assert(type(v) == "number", "The count for " .. k .. " was not a number.")
+		assert(v >= 0, "The count for " .. k .. " was negative.")
+		total = total + v
+	end
+
+	return total
+end
+
+function PlayerEntity:AddFishToBag(name)
+	assert(name ~= nil, "Attempt to add a fish to the bag without providing a fish name.")
+	assert(type(name) == "string", "Attempt to add a fish to the bag with a non-string name.")
+
+	local contents = self:GetFishBagContents()
+
+	contents[name] = contents[name] ~= nil and (contents[name] + 1) or 1
+
+	self.fishBagStore:Set(contents)
+
+	FishBagContentsChangedRE:FireClient(self.Player, self:GetTotalFishCaught(), self:GetFishBagContents())
 end
 
 function PlayerEntity:GetCurrentPole()
@@ -60,12 +91,6 @@ function PlayerEntity:SetTotalCoins(amount)
 	end
 
 	self.coinStore:Set(amount)
-end
-
-function PlayerEntity:IncrementTotalFishCaught()
-	local newTotal = self:GetTotalFishCaught() + 1
-	self.fishAmountStore:Set(newTotal)
-	TotalFishCaughtChangedRE:FireClient(self.Player, newTotal)
 end
 
 function PlayerEntity:AddPoleToPack(poleName)

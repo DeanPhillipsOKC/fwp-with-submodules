@@ -38,10 +38,12 @@ end
 FishingProgressBar = RoactRodux.connect(
     function(state, props)        
         return {
+            -- Even though we aren't using the FishBag state property in this reducer, we still want
+            -- it here so that the render event is triggered when the bag contents change.
+            FishBag = state.FishBag,
             PlayerIsFishing = state.PlayerIsFishing,
             WaitingForFish = state.WaitingForFish.Waiting,
             TimeToWaitForFish = state.WaitingForFish.TimeToWait,
-            TimeLastFishWasCaught = state.CaughtFish.TimeLastFishWasCaught
         }
     end
 )(FishingProgressBar)

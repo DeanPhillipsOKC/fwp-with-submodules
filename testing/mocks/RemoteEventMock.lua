@@ -12,6 +12,12 @@ function RemoteEventMock.new(e)
         end
     }
 
+    e.OnClientEvent = {
+        Connect = function (instance, cb)
+            e.handleClientCallback = cb
+        end
+    }
+
     setmetatable(e, RemoteEventMock)
     return e
 end
@@ -20,7 +26,7 @@ function RemoteEventMock:HandleClient(cb)
     self.handleClientCallback = cb
 end
 
-function RemoteEventMock:FireClient(...)
+function RemoteEventMock:FireClient(player, ...)
     self.handleClientCallback(...)
 end
 

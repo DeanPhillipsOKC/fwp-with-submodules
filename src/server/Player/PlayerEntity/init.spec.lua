@@ -14,7 +14,8 @@ return function()
         PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock),
         FishingController = require(game.Mocks.PlayerFishingControllerMock),
         FishingPoleRepository = FishingPoleRepositoryMock,
-        EquippedToolLocation = EquippedToolLocationMock
+        EquippedToolLocation = EquippedToolLocationMock,
+        FishBagContentsChangedRE = require(game.Mocks.RemoteEventMock).new()
     })
 
     local uut = require(script.Parent)
@@ -77,6 +78,234 @@ return function()
             expect(function() 
                 player:SetTotalCoins(123.5) 
             end).to.throw()
+        end)
+    end)
+
+    describe("GetFishBagContents", function()
+        local player
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should return an empty table if database record is null.", function()
+            setup()
+            DataStoreMock.SetGet(nil)
+
+            expect(player:GetFishBagContents()).to.be.ok()
+        end)
+
+        it("Should return whatever table is in the database if record found.", function()
+            setup()
+            DataStoreMock.SetGet({Name = "someName"})
+
+            expect(player:GetFishBagContents().Name).to.equal("someName")
+        end)
+
+        it("Should throw an error if the record in the database is not a table.", function()
+            setup()
+            DataStoreMock.SetGet(321)
+
+            expect(function ()
+                player:GetFishBagContents()
+            end).to.throw()
+        end)
+    end)
+
+    describe("GetTotalFishCaught", function()
+        local player
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should return zero if the bag is empty", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            expect(player:GetTotalFishCaught()).to.equal(0)
+        end)
+
+        it("Should return the count stored in the database if a fish was caught.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 3
+            })
+
+            expect(player:GetTotalFishCaught()).to.equal(3)
+        end)
+
+        it("Should return the total counts stored in the database, if multiple fish were caught", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = 3,
+                StarFish = 2
+            })
+
+            expect(player:GetTotalFishCaught()).to.equal(16)
+        end)
+
+        it("Should throw an error if a non-numeric value is found in the bag", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = "abc"
+            })
+
+            expect(function()
+                player:GetTotalFishCaught()
+            end).to.throw()
+        end)
+
+        it("Should throw an error if a negative count is found in the bag", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = -1
+            })
+
+            expect(function()
+                player:GetTotalFishCaught()
+            end).to.throw()
+        end)
+    end)
+
+    describe("AddFishToBag", function()
+        local player
+        local fishBagContentsChangedFired
+        local fishBagContentsChangedTotalCapture
+        local fishBagContentsChangedContentsCapture
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+            fishBagContentsChangedFired = false
+            fishBagContentsChangedTotalCapture = nil
+            fishBagContentsChangedContentsCapture = nil
+
+            uutDependencies.Get().FishBagContentsChangedRE:HandleClient(function(total, contents)
+                fishBagContentsChangedFired = true
+                fishBagContentsChangedTotalCapture = total
+                fishBagContentsChangedContentsCapture = contents
+            end)
+        end
+
+        it("Should increment the count of the caught fish, if a record exists for it.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = 2,
+                StarFish = 8
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(3)
+        end)
+
+        it("Should set the count of a caught fish to 1, if a record does not already exist for it.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(1)
+        end)
+
+        it("Should throw an error, if the database returns a record that is not a table.", function()
+            setup()
+
+            DataStoreMock.SetGet(123)
+
+            expect(function()
+                player:AddFishToBag("SunFish")
+            end).to.throw()
+        end)
+
+        it("Should add the fish, and set the count to 1 even if the database does not have a record.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(1)
+        end)
+
+        it("Should throw an error, if the fish name is not a string.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 1
+            })
+
+            expect(function()
+                player:AddFishToBag(123)
+            end).to.throw()
+
+            expect(function()
+                player:AddFishToBag({})
+            end).to.throw()
+        end)
+
+        it("Should throw an error, if the fish name is not provided.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 1
+            })
+
+            expect(function()
+                player:AddFishToBag()
+            end).to.throw()
+
+            expect(function()
+                player:AddFishToBag(nil)
+            end).to.throw()
+        end)
+
+        it("Should fire the fish bag contents changed, if a fish is added to the bag.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            player:AddFishToBag("SunFish")
+
+            expect(fishBagContentsChangedFired).to.equal(true)
+        end)
+
+        it("Should pass the updated total fish caught to the client via the fish bag contents changed event.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StarFish = 7,
+                SillyFish = 3
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(fishBagContentsChangedTotalCapture).to.equal(11)
+        end)
+
+        it("Should not fire the fish bag contents changed, if there was an error.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            expect(function()
+                player:AddFishToBag(123) -- should throw exception
+            end).to.throw()
+            
+            expect(fishBagContentsChangedFired).to.equal(false)
         end)
     end)
 

@@ -23639,7 +23639,7 @@ FAAAABQAAAAaAAAAGwAAABQAAAAbAAAAFwAAAA==]]></BinaryString>
 local Roact = require(game.ReplicatedStorage.lib.Roact)
 local RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux)
 local PlayersService = game:GetService("Players")
-local VM = require(Game:GetService("Players").LocalPlayer.PlayerScripts.src.viewmodel)
+local VM = require(game.Players[PlayersService.LocalPlayer.Name].PlayerScripts.src.viewmodel)
 
 local mainUI = Roact.createElement(RoactRodux.StoreProvider, {
     store = VM
@@ -23813,27 +23813,28 @@ return LeftHudStat]]></ProtectedString>
 											<Content name="LinkedSource"><null></null></Content>
 											<string name="Name">TotalFishStat</string>
 											<string name="ScriptGuid">{ACBB492F-D0D9-43A6-B356-C492F62F7DF6}</string>
-											<ProtectedString name="Source"><![CDATA[local Roact = require(game.ReplicatedStorage.lib.Roact)
-local RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux)
-
-local LeftHudStat = require(script.Parent.LeftHudStat)
+											<ProtectedString name="Source"><![CDATA[local dependencies = require(script.Dependencies).Get()
 
 function TotalFishStat(props)
     props = props or {}
 
-    return Roact.createElement(LeftHudStat, {
+    return dependencies.Roact.createElement(dependencies.BaseComponent, {
         FrameName = props.FrameName or "TotalFishStatComponent",
         IconText = props.IconText or "🐟",
         AmountText = props.AmountText or "Loading..."
     })
 end
 
-TotalFishStat = RoactRodux.connect(
+TotalFishStat = dependencies.RoactRodux.connect(
     function(state, props)
+        assert(state ~= nil, "state should not be nil.")
+        assert(state.FishBag ~= nil, "state should have a FishBag property")
+        assert(state.FishBag.Total ~= nil, "FishBag should have a Total property")
+
         -- mapStateToProps is run every time the store's state updates.
         -- It's also run whenever the component receives new props.
         return {
-            AmountText = state.TotalFishCaught,
+            AmountText = state.FishBag.Total
         }
     end
 )(TotalFishStat)
@@ -23841,6 +23842,179 @@ TotalFishStat = RoactRodux.connect(
 return TotalFishStat]]></ProtectedString>
 											<BinaryString name="Tags"></BinaryString>
 										</Properties>
+										<Item class="ModuleScript" referent="RBX1AF978AE35C543CC8CAC481ABD45EAF4">
+											<Properties>
+												<Content name="LinkedSource"><null></null></Content>
+												<string name="Name">Dependencies</string>
+												<string name="ScriptGuid">{32172C9D-1ADB-45EE-9790-E1A5793AFE54}</string>
+												<ProtectedString name="Source"><![CDATA[local TotalFishStatDependencies = {}
+
+local injected = nil
+
+function TotalFishStatDependencies.Inject(newDependencies)
+    injected = newDependencies
+end
+
+function TotalFishStatDependencies.Get()
+    return injected or {
+        Roact = require(game.ReplicatedStorage.lib.Roact),
+        RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux),
+        BaseComponent = require(script.Parent.Parent.LeftHudStat)
+    }
+end
+
+return TotalFishStatDependencies]]></ProtectedString>
+												<BinaryString name="Tags"></BinaryString>
+											</Properties>
+										</Item>
+										<Item class="ModuleScript" referent="RBX41E244245BA74C51B005ECAD95E94F0C">
+											<Properties>
+												<Content name="LinkedSource"><null></null></Content>
+												<string name="Name">init.spec</string>
+												<string name="ScriptGuid">{9A76E393-1A66-409A-AA8D-DD1A225475F1}</string>
+												<ProtectedString name="Source"><![CDATA[return function()
+    local dependencies
+
+    function setup()
+        dependencies = {}
+        dependencies.Roact = require(game.Mocks.RoactMock)
+        dependencies.RoactRodux = require(game.Mocks.RoactRoduxMock)
+        dependencies.BaseComponent = "Some Base Component"
+
+        require(script.Parent.Dependencies).Inject(dependencies)
+    end
+
+    describe("Property Mapper", function()
+        it("Should set the AmountText property to the total in the FishBag state property", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(roactRoduxComponent.Mapper({
+                FishBag = {
+                    Total = 123
+                }
+            }, nil).AmountText).to.equal(123)
+        end)
+
+        it("Should throw an error if the state is nil", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(function()
+                roactRoduxComponent.Mapper(nil, {})
+            end).to.throw()
+        end)
+
+        it("Should throw an error if the state does not have a FishBag property", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(function()
+                roactRoduxComponent.Mapper({}, {})
+            end).to.throw()
+        end)
+
+        it("Should throw an error if the state FishBag property does not have a Total property", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(function()
+                roactRoduxComponent.Mapper({
+                    FishBag = { }
+                }, {})
+            end).to.throw()
+        end)
+    end)
+
+    describe("Property Builder", function()
+        it("Should inherit the BaseComponent", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+            
+            local component, props = roactRoduxComponent.PropertyBuilder()
+
+            expect(component).to.equal(dependencies.BaseComponent)
+        end)
+
+        it("should set the FrameName property to TotalFishStatComponent, if not already set by mapper", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            local component, props = roactRoduxComponent.PropertyBuilder()
+
+            expect(props.FrameName).to.equal("TotalFishStatComponent")
+        end)
+
+        it("Should set the FrameName property to the mapper output, if it was given a value.", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            local component, props = roactRoduxComponent.PropertyBuilder({
+                FrameName = "Foo"
+            })
+
+            expect(props.FrameName).to.equal("Foo")
+        end)
+
+        it("Should set the IconText to a fish emoji, if it was not given a value by the mapper.", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            local component, props = roactRoduxComponent.PropertyBuilder()
+
+            expect(props.IconText).to.equal("🐟")
+        end)
+
+        it("Should set the IconText property to the mapper output, if it was given a value.", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            local component, props = roactRoduxComponent.PropertyBuilder({
+                IconText = "SomeText"
+            })
+
+            expect(props.IconText).to.equal("SomeText")
+        end)
+
+        it("Should set the AmountText to Loading, if it was not given a value by the mapper.", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            local component, props = roactRoduxComponent.PropertyBuilder()
+
+            expect(props.AmountText).to.equal("Loading...")
+        end)
+
+        it("Should set the AmountText property to the mapper output, if it was given a value.", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            local component, props = roactRoduxComponent.PropertyBuilder({
+                AmountText = "An Amount"
+            })
+
+            expect(props.AmountText).to.equal("An Amount")
+        end)
+    end)
+
+    --return dependencies.Roact.createElement(dependencies.BaseComponent, {
+    --    AmountText = props.AmountText or "Loading..."
+    --})
+end]]></ProtectedString>
+												<BinaryString name="Tags"></BinaryString>
+											</Properties>
+										</Item>
 									</Item>
 								</Item>
 							</Item>
@@ -23959,6 +24133,7 @@ local progressBarReference = nil
 local FishingProgressBar = Roact.Component:extend("FishingProgressBar")
 
 function FishingProgressBar:render()
+    print("rendering")
     local props = self.props or {
         PlayerIsFishing = false,
         WaitingForFish = false,
@@ -23991,10 +24166,12 @@ end
 FishingProgressBar = RoactRodux.connect(
     function(state, props)        
         return {
+            -- Even though we aren't using the FishBag state property in this reducer, we still want
+            -- it here so that the render event is triggered when the bag contents change.
+            FishBag = state.FishBag,
             PlayerIsFishing = state.PlayerIsFishing,
             WaitingForFish = state.WaitingForFish.Waiting,
             TimeToWaitForFish = state.WaitingForFish.TimeToWait,
-            TimeLastFishWasCaught = state.CaughtFish.TimeLastFishWasCaught
         }
     end
 )(FishingProgressBar)
@@ -24034,31 +24211,30 @@ return RightMiddleFrame]]></ProtectedString>
 										<Content name="LinkedSource"><null></null></Content>
 										<string name="Name">FishInBagList</string>
 										<string name="ScriptGuid">{0A6D10B7-BD09-47DE-9489-51B264300409}</string>
-										<ProtectedString name="Source"><![CDATA[local Roact = require(game.ReplicatedStorage.lib.Roact)
-local CaughtFishComponent = require(script.CaughtFish)
-local RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux)
+										<ProtectedString name="Source"><![CDATA[local dependencies = require(script.Dependencies).Get()
 
+function FishInBagComponent(props)
+    props = props or {}
+    props.FishBagContents = props.FishBagContents or {}
 
-local FishInBagList = Roact.Component:extend("FishInBagList")
-
-local FishInBag = {}
-
-function FishInBagList:render()
     local list = {
-        Layout = Roact.createElement("UIGridLayout", {
+        Layout = dependencies.Roact.createElement("UIGridLayout", {
             Name = "Layout",
             CellPadding = UDim2.new(0, 0, 0, 0)
         })
     }
 
-    for k,v in pairs(FishInBag) do
-        list[k] = Roact.createElement(CaughtFishComponent, {
-            ID = v.ImageId, 
-            Count = v.Count
+    for k,v in pairs(props.FishBagContents) do
+        print("v", v)
+        print("v.ImageAssetId", v.ImageAssetId)
+        print("v.Total", v.Total)
+        list[k] = dependencies.Roact.createElement(dependencies.CaughtFishComponent, {
+            ID = v.ImageAssetId, 
+            Count = v.Total
         })
     end
-    
-    return Roact.createElement("ScrollingFrame", {
+
+    return dependencies.Roact.createElement("ScrollingFrame", {
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
         BackgroundTransparency = 1,
@@ -24066,51 +24242,17 @@ function FishInBagList:render()
     }, list)
 end
 
--- Used to determine if we need ot update our FishInBag list with a new catch
-function caughtNewFish(state)
-    return state.CaughtFish.TimeLastFishWasCaught ~= nil and FishInBag[state.CaughtFish.TimeLastFishWasCaught] == nil
-end
-
-function addLatestCatchToBag(state)
-    -- Search the bag for the same kind of fish.  If found, remember the key so that we
-    -- can update the count, and delete it.
-    local fishFound = false
-    for k, v in pairs(FishInBag) do
-        if v.Name == state.CaughtFish.Name then
-            fishFound = true
-            keyToReplace = k
-            break
-        end
-    end
-
-    FishInBag[state.CaughtFish.TimeLastFishWasCaught] = {
-        Name = state.CaughtFish.Name,
-        Count = fishFound and (FishInBag[keyToReplace].Count + 1) or 1,
-        ImageId = state.CaughtFish.ImageId
-    }
-
-    -- If the fish was found in the old list, we need to get rid of the old key
-    -- because the time of the latest catch has changed.
-    if fishFound then
-        FishInBag[keyToReplace] = nil
-    end
-end
-
-FishInBagList = RoactRodux.connect(
+FishInBagList = dependencies.RoactRodux.connect(
     function(state, props)
-        local fishFound = false
-        local keyToReplace = nil
-        if caughtNewFish(state) then
-            addLatestCatchToBag(state)
-        end
+        assert(state ~= nil, "State should not be nil.")
+        assert(state.FishBag ~= nil, "State should have a FishBag property")
+        assert(state.FishBag.Contents ~= nil, "State FishBag property should have Contents")
 
         return {
-            TimeLastFishWasCaught = state.CaughtFish.TimeLastFishWasCaught,
-            NameOfLastFishCaught = state.CaughtFish.Name,
-            ImageIdOfLastFishCaught = state.CaughtFish.ImageId
+            FishBagContents = state.FishBag.Contents
         }
     end
-)(FishInBagList)
+)(FishInBagComponent)
 
 return FishInBagList]]></ProtectedString>
 										<BinaryString name="Tags"></BinaryString>
@@ -24123,6 +24265,11 @@ return FishInBagList]]></ProtectedString>
 											<ProtectedString name="Source"><![CDATA[local Roact = require(game.ReplicatedStorage.lib.Roact)
 
 function CaughtFish(props)
+    print("props", props)
+    for k,v in pairs(props) do
+        print("k ", k, " | v ", v)
+    end 
+
     return Roact.createElement("Frame", {
         BackgroundTransparency = 1
     }, {
@@ -24164,6 +24311,119 @@ function CaughtFish(props)
 end
 
 return CaughtFish]]></ProtectedString>
+											<BinaryString name="Tags"></BinaryString>
+										</Properties>
+									</Item>
+									<Item class="ModuleScript" referent="RBX5A6C2AAD4E23491196F3613E6C23E392">
+										<Properties>
+											<Content name="LinkedSource"><null></null></Content>
+											<string name="Name">Dependencies</string>
+											<string name="ScriptGuid">{65A19F46-448E-49A2-B65E-A88F201A77B5}</string>
+											<ProtectedString name="Source"><![CDATA[local FishInBagListComponentDependencies = {}
+
+local injected = nil
+
+function FishInBagListComponentDependencies.Inject(newDependencies)
+    injected = newDependencies
+end
+
+function FishInBagListComponentDependencies.Get()
+    return injected or {
+        Roact = require(game.ReplicatedStorage.lib.Roact),
+        RoactRodux = require(game.ReplicatedStorage.lib.RoactRodux),
+        CaughtFishComponent = require(script.Parent.CaughtFish)
+    }
+end
+
+return FishInBagListComponentDependencies]]></ProtectedString>
+											<BinaryString name="Tags"></BinaryString>
+										</Properties>
+									</Item>
+									<Item class="ModuleScript" referent="RBX4B27A6EB0790486A9F2D778F9040F9ED">
+										<Properties>
+											<Content name="LinkedSource"><null></null></Content>
+											<string name="Name">init.spec</string>
+											<string name="ScriptGuid">{D183BEF5-4C34-4D05-B8DC-020CCF28C0AA}</string>
+											<ProtectedString name="Source"><![CDATA[return function()
+    local dependencies
+
+    function setup()
+        dependencies = {}
+        dependencies.Roact = require(game.Mocks.RoactMock)
+        dependencies.RoactRodux = require(game.Mocks.RoactRoduxMock)
+        dependencies.CaughtFishComponent = "Caught Fish Component"
+
+        require(script.Parent.Dependencies).Inject(dependencies)
+    end
+
+    describe("Property Mapper", function()
+        it("Should set the FishBagContents property to the total in the FishBag Contents state property", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(roactRoduxComponent.Mapper({
+                FishBag = {
+                    Contents = 123
+                }
+            }, nil).FishBagContents).to.equal(123)
+        end)
+
+        it("Should throw an exception if the state is nil.", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(function()
+                roactRoduxComponent.Mapper(nil, {})
+            end).to.throw()
+        end)
+
+        it("Should throw an error if the state is missing a FishBag property", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(function()
+                roactRoduxComponent.Mapper({}, {})
+            end)
+        end)
+
+        it("Should throw an error if the state is missing a FishBag.Contents property", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+
+            expect(function()
+                roactRoduxComponent.Mapper({ 
+                    FishBag = {}
+                }, {})
+            end).to.throw()
+        end)
+    end)
+
+    describe("Component Builder", function()
+        it("Should return a top-level component of type ScrollingFrame", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+            
+            local component, props, childComponent = roactRoduxComponent.PropertyBuilder()
+
+            expect(component).to.equal("ScrollingFrame")
+        end)
+
+        it("Should return a child component with a Layout component of type UIGridLayout", function()
+            setup()
+
+            local roactRoduxComponent = require(script.Parent)
+            
+            local component, props, childComponent = roactRoduxComponent.PropertyBuilder()
+
+            expect(childComponent.Layout).to.equal("UIGridLayout")
+        end)
+    end)
+end]]></ProtectedString>
 											<BinaryString name="Tags"></BinaryString>
 										</Properties>
 									</Item>
@@ -24808,29 +25068,20 @@ end]]></ProtectedString>
 						<Content name="LinkedSource"><null></null></Content>
 						<string name="Name">viewmodel</string>
 						<string name="ScriptGuid">{ACCC6CAD-E249-450C-A89E-22D0A5EA6691}</string>
-						<ProtectedString name="Source"><![CDATA[local Rodux = require(script.Dependencies).Get().Rodux
+						<ProtectedString name="Source"><![CDATA[local dependencies = require(script.Dependencies).Get()
 
-local TotalCoinsReducer = require(script.TotalCoins.TotalCoinsReducer)
-local IsfishingReducer = require(script.IsFishingReducer)
-local WaitingForFishReducer = require(script.WaitingForFishReducer)
-local CaughtFishReducer = require(script.CaughtFishReducer)
-local TotalFishCaughtReducer = require(script.TotalFishCaught.TotalFishCaughtReducer)
-
-function reducer(state, action)
+local function reducer(state, action)
     state = state or {}
     local newState = {
-        TotalCoins = TotalCoinsReducer(state.TotalCoins, action),
-        TotalFishCaught = TotalFishCaughtReducer(state.TotalFishCaught, action),
-        PlayerIsFishing = IsfishingReducer(state, action),
-        WaitingForFish = WaitingForFishReducer(state, action) or {},
-        CaughtFish = CaughtFishReducer(state, action)
+        FishBag = dependencies.FishBagReducer(state, action),
+        TotalCoins = dependencies.TotalCoinsReducer(state.TotalCoins, action),
+        PlayerIsFishing = dependencies.IsfishingReducer(state, action),
+        WaitingForFish = dependencies.WaitingForFishReducer(state, action) or {}
     }
-
     return newState
 end
 
-
-local store = Rodux.Store.new(reducer)
+local store = dependencies.Rodux.Store.new(reducer)
 
 return store]]></ProtectedString>
 						<BinaryString name="Tags"></BinaryString>
@@ -24850,7 +25101,11 @@ end
 
 function vmDependencies.Get()
     return injected or {
-        Rodux = require(game.ReplicatedStorage.lib.Rodux)
+        Rodux = require(game.ReplicatedStorage.lib.Rodux),
+        TotalCoinsReducer = require(script.Parent.TotalCoins.TotalCoinsReducer),
+        IsfishingReducer = require(script.Parent.IsFishingReducer),
+        WaitingForFishReducer = require(script.Parent.WaitingForFishReducer),
+        FishBagReducer = require(script.Parent.FishBagReducer),
     }
 end
 
@@ -25025,105 +25280,574 @@ end)]]></ProtectedString>
 							</Properties>
 						</Item>
 					</Item>
-					<Item class="ModuleScript" referent="RBX0744EBA219254BBC8CF1B7F3DC938C63">
+					<Item class="ModuleScript" referent="RBX8C25A590340041098A2007A5D8444979">
 						<Properties>
 							<Content name="LinkedSource"><null></null></Content>
-							<string name="Name">CaughtFishReducer</string>
-							<string name="ScriptGuid">{6AFF7664-9BCF-41C2-B0DF-570D22A2EDD7}</string>
+							<string name="Name">FishBagReducer</string>
+							<string name="ScriptGuid">{2F50F121-B370-4FE5-93BE-CFBD63C6D1DA}</string>
 							<ProtectedString name="Source"><![CDATA[local function reducer(state, action)
     
-    if action.type == "caughtfish" then
-        return {
-            Name = action.fishName,
-            ImageId = action.fishImageId,
-            TimeLastFishWasCaught = action.timeLastFishWasCaught
-        }
+    local dependencies = require(script.Dependencies).Get()
+    
+    if action.type == "fishBagContentsChanged" then
+        assert(action.FishBag ~= nil, "Fish bag contents changed, but were not sent with the event dispatcher.")
+        assert(action.FishBag.Total ~= nil, "Fish bag contents changed, but the event dispatcher did not send a new total.")
+        assert(action.FishBag.Contents ~= nil, "Fish bag contents changed, but the event dispatcher did not send new contents.")
+
+        local totalFishInBag = action.FishBag.Total
+        local bagContents = action.FishBag.Contents
+
+        local newState = {}
+        newState.Total = totalFishInBag
+        newState.Contents = {}
+
+        for k,v in pairs(bagContents) do
+            newState.Contents[k] = {}
+            newState.Contents[k].ImageAssetId = dependencies.FishImageService.GetAssetIdFromName(k)
+            newState.Contents[k].Total = v
+        end
+
+        return newState
     end
 
-    return state.CaughtFish or {}
+    return state.FishBag or {
+        Total = 0,
+        Contents = {}
+    }
 end
 
 return reducer]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
-						<Item class="LocalScript" referent="RBX96F702F41ADB4C0DAF1261C6877F4E01">
+						<Item class="ModuleScript" referent="RBX8E4D2AF2392243D4B0501CF3AFFF1944">
 							<Properties>
-								<bool name="Disabled">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
-								<string name="Name">CaughtFishEventHandlers</string>
-								<string name="ScriptGuid">{C481DDF1-95D4-42CB-9533-8FC965127E31}</string>
-								<ProtectedString name="Source"><![CDATA[local caughtFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.CaughtFishRE
+								<string name="Name">Dependencies</string>
+								<string name="ScriptGuid">{59618FAA-EC7B-46C4-B55A-1BBC0825B20C}</string>
+								<ProtectedString name="Source"><![CDATA[local FishBagReducerDependencies = {}
 
-local VM = require(Game:GetService("Players").LocalPlayer.PlayerScripts.src.viewmodel)
+local injected = nil
 
-caughtFishRE.OnClientEvent:Connect(function(fishInfo)
-    VM:dispatch({
-        type = "caughtfish",
-        fishName = fishInfo.Name,
-        fishImageId = fishInfo.ImageAssetId,
-        timeLastFishWasCaught = tick()
-    })
-end)]]></ProtectedString>
+function FishBagReducerDependencies.Inject(newDependencies)
+    injected = newDependencies
+end
+
+function FishBagReducerDependencies.Get()
+    return injected or {
+        FishImageService = require(game.Players[game.Players.LocalPlayer.Name].PlayerScripts.src.Fish.FishImageService)
+    }
+end
+
+return FishBagReducerDependencies]]></ProtectedString>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="ModuleScript" referent="RBXE90E168724DF4DB89EEEC645DF36FE36">
+							<Properties>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">init.spec</string>
+								<string name="ScriptGuid">{79C0EF3C-BBAD-484E-A5A4-1072E315E2D3}</string>
+								<ProtectedString name="Source"><![CDATA[return function()
+    describe("Reducer", function()
+        local uut
+        local dpendencies
+        local oldState
+        local changedBagContents
+
+        local function setup()
+            uut = require(script.Parent)
+
+            dependencies = {
+                FishImageService = require(game.Mocks.FishImageServiceMock)
+            }
+
+            require(script.Parent.Dependencies).Inject(dependencies)
+
+            oldState = {
+                FishBag = {
+                    Total = 7,
+                    Contents = {
+                        SunFish = {
+                            ImageAssetId = "1234",
+                            Total = 4
+                        },
+                        StarFish = {
+                            ImageAssetId = "4321",
+                            Total = 3
+                        }
+                    }
+                }
+            }
+
+            changedBagContents = {
+                Total = 12,
+                Contents = {
+                    SunFish = 5,
+                    StarFish = 6,
+                    SillyFish = 1
+                }
+            }
+        end
+        
+        it("Should return a new state with a zero total fish, if the fish bag contents did not change and the fish bag state is nil", function()
+            setup()
+            expect(uut({}, {}).Total).to.equal(0)
+        end)
+
+        it("Should return a new state with an empty bag, if the fish bag contents did not change and the fish bag state is nil", function()
+            setup()
+            local state = uut({}, {})
+
+            expect(state.Contents).to.be.ok()
+            expect(type(state.Contents)).to.equal("table")
+        end)
+
+        it("Should return the original fish bag state, if the fish bag contents did not change, and an old state is available.", function()
+            setup()
+            
+            local state = uut(oldState, {})
+
+            expect(state).to.equal(oldState.FishBag)
+        end)
+
+        it("Should return a new fish bag state with an updated total fish count, if the fish bag contents changed", function()
+            setup()
+
+            local state = uut(oldState, {
+                type = "fishBagContentsChanged",
+                FishBag = changedBagContents
+            })
+
+            expect(state.Total).to.equal(changedBagContents.Total)
+        end)
+
+        it("Should return a new fish bag with updated contents, if the fish bag contents changed", function()
+            local state = uut(oldState, {
+                type = "fishBagContentsChanged",
+                FishBag = changedBagContents
+            })
+
+            expect(state.Contents).to.be.ok()
+            
+            expect(state.Contents.SunFish).to.be.ok()
+            expect(state.Contents.StarFish).to.be.ok()
+            expect(state.Contents.SillyFish).to.be.ok()
+            
+            expect(state.Contents.SunFish.Total).to.equal(changedBagContents.Contents.SunFish)
+            expect(state.Contents.StarFish.Total).to.equal(changedBagContents.Contents.StarFish)
+            expect(state.Contents.SillyFish.Total).to.equal(changedBagContents.Contents.SillyFish)
+        end)
+
+        it("Should return Image asset IDs for each fish in the bag, if the fish bag contents changed", function()
+            local state = uut(oldState, {
+                type = "fishBagContentsChanged",
+                FishBag = changedBagContents
+            })
+
+            expect(state.Contents).to.be.ok()
+            
+            expect(state.Contents.SunFish.ImageAssetId).to.be.ok()
+            expect(state.Contents.StarFish.ImageAssetId).to.be.ok()
+            expect(state.Contents.SillyFish.ImageAssetId).to.be.ok()
+        end)
+
+        it("Should throw an exception, if not fish bag is found, when the bag contents change", function()    
+            expect(function()
+                uut(oldState, {
+                    type = "fishBagContentsChanged",
+                    FishBag = nil
+                })
+            end).to.throw()
+        end)
+
+        it("Should throw an exception, if a new fish bag total is not found, when the bag contents change.", function()
+            expect(function()
+                uut(oldState, {
+                    type = "fishBagContentsChanged",
+                    FishBag = {
+                        Total = nil,
+                        Contents = {}
+                    }
+                })
+            end).to.throw()
+        end)
+
+        it("Should throw an exception, if a new fish bag contents are not found, when the bag contents change.", function()
+            expect(function()
+                uut(oldState, {
+                    type = "fishBagContentsChanged",
+                    FishBag = {
+                        Total = 7,
+                        Contents = nil
+                    }
+                })
+            end).to.throw()
+        end)
+
+        it("Should throw an exception if no dependencies are found.", function()
+            setup()
+            require(script.Parent.Dependencies).Inject(nil)
+            expect(function()
+                uut({}, {})    
+            end).to.throw()
+        end)
+    end)
+end]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
 					</Item>
-					<Item class="Folder" referent="RBX8596BAEF10C84CB881F616D436483B0E">
+					<Item class="ModuleScript" referent="RBXC5813BF9E0A24A8091F03A65808C8A4A">
 						<Properties>
-							<string name="Name">TotalFishCaught</string>
-							<BinaryString name="Tags"></BinaryString>
-						</Properties>
-						<Item class="ModuleScript" referent="RBXE88CEF4A8A9148F4A6321FF5CFD8AB85">
-							<Properties>
-								<Content name="LinkedSource"><null></null></Content>
-								<string name="Name">TotalFishCaughtReducer</string>
-								<string name="ScriptGuid">{46921D90-0272-4D36-A4F4-8691CBFFA7B3}</string>
-								<ProtectedString name="Source"><![CDATA[local function reducer(state, action)
-    if action.type == "totalfishcaughtchanged" then
-        return action.newTotalFishCaught
-    end
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">FishBagDispatcher</string>
+							<string name="ScriptGuid">{9DD2787A-CD99-499F-A3D9-AF8ABB0E6558}</string>
+							<ProtectedString name="Source"><![CDATA[local FishBagDispatcher = {}
+FishBagDispatcher.prototype = {}
 
-    return state
+local dependencies = require(script.Dependencies).Get()
+
+function FishBagDispatcher.Dispatch(totalFishCaught, bagContents)
+    assert(totalFishCaught ~= nil, "Attempted to dispatch a fish bag contents change without a total fish caught.")
+    assert(bagContents ~= nil, "Attempted to dispatch a fish bag contents change without bag contents. ")
+
+    dependencies.VM:dispatch({
+        type = "fishBagContentsChanged",
+        FishBag = {
+            Total = totalFishCaught,
+            Contents = bagContents
+        }
+    })
 end
 
-return reducer]]></ProtectedString>
+dependencies.FishBagContentsChangedRE.OnClientEvent:Connect(function(newTotalFishCaught, newFishBagContents)
+    print("newTotalFishCaught", newTotalFishCaught)
+    FishBagDispatcher.Dispatch(newTotalFishCaught, newFishBagContents)
+end)
+
+local totalFishCaught = dependencies.GetTotalFishCaughtRF:InvokeServer()
+local fishBagContents = dependencies.GetFishBagContentsRF:InvokeServer()
+
+FishBagDispatcher.Dispatch(totalFishCaught, fishBagContents)
+
+return FishBagDispatcher.prototype]]></ProtectedString>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+						<Item class="ModuleScript" referent="RBX328F6FB620784FF89196B414A9FA3F1B">
+							<Properties>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">Dependencies</string>
+								<string name="ScriptGuid">{1AC54AD6-1329-4C9F-8EEA-EECEE64EC104}</string>
+								<ProtectedString name="Source"><![CDATA[local FishBagDispatcherDependencies = {}
+
+local injected = nil
+
+function FishBagDispatcherDependencies.Inject(newDependencies)
+    injected = newDependencies
+end
+
+function FishBagDispatcherDependencies.Get()
+    return injected or {
+        VM = require(Game:GetService("Players").LocalPlayer.PlayerScripts.src.viewmodel),
+        FishBagContentsChangedRE = game.ReplicatedStorage.src.Player.Actions.Fishing.FishBagContentsChangedRE,
+        GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF,
+        GetFishBagContentsRF = game.ReplicatedStorage.src.Player.Actions.Fishing.GetFishBagContentsRF
+    }
+end
+
+return FishBagDispatcherDependencies]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="LocalScript" referent="RBXA6525C044E844C909AD20D3B233F7976">
+						<Item class="ModuleScript" referent="RBX37F14B54DE4D44CA9EE7514B46585AD2">
+							<Properties>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">init.spec</string>
+								<string name="ScriptGuid">{8310EFBB-97C8-4745-BA50-67D6AF5DE4E5}</string>
+								<ProtectedString name="Source"><![CDATA[local dependencies = {}
+
+dependencies.VM = require(game.Mocks.VmMock).new()
+dependencies.FishBagContentsChangedRE = require(game.Mocks.RemoteEventMock).new()
+dependencies.GetTotalFishCaughtRF = require(game.Mocks.RemoteFunctionMock).new()
+dependencies.GetFishBagContentsRF = require(game.Mocks.RemoteFunctionMock).new()
+
+local uut
+local totalFishOnServer
+local fishBagContentsOnServer
+local serverAskedForTotalFishCaught
+local serverAskedForFishBagContents
+
+local function setup()
+    serverAskedForTotalFishCaught = false
+    serverAskedForFishBagContents = false
+
+    getmetatable(script.Parent).instance.moduleLoaded = false
+    
+    require(script.Parent.Dependencies).Inject(dependencies)
+    
+    dependencies.GetTotalFishCaughtRF.OnServerInvoke = function()
+        serverAskedForTotalFishCaught = true
+        return totalFishOnServer
+    end
+
+    dependencies.GetFishBagContentsRF.OnServerInvoke = function()
+        serverAskedForFishBagContents = true
+        return fishBagContentsOnServer
+    end
+
+    dependencies.VM.dispatchedObjectCapture = nil
+end
+
+return function()
+    describe("Bootstrapper", function()        
+        it("Should retrieve the total fish caught from the server when loading.", function()
+            totalFishOnServer = 11
+            fishBagContentsOnServer = {}
+
+            setup()
+
+            require(script.Parent)
+
+            expect(serverAskedForTotalFishCaught).to.equal(true)
+        end)
+
+        it("Should retrieve the contents of the fish bag from the server when loading.", function()
+            totalFishOnServer = 22
+            fishBagContentsOnServer = {
+                StarFish = 2,
+                SunFish = 4
+            }
+
+            setup()
+
+            require(script.Parent)
+
+            local dispatchedObj = dependencies.VM.dispatchedObjectCapture.FishBag.Contents
+
+            expect(serverAskedForFishBagContents).to.equal(true)
+        end)
+
+        it("Should throw an error if the total fish caught is not available when loading.", function()
+            totalFishOnServer = nil
+            fishBagContentsOnServer = {
+                StarFish = 2,
+                SunFish = 2
+            }
+
+            setup()
+
+            expect(function()
+                require(script.Parent)
+            end).to.throw()
+        end)
+
+        it("Should throw an error if the contents of the fish bag is null when loading.", function()
+            totalFishOnServer = 22
+            fishBagContentsOnServer = nil
+            
+            setup()
+
+            expect(function()
+                require(script.Parent)
+            end).to.throw()
+        end)
+
+        it("Should dispatch an action of type fishBagContentsChanged, when loading", function()
+            totalFishOnServer = 22
+            fishBagContentsOnServer = {}
+
+            setup()
+
+            require(script.Parent)
+
+            expect(dependencies.VM.dispatchedObjectCapture.type).to.equal("fishBagContentsChanged")
+        end)
+
+        it("Should dispatch an action with a FishBag object, when loading", function()
+            totalFishOnServer = 22
+            fishBagContentsOnServer = {}
+
+            setup()
+
+            require(script.Parent)
+
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag).to.be.ok()
+        end)
+
+        it("Should dispatch an action with an updated total fish count, when loading", function()
+            totalFishOnServer = 22
+            fishBagContentsOnServer = {}
+
+            setup()
+
+            require(script.Parent)
+
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Total).to.equal(22)
+        end)
+
+        it("Should dispatch an action with the new fish bag contents, when loading", function()
+            totalFishOnServer = 22
+            fishBagContentsOnServer = {
+                SunFish = 2,
+                StarFish = 3
+            }
+
+            setup()
+
+            require(script.Parent)
+
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Contents).to.be.ok()
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Contents.SunFish).to.equal(2)
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Contents.StarFish).to.equal(3)
+        end)
+    end)
+
+    describe("Fish Bag Contents Changed Event Handler", function()
+        function initialize()
+            -- Set the values returned by the remote function calls during
+            -- bootstrapping to values that will not throw an exception.
+            totalFishOnServer = 11
+            fishBagContentsOnServer = {}
+
+            setup()            
+            require(script.Parent)
+            dependencies.VM.dispatchedObjectCapture = nil
+        end
+
+        it("Should throw an error if the total fish caught is not available when contents change.", function()
+            initialize()
+
+            expect(function()
+                dependencies.FishBagContentsChangedRE:FireClient(nil, {})
+            end).to.throw()
+        end)
+
+        it("Should throw an error if the contents of the fish bag is null when contents change.", function()
+            initialize()
+
+            expect(function()
+                dependencies.FishBagContentsChangedRE:FireClient(7, nil)
+            end).to.throw()
+        end)
+
+        it("Should dispatch an action of type fishBagContentsChanged, when contents change", function()
+            initialize()
+
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {})
+
+            expect(dependencies.VM.dispatchedObjectCapture.type).to.equal("fishBagContentsChanged")
+        end)
+
+        it("Should dispatch an action with a FishBag object, when contents change", function()
+            initialize()
+
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {})
+
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag).to.be.ok()
+        end)
+
+        it("Should dispatch an action with an updated total fish count, when contents change", function()
+            initialize()
+
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {})
+
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Total).to.equal(7)
+        end)
+
+        it("Should dispatch an action with the new fish bag contents, when contents change", function()
+            initialize()
+
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {
+                SunFish = 123,
+                StarFish = 321
+            })
+
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Contents).to.be.ok()
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Contents.SunFish).to.equal(123)
+            expect(dependencies.VM.dispatchedObjectCapture.FishBag.Contents.StarFish).to.equal(321)
+        end)
+    end)
+end
+]]></ProtectedString>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="LocalScript" referent="RBXA84CB2FAE7394CEEA43EF1AB09DE28A6">
 							<Properties>
 								<bool name="Disabled">false</bool>
 								<Content name="LinkedSource"><null></null></Content>
-								<string name="Name">TotalFishCaughtEventHandlers</string>
-								<string name="ScriptGuid">{F738C4E6-9B4C-4984-A9A7-8EF44BB60D36}</string>
-								<ProtectedString name="Source"><![CDATA[local GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF
-local PlayerInstantiatedRE = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE
-local TotalFishCaughtChanged = game.ReplicatedStorage.src.Player.Stats.TotalFishCaughtChangedRE
-local VM = require(Game:GetService("Players").LocalPlayer.PlayerScripts.src.viewmodel)
-
-PlayerInstantiatedRE.OnClientEvent:Connect(function()
-    local totalFishCaught = GetTotalFishCaughtRF:InvokeServer()
-    VM:dispatch({
-        type = "totalfishcaughtchanged",
-        newTotalFishCaught = totalFishCaught
-    })
-end)
-
-TotalFishCaughtChanged.OnClientEvent:Connect(function(newTotal)
-    VM:dispatch({
-        type = "totalfishcaughtchanged",
-        newTotalFishCaught = newTotal
-    })
-end)
-
-local totalFishCaught = GetTotalFishCaughtRF:InvokeServer()
-VM:dispatch({
-    type = "totalfishcaughtchanged",
-    newTotalCoins = totalFishCaught
-})]]></ProtectedString>
+								<string name="Name">load</string>
+								<string name="ScriptGuid">{55C1750B-87D0-4F24-A8A5-9CA7FBEC4A3A}</string>
+								<ProtectedString name="Source">require(script.Parent)</ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
+					</Item>
+					<Item class="ModuleScript" referent="RBX7614A454A2E84FDE978BD2258F8DB661">
+						<Properties>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">init.spec</string>
+							<string name="ScriptGuid">{85370992-7EEE-497F-B0C1-8018B898CA31}</string>
+							<ProtectedString name="Source"><![CDATA[return function()
+    local dependencies
+
+    function setup()
+        getmetatable(script.Parent).instance.moduleLoaded = false
+
+        dependencies = {}
+        dependencies.Rodux = require(game.Mocks.RoduxMock)
+        dependencies.TotalCoinsReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.IsfishingReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.WaitingForFishReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.FishBagReducer = require(game.Mocks.ReducerMock).new()
+        dependencies.FishBagDispatcherInstance = game.Mocks.FishBagDispatcherMock
+
+        require(script.Parent.Dependencies).Inject(dependencies)
+
+        getmetatable(dependencies.FishBagDispatcherInstance).instance.moduleLoaded = false
+
+        dependencies.FishBagReducer.returnValue = nil
+        dependencies.TotalCoinsReducer.returnValue = nil
+        dependencies.IsfishingReducer.returnValue = nil
+        dependencies.WaitingForFishReducer.returnValue = nil
+    end
+
+    describe("Store State", function()
+        it("Will have a property called FishBag that is set by the fish bag reducer.", function()
+            setup()
+            dependencies.FishBagReducer.returnValue = 123
+
+            local uut = require(script.Parent)
+            expect(uut().FishBag).to.equal(123)
+        end)
+
+        it("Will have a property called TotalCoins that is set by the total coins reducer", function()
+            setup()
+            dependencies.TotalCoinsReducer.returnValue = 321
+
+            local uut = require(script.Parent)
+            expect(uut().TotalCoins).to.equal(321)
+        end)
+
+        it("Will have a property called PlayerIsFishing that is set by the is fishing reducer", function()
+            setup()
+            dependencies.IsfishingReducer.returnValue = "abc"
+
+            local uut = require(script.Parent)
+            expect(uut().PlayerIsFishing).to.equal("abc")
+        end)
+
+        it("Will have a property called WaitingForFish that is set by the waiting for fish reducer", function()
+            setup()
+            dependencies.WaitingForFishReducer.returnValue = "xyz"
+
+            local uut = require(script.Parent)
+            expect(uut().WaitingForFish).to.equal("xyz")
+        end)
+    end)
+end]]></ProtectedString>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
 					</Item>
 				</Item>
 				<Item class="Folder" referent="RBX6D11FDA3AC9F4DF491C111889A06397D">
@@ -25149,6 +25873,79 @@ end
 return Input2dToWorld3dService]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
+					</Item>
+				</Item>
+				<Item class="Folder" referent="RBX2CFA3318DE57466D9A6BC46FA6793E52">
+					<Properties>
+						<string name="Name">Fish</string>
+						<BinaryString name="Tags"></BinaryString>
+					</Properties>
+					<Item class="ModuleScript" referent="RBXC3D52CECC4E44B21BFDA67757AC02A9C">
+						<Properties>
+							<Content name="LinkedSource"><null></null></Content>
+							<string name="Name">FishImageService</string>
+							<string name="ScriptGuid">{F2952C4C-5A23-43DC-9FDC-4BA112A67A2F}</string>
+							<ProtectedString name="Source"><![CDATA[local FishImageService = {}
+
+nameToImageIdMap = { }
+nameToImageIdMap["Green Banded Lilac Wretzel"] = "2771043601"
+nameToImageIdMap["Brown Spotted Sturdy Erv"] = "2754714344"
+nameToImageIdMap["Sweetwater Melon Cote"] = "2773360527"
+nameToImageIdMap["Silver Dollar Sand Skipper"] = "2778875718"
+
+function FishImageService.GetAssetIdFromName(fishName)
+    assert(fishName ~= nil, "Fish name parameter is null.")
+    assert(nameToImageIdMap[fishName] ~= nil, "Could not find an asset id for " .. fishName)
+
+    return nameToImageIdMap[fishName]
+end
+
+return FishImageService]]></ProtectedString>
+							<BinaryString name="Tags"></BinaryString>
+						</Properties>
+						<Item class="ModuleScript" referent="RBX108D7CDE5848404BBCA1007547428D90">
+							<Properties>
+								<Content name="LinkedSource"><null></null></Content>
+								<string name="Name">init.spec</string>
+								<string name="ScriptGuid">{1E85B7CC-1944-41CB-B17B-F1B84D4CFD79}</string>
+								<ProtectedString name="Source"><![CDATA[return function()
+    describe("GetAssetIdFromName", function()
+        local uut
+
+        local function setup()
+            uut = require(script.Parent)
+        end
+
+        it("Should return the asset ID corresponding to the fish name parameter", function()
+            setup()
+
+            expect(uut.GetAssetIdFromName("Sweetwater Melon Cote")).to.be.ok()
+        end)
+
+        it("Should throw an error if the asset ID is not known", function()
+            setup()
+
+            expect(function()
+                uut.GetAssetIdFromName("Who Dat")
+            end).to.throw()
+        end)
+
+        it("Should throw an error if the fish name parameter is null", function()
+            setup()
+
+            expect(function()
+                uut.GetAssetIdFromName()
+            end).to.throw()
+
+            expect(function()
+                uut.GetAssetIdFromName(nil)
+            end)
+        end)
+    end)
+end]]></ProtectedString>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
 					</Item>
 				</Item>
 			</Item>
@@ -26132,7 +26929,7 @@ return setmetatable(newTable, {
 					<string name="Name">Player</string>
 					<string name="ScriptGuid">{C5220529-6CC2-4A21-ACC8-9CF2D27071BB}</string>
 					<ProtectedString name="Source"><![CDATA[local repo = require(script.PlayerRepository)
-print("print a message")]]></ProtectedString>
+]]></ProtectedString>
 					<BinaryString name="Tags"></BinaryString>
 				</Properties>
 				<Item class="ModuleScript" referent="RBX34522AFDB31242A38110B56B0311FD34">
@@ -26638,7 +27435,7 @@ local PlayerFishingController = require(script.Dependencies).Get().FishingContro
 local FishingPoleRepository = require(script.Dependencies).Get().FishingPoleRepository
 local EquippedToolLocation = require(script.Dependencies).Get().EquippedToolLocation
 local PlayersService = require(script.Dependencies).Get().PlayersService
-local TotalFishCaughtChangedRE = require(script.Dependencies).Get().TotalFishCaughtChangedRE
+local FishBagContentsChangedRE = require(script.Dependencies).Get().FishBagContentsChangedRE
 
 -- Constructor
 function PlayerEntity.new(player)
@@ -26648,7 +27445,7 @@ function PlayerEntity.new(player)
 	setmetatable(p, PlayerEntity)
 	p.coinStore = datastore("coins", player)
 	p.poleStore = datastore("poles", player)
-	p.fishAmountStore = datastore("fishamount", player)
+	p.fishBagStore = datastore("fishbag", player)
 	p.backpack = playerBackpack.new(player)
 	p.animationController = PlayerAnimationController.new(player)
 	p.fishingController = PlayerFishingController.new(player, p)
@@ -26663,8 +27460,39 @@ function PlayerEntity:GetTotalCoins()
 	return self.coinStore:Get(0)
 end
 
+function PlayerEntity:GetFishBagContents()
+	local contents = self.fishBagStore:Get({})
+
+	assert(type(contents) == "table", "The datastore returned a non table for the fish bag contents.  This needs to be fixed")
+
+	return contents
+end
+
 function PlayerEntity:GetTotalFishCaught()
-	return self.fishAmountStore:Get(0)
+	local bagContents = self:GetFishBagContents()
+
+	local total = 0
+
+	for k,v in pairs(bagContents) do
+		assert(type(v) == "number", "The count for " .. k .. " was not a number.")
+		assert(v >= 0, "The count for " .. k .. " was negative.")
+		total = total + v
+	end
+
+	return total
+end
+
+function PlayerEntity:AddFishToBag(name)
+	assert(name ~= nil, "Attempt to add a fish to the bag without providing a fish name.")
+	assert(type(name) == "string", "Attempt to add a fish to the bag with a non-string name.")
+
+	local contents = self:GetFishBagContents()
+
+	contents[name] = contents[name] ~= nil and (contents[name] + 1) or 1
+
+	self.fishBagStore:Set(contents)
+
+	FishBagContentsChangedRE:FireClient(self.Player, self:GetTotalFishCaught(), self:GetFishBagContents())
 end
 
 function PlayerEntity:GetCurrentPole()
@@ -26690,12 +27518,6 @@ function PlayerEntity:SetTotalCoins(amount)
 	end
 
 	self.coinStore:Set(amount)
-end
-
-function PlayerEntity:IncrementTotalFishCaught()
-	local newTotal = self:GetTotalFishCaught() + 1
-	self.fishAmountStore:Set(newTotal)
-	TotalFishCaughtChangedRE:FireClient(self.Player, newTotal)
 end
 
 function PlayerEntity:AddPoleToPack(poleName)
@@ -26782,7 +27604,7 @@ function Dependencies.Get()
         FishingPoleRepository = require(game.ServerScriptService.src.Fishing.FishingPoleRepository),
         EquippedToolLocation = game.Workspace,
         PlayersService = game:GetService("Players"),
-        TotalFishCaughtChangedRE = game.ReplicatedStorage.src.Player.Stats.TotalFishCaughtChangedRE
+        FishBagContentsChangedRE = game.ReplicatedStorage.src.Player.Actions.Fishing.FishBagContentsChangedRE
     }
 end
 
@@ -26815,7 +27637,8 @@ return Dependencies]]></ProtectedString>
         PlayerAnimationController = require(game.Mocks.PlayerAnimationControllerMock),
         FishingController = require(game.Mocks.PlayerFishingControllerMock),
         FishingPoleRepository = FishingPoleRepositoryMock,
-        EquippedToolLocation = EquippedToolLocationMock
+        EquippedToolLocation = EquippedToolLocationMock,
+        FishBagContentsChangedRE = require(game.Mocks.RemoteEventMock).new()
     })
 
     local uut = require(script.Parent)
@@ -26878,6 +27701,234 @@ return Dependencies]]></ProtectedString>
             expect(function() 
                 player:SetTotalCoins(123.5) 
             end).to.throw()
+        end)
+    end)
+
+    describe("GetFishBagContents", function()
+        local player
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should return an empty table if database record is null.", function()
+            setup()
+            DataStoreMock.SetGet(nil)
+
+            expect(player:GetFishBagContents()).to.be.ok()
+        end)
+
+        it("Should return whatever table is in the database if record found.", function()
+            setup()
+            DataStoreMock.SetGet({Name = "someName"})
+
+            expect(player:GetFishBagContents().Name).to.equal("someName")
+        end)
+
+        it("Should throw an error if the record in the database is not a table.", function()
+            setup()
+            DataStoreMock.SetGet(321)
+
+            expect(function ()
+                player:GetFishBagContents()
+            end).to.throw()
+        end)
+    end)
+
+    describe("GetTotalFishCaught", function()
+        local player
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+        end
+
+        it("Should return zero if the bag is empty", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            expect(player:GetTotalFishCaught()).to.equal(0)
+        end)
+
+        it("Should return the count stored in the database if a fish was caught.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 3
+            })
+
+            expect(player:GetTotalFishCaught()).to.equal(3)
+        end)
+
+        it("Should return the total counts stored in the database, if multiple fish were caught", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = 3,
+                StarFish = 2
+            })
+
+            expect(player:GetTotalFishCaught()).to.equal(16)
+        end)
+
+        it("Should throw an error if a non-numeric value is found in the bag", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = "abc"
+            })
+
+            expect(function()
+                player:GetTotalFishCaught()
+            end).to.throw()
+        end)
+
+        it("Should throw an error if a negative count is found in the bag", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = -1
+            })
+
+            expect(function()
+                player:GetTotalFishCaught()
+            end).to.throw()
+        end)
+    end)
+
+    describe("AddFishToBag", function()
+        local player
+        local fishBagContentsChangedFired
+        local fishBagContentsChangedTotalCapture
+        local fishBagContentsChangedContentsCapture
+
+        local function setup()
+            player = uut.new( { UserId = 123, Name = "tester"} )
+            fishBagContentsChangedFired = false
+            fishBagContentsChangedTotalCapture = nil
+            fishBagContentsChangedContentsCapture = nil
+
+            uutDependencies.Get().FishBagContentsChangedRE:HandleClient(function(total, contents)
+                fishBagContentsChangedFired = true
+                fishBagContentsChangedTotalCapture = total
+                fishBagContentsChangedContentsCapture = contents
+            end)
+        end
+
+        it("Should increment the count of the caught fish, if a record exists for it.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11,
+                SunFish = 2,
+                StarFish = 8
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(3)
+        end)
+
+        it("Should set the count of a caught fish to 1, if a record does not already exist for it.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StupidFish = 11
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(1)
+        end)
+
+        it("Should throw an error, if the database returns a record that is not a table.", function()
+            setup()
+
+            DataStoreMock.SetGet(123)
+
+            expect(function()
+                player:AddFishToBag("SunFish")
+            end).to.throw()
+        end)
+
+        it("Should add the fish, and set the count to 1 even if the database does not have a record.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            player:AddFishToBag("SunFish")
+
+            expect(DataStoreMock:Get().SunFish).to.equal(1)
+        end)
+
+        it("Should throw an error, if the fish name is not a string.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 1
+            })
+
+            expect(function()
+                player:AddFishToBag(123)
+            end).to.throw()
+
+            expect(function()
+                player:AddFishToBag({})
+            end).to.throw()
+        end)
+
+        it("Should throw an error, if the fish name is not provided.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                SunFish = 1
+            })
+
+            expect(function()
+                player:AddFishToBag()
+            end).to.throw()
+
+            expect(function()
+                player:AddFishToBag(nil)
+            end).to.throw()
+        end)
+
+        it("Should fire the fish bag contents changed, if a fish is added to the bag.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            player:AddFishToBag("SunFish")
+
+            expect(fishBagContentsChangedFired).to.equal(true)
+        end)
+
+        it("Should pass the updated total fish caught to the client via the fish bag contents changed event.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StarFish = 7,
+                SillyFish = 3
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(fishBagContentsChangedTotalCapture).to.equal(11)
+        end)
+
+        it("Should not fire the fish bag contents changed, if there was an error.", function()
+            setup()
+
+            DataStoreMock.SetGet(nil)
+
+            expect(function()
+                player:AddFishToBag(123) -- should throw exception
+            end).to.throw()
+            
+            expect(fishBagContentsChangedFired).to.equal(false)
         end)
     end)
 
@@ -26994,8 +28045,8 @@ local getEquippedPoleRF = require(script.Dependencies).Get().GetEquippedPoleRF
 local startFishingRE = require(script.Dependencies).Get().StartFishingRE
 local stopFishingRE = require(script.Dependencies).Get().StopFishingRE
 local waitForFishRE = require(script.Dependencies).Get().WaitForFishRE
-local caughtFishRE = require(script.Dependencies).Get().CaughtFishRE
 local getTotalFishCaughtRF = require(script.Dependencies).Get().GetTotalFishCaughtRF
+local getFishBagContentsRF = require(script.Dependencies).Get().GetFishBagContentsRF
 
 playersService.PlayerAdded:Connect(function (player)
 	newPlayerEntity = playerFactory.new(player)
@@ -27031,6 +28082,11 @@ function getTotalFishCaughtRF.OnServerInvoke(player)
 	return playerEntity:GetTotalFishCaught()
 end
 
+function getFishBagContentsRF.OnServerInvoke(player)
+	local playerEntity = PlayerRepository.GetPlayer(player)
+	return playerEntity:GetFishBagContents()
+end
+
 startFishingRE.OnServerEvent:Connect(function(player, fishingLocation)
 	local playerEntity = PlayerRepository.GetPlayer(player)
 	playerEntity:StartFishing(fishingLocation)
@@ -27057,6 +28113,7 @@ return PlayerRepository
     local PlayerFactoryMock = require(game.Mocks.PlayerFactoryMock)
     local PlayerInstantiatedEvent = require(game.Mocks.RemoteEventMock).new()
     local GetTotalFishCaughtRF = require(game.Mocks.RemoteFunctionMock).new()
+    local GetFishBagContentsRF = require(game.Mocks.RemoteFunctionMock).new()
     local GetTotalCoinsRF = require(game.Mocks.RemoteFunctionMock).new()
     local StartFishingRE = require(game.Mocks.RemoteEventMock).new()
     local StopFishingRE = require(game.Mocks.RemoteEventMock).new()
@@ -27069,7 +28126,8 @@ return PlayerRepository
         GetTotalCoinsRF = GetTotalCoinsRF,
         StartFishingRE = StartFishingRE,
         StopFishingRE = StopFishingRE,
-        GetTotalFishCaughtRF = GetTotalFishCaughtRF
+        GetTotalFishCaughtRF = GetTotalFishCaughtRF,
+        GetFishBagContentsRF = GetFishBagContentsRF
     })
 
     local uut = require(script.Parent)
@@ -27087,11 +28145,11 @@ return PlayerRepository
             local playerRxFromServer = nil
 
             PlayerInstantiatedEvent:HandleClient(function(player)
-                playerRxFromServer = player
+                playerRxFromServer = true
             end)
 
             PlayerServiceMock.PlayerAdded:Fire(player)
-            expect(playerRxFromServer.UserId).to.equal(player.UserId)
+            expect(playerRxFromServer).to.equal(true)
         end)
 
         it("Should add the player's currently equipped pole to his or her backpack.", function()
@@ -27127,6 +28185,29 @@ return PlayerRepository
             expect(GetTotalCoinsRF:InvokeServer(player)).to.equal(743)
         end)
     end)
+
+    describe("GetFishBagContents Remote Function", function()
+        local player
+
+        local function setup()
+            player = {
+                UserId = 123,
+                FishBagContents = {
+                    SunFish = 11,
+                    StarFish = 3
+                }
+            }
+            PlayerServiceMock.PlayerAdded:Fire(player)
+        end
+
+        it("Should return the contents of the fish bag for the corresponding player when invoked", function()
+            setup()
+
+            expect(GetFishBagContentsRF:InvokeServer(player).SunFish).to.equal(11)
+            expect(GetFishBagContentsRF:InvokeServer(player).StarFish).to.equal(3)
+        end)
+    end)
+
 end]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
@@ -27151,6 +28232,7 @@ function PlayerRepositoryDependencies.Get()
         PlayerInstantiatedEvent = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE,
         GetTotalCoinsRF = game.ReplicatedStorage.src.Player.Stats.GetTotalCoinsRF,
         GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF,
+        GetFishBagContentsRF = game.ReplicatedStorage.src.Player.Actions.Fishing.GetFishBagContentsRF,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
         WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE
@@ -27213,22 +28295,10 @@ end
 
 function getFish()
 	fishTable = {}
-	fishTable[1] = {
-		ImageAssetId = "2771043601",
-		Name = "Green Banded Lilac Wretzel"
-	}
-	fishTable[2] = {
-		Name = "Brown Spotted Sturdy Erv",
-		ImageAssetId = "2754714344"
-	}
-	fishTable[3] = {
-		Name = "Sweetwater Melon Cote",
-		ImageAssetId = "2773360527"
-	}
-	fishTable[4] = {
-		Name = "Silver Dollar Sand Skipper",
-		ImageAssetId = "2778875718"
-	}
+	fishTable[1] = "Green Banded Lilac Wretzel"
+	fishTable[2] = "Brown Spotted Sturdy Erv"
+	fishTable[3] = "Sweetwater Melon Cote"
+	fishTable[4] = "Silver Dollar Sand Skipper"
 
 	return fishTable[math.random(1, #fishTable)]
 end
@@ -27261,8 +28331,7 @@ function PlayerFishingController:waitForFish(timeToWait)
 		stateChangedConnection = nil
 
 		if not interrupted then
-			dependencies.CaughtFishRE:FireClient(self.Player, getFish())
-			self.PlayerEntity:IncrementTotalFishCaught()
+			self.PlayerEntity:AddFishToBag(getFish())
 			self:waitForFish(timeToWait)
 		elseif playerInInvalidState then
 			self:StopFishing()
@@ -27292,7 +28361,6 @@ function PlayerFishingControllerDependencies.Get()
     return injected or {
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
-        CaughtFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.CaughtFishRE,
         WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE
     }
 end
@@ -27694,12 +28762,6 @@ return FishingPoleRepositoryDependencies]]></ProtectedString>
 							<BinaryString name="Tags"></BinaryString>
 						</Properties>
 					</Item>
-					<Item class="RemoteEvent" referent="RBX49E53044BD3A409996F0BEB8C39B7F43">
-						<Properties>
-							<string name="Name">TotalFishCaughtChangedRE</string>
-							<BinaryString name="Tags"></BinaryString>
-						</Properties>
-					</Item>
 					<Item class="RemoteFunction" referent="RBX78514784A9B94BF2AEA77B4119B66B06">
 						<Properties>
 							<string name="Name">GetTotalFishCaughtRF</string>
@@ -27741,12 +28803,6 @@ return FishingPoleRepositoryDependencies]]></ProtectedString>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>
-						<Item class="RemoteEvent" referent="RBX30B263EE9B6949F7AD6B644CC5BE3D55">
-							<Properties>
-								<string name="Name">CaughtFishRE</string>
-								<BinaryString name="Tags"></BinaryString>
-							</Properties>
-						</Item>
 						<Item class="RemoteEvent" referent="RBX11FEEA714C384D30B1643B63DC6FDEF9">
 							<Properties>
 								<string name="Name">StopWaitingForFishRE</string>
@@ -27784,6 +28840,18 @@ end
 
 FishingValidationService.__index= FishingValidationService
 return FishingValidationService]]></ProtectedString>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="RemoteEvent" referent="RBX448542692BEE49E0A86618054E2EF3CD">
+							<Properties>
+								<string name="Name">FishBagContentsChangedRE</string>
+								<BinaryString name="Tags"></BinaryString>
+							</Properties>
+						</Item>
+						<Item class="RemoteFunction" referent="RBX05127448870246C3B1FD2DBBC1E0C473">
+							<Properties>
+								<string name="Name">GetFishBagContentsRF</string>
 								<BinaryString name="Tags"></BinaryString>
 							</Properties>
 						</Item>

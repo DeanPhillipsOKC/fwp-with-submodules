@@ -13,6 +13,7 @@ function PlayerRepositoryDependencies.Get()
         PlayerInstantiatedEvent = game.ReplicatedStorage.src.Player.PlayerInstantiatedRE,
         GetTotalCoinsRF = game.ReplicatedStorage.src.Player.Stats.GetTotalCoinsRF,
         GetTotalFishCaughtRF = game.ReplicatedStorage.src.Player.Stats.GetTotalFishCaughtRF,
+        GetFishBagContentsRF = game.ReplicatedStorage.src.Player.Actions.Fishing.GetFishBagContentsRF,
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
         WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE
