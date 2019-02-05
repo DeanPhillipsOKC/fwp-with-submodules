@@ -1,11 +1,6 @@
 local Roact = require(game.ReplicatedStorage.lib.Roact)
 
 function CaughtFish(props)
-    print("props", props)
-    for k,v in pairs(props) do
-        print("k ", k, " | v ", v)
-    end 
-
     return Roact.createElement("Frame", {
         BackgroundTransparency = 1
     }, {

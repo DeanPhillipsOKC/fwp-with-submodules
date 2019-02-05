@@ -6,7 +6,6 @@ local progressBarReference = nil
 local FishingProgressBar = Roact.Component:extend("FishingProgressBar")
 
 function FishingProgressBar:render()
-    print("rendering")
     local props = self.props or {
         PlayerIsFishing = false,
         WaitingForFish = false,

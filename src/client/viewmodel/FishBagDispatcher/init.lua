@@ -17,7 +17,6 @@ function FishBagDispatcher.Dispatch(totalFishCaught, bagContents)
 end
 
 dependencies.FishBagContentsChangedRE.OnClientEvent:Connect(function(newTotalFishCaught, newFishBagContents)
-    print("newTotalFishCaught", newTotalFishCaught)
     FishBagDispatcher.Dispatch(newTotalFishCaught, newFishBagContents)
 end)
 
