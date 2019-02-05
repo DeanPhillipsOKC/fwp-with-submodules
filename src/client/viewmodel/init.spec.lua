@@ -22,15 +22,6 @@ return function()
         dependencies.WaitingForFishReducer.returnValue = nil
     end
 
-    describe("Dispatcher Initialization", function()
-        it("Will initialize the fish bag contents changed dispatcher", function()
-            setup()
-            require(script.Parent)
-
-            expect(getmetatable(dependencies.FishBagDispatcherInstance).instance.moduleLoaded).to.equal(true)
-        end)
-    end)
-
     describe("Store State", function()
         it("Will have a property called FishBag that is set by the fish bag reducer.", function()
             setup()

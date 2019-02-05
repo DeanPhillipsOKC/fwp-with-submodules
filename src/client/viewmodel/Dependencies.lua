@@ -13,7 +13,6 @@ function vmDependencies.Get()
         IsfishingReducer = require(script.Parent.IsFishingReducer),
         WaitingForFishReducer = require(script.Parent.WaitingForFishReducer),
         FishBagReducer = require(script.Parent.FishBagReducer),
-        FishBagDispatcherInstance = script.Parent.FishBagDispatcher
     }
 end
 

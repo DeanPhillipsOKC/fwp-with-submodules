@@ -167,7 +167,7 @@ return function()
         it("Should dispatch an action of type fishBagContentsChanged, when contents change", function()
             initialize()
 
-            dependencies.FishBagContentsChangedRE:FireClient(7, {})
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {})
 
             expect(dependencies.VM.dispatchedObjectCapture.type).to.equal("fishBagContentsChanged")
         end)
@@ -175,7 +175,7 @@ return function()
         it("Should dispatch an action with a FishBag object, when contents change", function()
             initialize()
 
-            dependencies.FishBagContentsChangedRE:FireClient(7, {})
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {})
 
             expect(dependencies.VM.dispatchedObjectCapture.FishBag).to.be.ok()
         end)
@@ -183,7 +183,7 @@ return function()
         it("Should dispatch an action with an updated total fish count, when contents change", function()
             initialize()
 
-            dependencies.FishBagContentsChangedRE:FireClient(7, {})
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {})
 
             expect(dependencies.VM.dispatchedObjectCapture.FishBag.Total).to.equal(7)
         end)
@@ -191,7 +191,7 @@ return function()
         it("Should dispatch an action with the new fish bag contents, when contents change", function()
             initialize()
 
-            dependencies.FishBagContentsChangedRE:FireClient(7, {
+            dependencies.FishBagContentsChangedRE:FireClient({}, 7, {
                 SunFish = 123,
                 StarFish = 321
             })

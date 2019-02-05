@@ -13,7 +13,4 @@ end
 
 local store = dependencies.Rodux.Store.new(reducer)
 
--- These are not used, but need to be loaded so that the dispatchers can respond to events
-local FishBagDispatcher = require(dependencies.FishBagDispatcherInstance)
-
 return store

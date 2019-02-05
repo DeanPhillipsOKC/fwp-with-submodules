@@ -37,11 +37,11 @@ return function()
             local playerRxFromServer = nil
 
             PlayerInstantiatedEvent:HandleClient(function(player)
-                playerRxFromServer = player
+                playerRxFromServer = true
             end)
 
             PlayerServiceMock.PlayerAdded:Fire(player)
-            expect(playerRxFromServer.UserId).to.equal(player.UserId)
+            expect(playerRxFromServer).to.equal(true)
         end)
 
         it("Should add the player's currently equipped pole to his or her backpack.", function()

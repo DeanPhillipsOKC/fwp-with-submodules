@@ -26,7 +26,7 @@ function RemoteEventMock:HandleClient(cb)
     self.handleClientCallback = cb
 end
 
-function RemoteEventMock:FireClient(...)
+function RemoteEventMock:FireClient(player, ...)
     self.handleClientCallback(...)
 end
 

@@ -12,8 +12,11 @@ function FishInBagComponent(props)
     }
 
     for k,v in pairs(props.FishBagContents) do
+        print("v", v)
+        print("v.ImageAssetId", v.ImageAssetId)
+        print("v.Total", v.Total)
         list[k] = dependencies.Roact.createElement(dependencies.CaughtFishComponent, {
-            ID = v.ImageAsetId, 
+            ID = v.ImageAssetId, 
             Count = v.Total
         })
     end

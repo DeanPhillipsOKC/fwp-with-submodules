@@ -65,7 +65,7 @@ function PlayerEntity:AddFishToBag(name)
 
 	self.fishBagStore:Set(contents)
 
-	FishBagContentsChangedRE:FireClient(self.Player)
+	FishBagContentsChangedRE:FireClient(self.Player, self:GetTotalFishCaught(), self:GetFishBagContents())
 end
 
 function PlayerEntity:GetCurrentPole()

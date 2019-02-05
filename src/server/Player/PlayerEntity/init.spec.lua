@@ -179,13 +179,19 @@ return function()
     describe("AddFishToBag", function()
         local player
         local fishBagContentsChangedFired
+        local fishBagContentsChangedTotalCapture
+        local fishBagContentsChangedContentsCapture
 
         local function setup()
             player = uut.new( { UserId = 123, Name = "tester"} )
             fishBagContentsChangedFired = false
+            fishBagContentsChangedTotalCapture = nil
+            fishBagContentsChangedContentsCapture = nil
 
-            uutDependencies.Get().FishBagContentsChangedRE:HandleClient(function()
+            uutDependencies.Get().FishBagContentsChangedRE:HandleClient(function(total, contents)
                 fishBagContentsChangedFired = true
+                fishBagContentsChangedTotalCapture = total
+                fishBagContentsChangedContentsCapture = contents
             end)
         end
 
@@ -275,6 +281,19 @@ return function()
             player:AddFishToBag("SunFish")
 
             expect(fishBagContentsChangedFired).to.equal(true)
+        end)
+
+        it("Should pass the updated total fish caught to the client via the fish bag contents changed event.", function()
+            setup()
+
+            DataStoreMock.SetGet({
+                StarFish = 7,
+                SillyFish = 3
+            })
+
+            player:AddFishToBag("SunFish")
+
+            expect(fishBagContentsChangedTotalCapture).to.equal(11)
         end)
 
         it("Should not fire the fish bag contents changed, if there was an error.", function()
