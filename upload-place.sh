@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ["$TRAVIS_BRANCH" == "master" ]
+if [ "$TRAVIS_BRANCH" == "master" ]
 then
     PLACE_ID="2751232980"
 else
