@@ -11,7 +11,9 @@ function FishInBagComponent(props)
         })
     }
 
+    local numUniqueFish = 0
     for k,v in pairs(props.FishBagContents) do
+        numUniqueFish = numUniqueFish + 1
         list[k] = dependencies.Roact.createElement(dependencies.CaughtFishComponent, {
             ID = v.ImageAssetId, 
             Count = v.Total
@@ -22,7 +24,7 @@ function FishInBagComponent(props)
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
         BackgroundTransparency = 1,
-        CanvasSize = UDim2.new(1, 0, 1, 0)
+        CanvasSize = UDim2.new(0, 0, (numUniqueFish * 0.3) + 0.13, 0)
     }, list)
 end
 
