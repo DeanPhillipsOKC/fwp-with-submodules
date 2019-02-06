@@ -42,16 +42,6 @@ function PlayerFishingController:StopFishing()
 	dependencies.StopFishingRE:FireClient(self.Player)
 end
 
-function getFish()
-	fishTable = {}
-	fishTable[1] = "Green Banded Lilac Wretzel"
-	fishTable[2] = "Brown Spotted Sturdy Erv"
-	fishTable[3] = "Sweetwater Melon Cote"
-	fishTable[4] = "Silver Dollar Sand Skipper"
-
-	return fishTable[math.random(1, #fishTable)]
-end
-
 function PlayerFishingController:waitForFish(timeToWait)
 	spawn(function() 
 		local interrupted = false
@@ -80,7 +70,7 @@ function PlayerFishingController:waitForFish(timeToWait)
 		stateChangedConnection = nil
 
 		if not interrupted then
-			self.PlayerEntity:AddFishToBag(getFish())
+			self.PlayerEntity:AddFishToBag(dependencies.FishRepository.RollForFish())
 			self:waitForFish(timeToWait)
 		elseif playerInInvalidState then
 			self:StopFishing()
