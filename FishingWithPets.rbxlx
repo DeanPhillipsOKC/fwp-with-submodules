@@ -24133,7 +24133,6 @@ local progressBarReference = nil
 local FishingProgressBar = Roact.Component:extend("FishingProgressBar")
 
 function FishingProgressBar:render()
-    print("rendering")
     local props = self.props or {
         PlayerIsFishing = false,
         WaitingForFish = false,
@@ -24224,10 +24223,9 @@ function FishInBagComponent(props)
         })
     }
 
+    local numUniqueFish = 0
     for k,v in pairs(props.FishBagContents) do
-        print("v", v)
-        print("v.ImageAssetId", v.ImageAssetId)
-        print("v.Total", v.Total)
+        numUniqueFish = numUniqueFish + 1
         list[k] = dependencies.Roact.createElement(dependencies.CaughtFishComponent, {
             ID = v.ImageAssetId, 
             Count = v.Total
@@ -24238,7 +24236,7 @@ function FishInBagComponent(props)
         Size = UDim2.new(1, 0, 1, 0),
         Position = UDim2.new(0, 0, 0, 0),
         BackgroundTransparency = 1,
-        CanvasSize = UDim2.new(1, 0, 1, 0)
+        CanvasSize = UDim2.new(0, 0, (numUniqueFish * 0.3) + 0.13, 0)
     }, list)
 end
 
@@ -24265,11 +24263,6 @@ return FishInBagList]]></ProtectedString>
 											<ProtectedString name="Source"><![CDATA[local Roact = require(game.ReplicatedStorage.lib.Roact)
 
 function CaughtFish(props)
-    print("props", props)
-    for k,v in pairs(props) do
-        print("k ", k, " | v ", v)
-    end 
-
     return Roact.createElement("Frame", {
         BackgroundTransparency = 1
     }, {
@@ -25521,7 +25514,6 @@ function FishBagDispatcher.Dispatch(totalFishCaught, bagContents)
 end
 
 dependencies.FishBagContentsChangedRE.OnClientEvent:Connect(function(newTotalFishCaught, newFishBagContents)
-    print("newTotalFishCaught", newTotalFishCaught)
     FishBagDispatcher.Dispatch(newTotalFishCaught, newFishBagContents)
 end)
 
