@@ -70,7 +70,8 @@ function PlayerFishingController:waitForFish(timeToWait)
 		stateChangedConnection = nil
 
 		if not interrupted then
-			self.PlayerEntity:AddFishToBag(dependencies.FishRepository.RollForFish())
+			local rarity = dependencies.RarityRepository.RollForRarity()
+			self.PlayerEntity:AddFishToBag(dependencies.FishRepository.RollForFish(rarity))
 			self:waitForFish(timeToWait)
 		elseif playerInInvalidState then
 			self:StopFishing()
