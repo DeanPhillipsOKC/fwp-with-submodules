@@ -8,12 +8,13 @@ function GetRandomIntegerMock.new(returnVals)
 
     setmetatable(settings, GetRandomIntegerMock)
 
-    return GetRandomIntegerMock
+    return settings
 end
 
-GetRandomIntegerMock.__call = function(self)
+function GetRandomIntegerMock.__call(self)
     local returnVal = self.returnVals[self.counter]
     self.counter = self.counter + 1
+    return returnVal
 end
 
 GetRandomIntegerMock.__index = GetRandomIntegerMock

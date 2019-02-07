@@ -8,14 +8,17 @@ return function()
     local uut;
 
     function setup()
-        for i,k in pairs(GetRandomIntegerReturnVals) do
-            k = 1
+        for i,k in ipairs(GetRandomIntegerReturnVals) do
+            GetRandomIntegerReturnVals[i] = 1
         end
 
         dependencies = {
             GetRandomInteger = require(game.Mocks.GetRandomIntegerMock).new(GetRandomIntegerReturnVals)
         }
 
+        getmetatable(script.Parent).instance.moduleLoaded = false
+
+        require(script.Parent.Dependencies).Inject(dependencies)
         uut = require(script.Parent)
     end
 

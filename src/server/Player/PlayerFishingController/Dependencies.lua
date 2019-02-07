@@ -11,7 +11,8 @@ function PlayerFishingControllerDependencies.Get()
         StartFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StartFishingRE,
         StopFishingRE = game.ReplicatedStorage.src.Player.Actions.Fishing.StopFishingRE,
         WaitForFishRE = game.ReplicatedStorage.src.Player.Actions.Fishing.WaitForFishRE,
-        FishRepository = require(game.ServerScriptService.src.Fishing.FishRepository)
+        FishRepository = require(game.ServerScriptService.src.Fishing.FishRepository),
+        RarityRepository = require(game.ServerScriptService.src.Meta.RarityRepository)
     }
 end
 

@@ -11,8 +11,8 @@ RarityRepository.rarityTable = {
 
 -- The roll starts at "Common" and only moves to the next level if a 1 out of 10 is rolled.
 function RarityRepository.prototype.RollForRarity()
-    for i,v in pairs(RarityRepository.rarityTable) do
-        if dependencies.GetRandomInteger(1, #RarityRepository.rarityTable) == 1 then
+    for i,v in ipairs(RarityRepository.rarityTable) do
+        if dependencies.GetRandomInteger(1, 10) ~= 1 then
             return RarityRepository.rarityTable[i]
         end
     end
