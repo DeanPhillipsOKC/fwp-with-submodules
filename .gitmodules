@@ -13,3 +13,6 @@
 [submodule "modules/shared/RoactRodux"]
 	path = modules/shared/RoactRodux
 	url = https://github.com/Roblox/roact-rodux
+[submodule "src/client"]
+	path = src/client
+	url = https://github.com/deanphillipsokc/fwp-client-test
